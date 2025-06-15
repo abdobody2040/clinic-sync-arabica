@@ -1,13 +1,13 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Users, Heart, Pill, FlaskConical } from 'lucide-react';
+import { Users, Heart, Pill, FlaskConical, FileText } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { PatientForm } from '@/components/PatientForm';
 import { PatientDetailsView } from '@/components/PatientDetailsView';
 import { PatientEditForm } from '@/components/PatientEditForm';
+import { PrescriptionForm } from '@/components/PrescriptionForm';
 
 interface Patient {
   id: number;
@@ -80,6 +80,10 @@ interface PatientsTabProps {
   onPatientUpdate: (data: any) => void;
   onClosePatientView: () => void;
   onEditFromView: () => void;
+  showPrescriptionForm?: boolean;
+  onWritePrescription?: (patient: Patient) => void;
+  onPrescriptionSubmit?: (data: any) => void;
+  onCancelPrescriptionForm?: () => void;
 }
 
 export const PatientsTab: React.FC<PatientsTabProps> = ({
@@ -97,7 +101,11 @@ export const PatientsTab: React.FC<PatientsTabProps> = ({
   onEditPatient,
   onPatientUpdate,
   onClosePatientView,
-  onEditFromView
+  onEditFromView,
+  showPrescriptionForm = false,
+  onWritePrescription,
+  onPrescriptionSubmit,
+  onCancelPrescriptionForm
 }) => {
   const { t } = useLanguage();
 
@@ -111,6 +119,16 @@ export const PatientsTab: React.FC<PatientsTabProps> = ({
       <PatientForm 
         onSubmit={onPatientSubmit}
         onCancel={onCancelPatientForm}
+      />
+    );
+  }
+
+  if (showPrescriptionForm && selectedPatient) {
+    return (
+      <PrescriptionForm
+        selectedPatient={selectedPatient}
+        onSubmit={onPrescriptionSubmit || (() => {})}
+        onCancel={onCancelPrescriptionForm || (() => {})}
       />
     );
   }
@@ -228,6 +246,15 @@ export const PatientsTab: React.FC<PatientsTabProps> = ({
                             className="text-xs w-full sm:w-auto"
                           >
                             {t("edit")}
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => onWritePrescription && onWritePrescription(patient)}
+                            className="text-xs w-full sm:w-auto"
+                          >
+                            <FileText className="w-3 h-3 mr-1" />
+                            Prescription
                           </Button>
                         </div>
                       </td>

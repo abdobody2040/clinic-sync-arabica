@@ -27,6 +27,7 @@ const Index = () => {
   const {
     showPatientForm,
     setShowPatientForm,
+    showPrescriptionForm,
     patients,
     selectedPatient,
     viewMode,
@@ -39,7 +40,10 @@ const Index = () => {
     handleEditPatient,
     handlePatientUpdate,
     handleClosePatientView,
-    handleEditFromView
+    handleEditFromView,
+    handleWritePrescription,
+    handlePrescriptionSubmit,
+    handleCancelPrescriptionForm
   } = usePatients();
 
   const {
@@ -108,6 +112,10 @@ const Index = () => {
       onPatientUpdate={handlePatientUpdate}
       onClosePatientView={handleClosePatientView}
       onEditFromView={handleEditFromView}
+      showPrescriptionForm={showPrescriptionForm}
+      onWritePrescription={handleWritePrescription}
+      onPrescriptionSubmit={handlePrescriptionSubmit}
+      onCancelPrescriptionForm={handleCancelPrescriptionForm}
       showAppointmentForm={showAppointmentForm}
       selectedAppointment={selectedAppointment}
       appointments={appointments}

@@ -59,6 +59,8 @@ interface LabResult {
 
 export const usePatients = () => {
   const [showPatientForm, setShowPatientForm] = useState(false);
+  const [showPrescriptionForm, setShowPrescriptionForm] = useState(false);
+  
   const [patients, setPatients] = useState<Patient[]>([
     { id: 1, name: "Ahmed Al-Mansouri", phone: "+971 50 123 4567", lastVisit: "2024-01-15" },
     { id: 2, name: "Fatima Hassan", phone: "+971 55 987 6543", lastVisit: "2024-01-14" }
@@ -292,9 +294,47 @@ export const usePatients = () => {
     setViewMode('edit');
   };
 
+  const handleWritePrescription = (patient: Patient) => {
+    console.log("Write prescription clicked for:", patient.name);
+    setSelectedPatient(patient);
+    setShowPrescriptionForm(true);
+  };
+
+  const handlePrescriptionSubmit = (data: any) => {
+    console.log("Prescription submitted:", data);
+    
+    const newPrescription = {
+      id: prescriptions.length + 1,
+      patientId: selectedPatient?.id || 0,
+      patientName: data.patientName,
+      medicationName: data.medications.map((med: any) => med.name).join(', '),
+      dosage: data.medications.map((med: any) => med.dosage).join(', '),
+      frequency: data.medications.map((med: any) => med.frequency).join(', '),
+      startDate: new Date().toISOString().split('T')[0],
+      endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days from now
+      status: 'active' as const,
+      prescribedBy: data.prescribedBy
+    };
+    
+    setPrescriptions(prevPrescriptions => [...prevPrescriptions, newPrescription]);
+    setShowPrescriptionForm(false);
+    setSelectedPatient(null);
+    
+    toast({
+      title: t("success"),
+      description: "Prescription created successfully!",
+    });
+  };
+
+  const handleCancelPrescriptionForm = () => {
+    setShowPrescriptionForm(false);
+    setSelectedPatient(null);
+  };
+
   return {
     showPatientForm,
     setShowPatientForm,
+    showPrescriptionForm,
     patients,
     selectedPatient,
     viewMode,
@@ -307,6 +347,9 @@ export const usePatients = () => {
     handleEditPatient,
     handlePatientUpdate,
     handleClosePatientView,
-    handleEditFromView
+    handleEditFromView,
+    handleWritePrescription,
+    handlePrescriptionSubmit,
+    handleCancelPrescriptionForm
   };
 };

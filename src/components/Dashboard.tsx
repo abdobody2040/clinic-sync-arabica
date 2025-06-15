@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Header } from './Header';
@@ -95,6 +94,12 @@ interface DashboardProps {
   onPatientUpdate: (data: any) => void;
   onClosePatientView: () => void;
   onEditFromView: () => void;
+  
+  // Prescription-related props
+  showPrescriptionForm?: boolean;
+  onWritePrescription?: (patient: Patient) => void;
+  onPrescriptionSubmit?: (data: any) => void;
+  onCancelPrescriptionForm?: () => void;
   
   // Appointment-related props
   showAppointmentForm: boolean;

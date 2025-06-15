@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { PatientsTab } from './tabs/PatientsTab';
@@ -93,6 +92,12 @@ interface MainTabsProps {
   onClosePatientView: () => void;
   onEditFromView: () => void;
   
+  // Prescription-related props
+  showPrescriptionForm?: boolean;
+  onWritePrescription?: (patient: Patient) => void;
+  onPrescriptionSubmit?: (data: any) => void;
+  onCancelPrescriptionForm?: () => void;
+  
   // Appointment-related props
   showAppointmentForm: boolean;
   selectedAppointment: Appointment | null;
@@ -130,6 +135,10 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
           onPatientUpdate={props.onPatientUpdate}
           onClosePatientView={props.onClosePatientView}
           onEditFromView={props.onEditFromView}
+          showPrescriptionForm={props.showPrescriptionForm}
+          onWritePrescription={props.onWritePrescription}
+          onPrescriptionSubmit={props.onPrescriptionSubmit}
+          onCancelPrescriptionForm={props.onCancelPrescriptionForm}
         />
       </TabsContent>
 
