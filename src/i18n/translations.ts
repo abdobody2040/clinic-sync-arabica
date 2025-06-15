@@ -35,6 +35,8 @@ export interface Translations {
   phone: string;
   status: string;
   actions: string;
+  date: string;
+  time: string;
   
   // Dashboard
   totalPatients: string;
@@ -141,6 +143,8 @@ export const translations: Record<Language, Translations> = {
     phone: "Phone",
     status: "Status",
     actions: "Actions",
+    date: "Date",
+    time: "Time",
     
     // Dashboard
     totalPatients: "Total Patients",
@@ -243,6 +247,8 @@ export const translations: Record<Language, Translations> = {
     phone: "الهاتف",
     status: "الحالة",
     actions: "الإجراءات",
+    date: "التاريخ",
+    time: "الوقت",
     
     // Dashboard
     totalPatients: "إجمالي المرضى",
