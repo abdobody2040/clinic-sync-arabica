@@ -6,8 +6,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Users, FileText, Settings, Stethoscope, Shield } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { 
+  Calendar, 
+  Users, 
+  FileText, 
+  Settings, 
+  Stethoscope, 
+  Shield, 
+  BarChart3, 
+  Package,
+  Heart,
+  Pill,
+  FlaskConical,
+  Activity,
+  AlertTriangle,
+  ClipboardList,
+  Globe,
+  ChevronDown
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/hooks/useLanguage";
 
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -16,6 +35,7 @@ const Index = () => {
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [licenseKey, setLicenseKey] = useState("");
   const { toast } = useToast();
+  const { currentLanguage, changeLanguage, t, isRTL } = useLanguage();
 
   // Mock authentication check
   useEffect(() => {
@@ -44,12 +64,12 @@ const Index = () => {
       setIsAuthenticated(true);
       setCurrentUser({ name: "Dr. Ahmed", role: "admin", email: "admin@test.com" });
       toast({
-        title: "Login Successful",
-        description: "Welcome to Clinic Management System",
+        title: t("success"),
+        description: t("welcomeBack"),
       });
     } else {
       toast({
-        title: "Login Failed",
+        title: t("error"),
         description: "Invalid credentials. Use admin@test.com / password123",
         variant: "destructive",
       });
@@ -61,12 +81,12 @@ const Index = () => {
       localStorage.setItem("clinic_license", licenseKey);
       setLicenseStatus("active");
       toast({
-        title: "License Activated",
-        description: "Your clinic license has been successfully activated!",
+        title: t("success"),
+        description: "License activated successfully!",
       });
     } else {
       toast({
-        title: "Invalid License",
+        title: t("error"),
         description: "Please enter a valid license key. Demo: DEMO-TRIAL-2024-ABCD",
         variant: "destructive",
       });
@@ -78,8 +98,8 @@ const Index = () => {
     setIsAuthenticated(false);
     setCurrentUser(null);
     toast({
-      title: "Logged Out",
-      description: "You have been successfully logged out",
+      title: t("success"),
+      description: "You have been logged out",
     });
   };
 
@@ -92,25 +112,43 @@ const Index = () => {
             <div className="mx-auto mb-4 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
               <Stethoscope className="w-8 h-8 text-white" />
             </div>
-            <CardTitle className="text-2xl">Clinic Management System</CardTitle>
-            <CardDescription>Enter your license key to activate</CardDescription>
+            <CardTitle className="text-2xl">{t("clinicManagementSystem")}</CardTitle>
+            <CardDescription>{t("enterLicenseKey")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="license">License Key</Label>
+              <Label htmlFor="license">{t("licenseKey")}</Label>
               <Input
                 id="license"
-                placeholder="Enter license key"
+                placeholder={t("licenseKey")}
                 value={licenseKey}
                 onChange={(e) => setLicenseKey(e.target.value)}
               />
             </div>
             <Button onClick={handleLicenseActivation} className="w-full">
               <Shield className="w-4 h-4 mr-2" />
-              Activate License
+              {t("activateLicense")}
             </Button>
             <div className="text-sm text-muted-foreground text-center">
-              Demo License: <code className="bg-muted px-2 py-1 rounded">DEMO-TRIAL-2024-ABCD</code>
+              {t("demoLicense")}: <code className="bg-muted px-2 py-1 rounded">DEMO-TRIAL-2024-ABCD</code>
+            </div>
+            
+            {/* Language selector */}
+            <div className="flex justify-center space-x-2">
+              <Button 
+                variant={currentLanguage === 'en' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => changeLanguage('en')}
+              >
+                English
+              </Button>
+              <Button 
+                variant={currentLanguage === 'ar' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => changeLanguage('ar')}
+              >
+                العربية
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -127,39 +165,57 @@ const Index = () => {
             <div className="mx-auto mb-4 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
               <Stethoscope className="w-8 h-8 text-white" />
             </div>
-            <CardTitle className="text-2xl">Welcome Back</CardTitle>
-            <CardDescription>Sign in to your clinic account</CardDescription>
+            <CardTitle className="text-2xl">{t("welcomeBack")}</CardTitle>
+            <CardDescription>{t("signInToAccount")}</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("email")}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={t("email")}
                   value={loginForm.email}
                   onChange={(e) => setLoginForm(prev => ({ ...prev, email: e.target.value }))}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("password")}</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder={t("password")}
                   value={loginForm.password}
                   onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
                   required
                 />
               </div>
               <Button type="submit" className="w-full">
-                Sign In
+                {t("signIn")}
               </Button>
             </form>
             <div className="mt-4 text-sm text-muted-foreground text-center">
-              Demo Login: <code className="bg-muted px-2 py-1 rounded">admin@test.com / password123</code>
+              {t("demoLogin")}: <code className="bg-muted px-2 py-1 rounded">admin@test.com / password123</code>
+            </div>
+            
+            {/* Language selector */}
+            <div className="flex justify-center space-x-2 mt-4">
+              <Button 
+                variant={currentLanguage === 'en' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => changeLanguage('en')}
+              >
+                English
+              </Button>
+              <Button 
+                variant={currentLanguage === 'ar' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => changeLanguage('ar')}
+              >
+                العربية
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -169,23 +225,36 @@ const Index = () => {
 
   // Main dashboard
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen bg-gray-50 ${isRTL ? 'font-arabic' : ''}`}>
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Stethoscope className="w-8 h-8 text-blue-600 mr-3" />
-              <h1 className="text-xl font-semibold text-gray-900">Clinic Management System</h1>
+              <h1 className="text-xl font-semibold text-gray-900">{t("clinicManagementSystem")}</h1>
             </div>
             <div className="flex items-center space-x-4">
               <Badge variant="secondary">
                 <Shield className="w-3 h-3 mr-1" />
-                Licensed
+                {t("licensed")}
               </Badge>
-              <span className="text-sm text-gray-600">Welcome, {currentUser?.name}</span>
+              
+              {/* Language Selector */}
+              <Select value={currentLanguage} onValueChange={changeLanguage}>
+                <SelectTrigger className="w-32">
+                  <Globe className="w-4 h-4 mr-2" />
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="ar">العربية</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <span className="text-sm text-gray-600">{t("welcome")}, {currentUser?.name}</span>
               <Button variant="outline" size="sm" onClick={handleLogout}>
-                Logout
+                {t("logout")}
               </Button>
             </div>
           </div>
@@ -201,8 +270,8 @@ const Index = () => {
               <CardContent className="p-6">
                 <div className="flex items-center">
                   <Users className="w-8 h-8 text-blue-600" />
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Total Patients</p>
+                  <div className={`${isRTL ? 'mr-4' : 'ml-4'}`}>
+                    <p className="text-sm font-medium text-gray-600">{t("totalPatients")}</p>
                     <p className="text-2xl font-bold text-gray-900">1,234</p>
                   </div>
                 </div>
@@ -213,8 +282,8 @@ const Index = () => {
               <CardContent className="p-6">
                 <div className="flex items-center">
                   <Calendar className="w-8 h-8 text-green-600" />
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Today's Appointments</p>
+                  <div className={`${isRTL ? 'mr-4' : 'ml-4'}`}>
+                    <p className="text-sm font-medium text-gray-600">{t("todaysAppointments")}</p>
                     <p className="text-2xl font-bold text-gray-900">28</p>
                   </div>
                 </div>
@@ -225,8 +294,8 @@ const Index = () => {
               <CardContent className="p-6">
                 <div className="flex items-center">
                   <FileText className="w-8 h-8 text-purple-600" />
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Pending Invoices</p>
+                  <div className={`${isRTL ? 'mr-4' : 'ml-4'}`}>
+                    <p className="text-sm font-medium text-gray-600">{t("pendingInvoices")}</p>
                     <p className="text-2xl font-bold text-gray-900">12</p>
                   </div>
                 </div>
@@ -237,9 +306,9 @@ const Index = () => {
               <CardContent className="p-6">
                 <div className="flex items-center">
                   <Settings className="w-8 h-8 text-orange-600" />
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">System Status</p>
-                    <p className="text-2xl font-bold text-green-600">Online</p>
+                  <div className={`${isRTL ? 'mr-4' : 'ml-4'}`}>
+                    <p className="text-sm font-medium text-gray-600">{t("systemStatus")}</p>
+                    <p className="text-2xl font-bold text-green-600">{t("online")}</p>
                   </div>
                 </div>
               </CardContent>
@@ -248,33 +317,78 @@ const Index = () => {
 
           {/* Main Tabs */}
           <Tabs defaultValue="patients" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="patients">Patients</TabsTrigger>
-              <TabsTrigger value="appointments">Appointments</TabsTrigger>
-              <TabsTrigger value="billing">Billing</TabsTrigger>
-              <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-6">
+              <TabsTrigger value="patients">{t("patients")}</TabsTrigger>
+              <TabsTrigger value="appointments">{t("appointments")}</TabsTrigger>
+              <TabsTrigger value="billing">{t("billing")}</TabsTrigger>
+              <TabsTrigger value="reports">{t("reports")}</TabsTrigger>
+              <TabsTrigger value="inventory">{t("inventory")}</TabsTrigger>
+              <TabsTrigger value="settings">{t("settings")}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="patients">
               <Card>
                 <CardHeader>
-                  <CardTitle>Patient Management</CardTitle>
-                  <CardDescription>View and manage patient records</CardDescription>
+                  <CardTitle className="flex items-center">
+                    <Users className="w-5 h-5 mr-2" />
+                    {t("patientManagement")}
+                  </CardTitle>
+                  <CardDescription>{t("viewManagePatients")}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <Input placeholder="Search patients..." className="max-w-sm" />
-                      <Button>Add New Patient</Button>
+                      <Input placeholder={t("searchPatients")} className="max-w-sm" />
+                      <Button>{t("addNewPatient")}</Button>
                     </div>
+                    
+                    {/* Patient Quick Actions */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                      <Card className="border-l-4 border-l-red-500">
+                        <CardContent className="p-4">
+                          <div className="flex items-center">
+                            <Heart className="w-6 h-6 text-red-500 mr-3" />
+                            <div>
+                              <p className="font-medium">{t("medicalRecords")}</p>
+                              <p className="text-sm text-gray-600">156 {t("records")}</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className="border-l-4 border-l-blue-500">
+                        <CardContent className="p-4">
+                          <div className="flex items-center">
+                            <Pill className="w-6 h-6 text-blue-500 mr-3" />
+                            <div>
+                              <p className="font-medium">{t("prescriptions")}</p>
+                              <p className="text-sm text-gray-600">89 {t("active")}</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className="border-l-4 border-l-green-500">
+                        <CardContent className="p-4">
+                          <div className="flex items-center">
+                            <FlaskConical className="w-6 h-6 text-green-500 mr-3" />
+                            <div>
+                              <p className="font-medium">{t("labResults")}</p>
+                              <p className="text-sm text-gray-600">23 {t("pending")}</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                    
                     <div className="border rounded-lg">
                       <table className="w-full">
                         <thead className="border-b bg-gray-50">
                           <tr>
-                            <th className="text-left p-4">Name</th>
-                            <th className="text-left p-4">Phone</th>
-                            <th className="text-left p-4">Last Visit</th>
-                            <th className="text-left p-4">Actions</th>
+                            <th className="text-left p-4">{t("name")}</th>
+                            <th className="text-left p-4">{t("phone")}</th>
+                            <th className="text-left p-4">{t("lastVisit")}</th>
+                            <th className="text-left p-4">{t("actions")}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -283,7 +397,10 @@ const Index = () => {
                             <td className="p-4">+971 50 123 4567</td>
                             <td className="p-4">2024-01-15</td>
                             <td className="p-4">
-                              <Button variant="outline" size="sm">View</Button>
+                              <div className="flex space-x-2">
+                                <Button variant="outline" size="sm">{t("view")}</Button>
+                                <Button variant="outline" size="sm">{t("edit")}</Button>
+                              </div>
                             </td>
                           </tr>
                           <tr className="border-b">
@@ -291,7 +408,10 @@ const Index = () => {
                             <td className="p-4">+971 55 987 6543</td>
                             <td className="p-4">2024-01-14</td>
                             <td className="p-4">
-                              <Button variant="outline" size="sm">View</Button>
+                              <div className="flex space-x-2">
+                                <Button variant="outline" size="sm">{t("view")}</Button>
+                                <Button variant="outline" size="sm">{t("edit")}</Button>
+                              </div>
                             </td>
                           </tr>
                         </tbody>
@@ -305,18 +425,21 @@ const Index = () => {
             <TabsContent value="appointments">
               <Card>
                 <CardHeader>
-                  <CardTitle>Appointment Scheduling</CardTitle>
-                  <CardDescription>Manage clinic appointments and schedules</CardDescription>
+                  <CardTitle className="flex items-center">
+                    <Calendar className="w-5 h-5 mr-2" />
+                    {t("appointmentScheduling")}
+                  </CardTitle>
+                  <CardDescription>{t("manageAppointments")}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <div className="flex space-x-2">
-                        <Button variant="outline">Today</Button>
-                        <Button variant="outline">Week</Button>
-                        <Button variant="outline">Month</Button>
+                        <Button variant="outline">{t("today")}</Button>
+                        <Button variant="outline">{t("week")}</Button>
+                        <Button variant="outline">{t("month")}</Button>
                       </div>
-                      <Button>New Appointment</Button>
+                      <Button>{t("newAppointment")}</Button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       <Card className="border-l-4 border-l-blue-500">
@@ -327,7 +450,7 @@ const Index = () => {
                               <p className="text-sm text-gray-600">General Checkup</p>
                               <p className="text-sm text-gray-500">09:00 AM - 09:30 AM</p>
                             </div>
-                            <Badge>Confirmed</Badge>
+                            <Badge>{t("confirmed")}</Badge>
                           </div>
                         </CardContent>
                       </Card>
@@ -340,7 +463,7 @@ const Index = () => {
                               <p className="text-sm text-gray-600">Follow-up</p>
                               <p className="text-sm text-gray-500">10:00 AM - 10:30 AM</p>
                             </div>
-                            <Badge variant="secondary">Completed</Badge>
+                            <Badge variant="secondary">{t("completed")}</Badge>
                           </div>
                         </CardContent>
                       </Card>
@@ -353,24 +476,27 @@ const Index = () => {
             <TabsContent value="billing">
               <Card>
                 <CardHeader>
-                  <CardTitle>Billing & Invoices</CardTitle>
-                  <CardDescription>Manage invoices and payments</CardDescription>
+                  <CardTitle className="flex items-center">
+                    <FileText className="w-5 h-5 mr-2" />
+                    {t("billingInvoices")}
+                  </CardTitle>
+                  <CardDescription>{t("manageInvoices")}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <Input placeholder="Search invoices..." className="max-w-sm" />
-                      <Button>Create Invoice</Button>
+                      <Input placeholder={t("searchInvoices")} className="max-w-sm" />
+                      <Button>{t("createInvoice")}</Button>
                     </div>
                     <div className="border rounded-lg">
                       <table className="w-full">
                         <thead className="border-b bg-gray-50">
                           <tr>
-                            <th className="text-left p-4">Invoice #</th>
-                            <th className="text-left p-4">Patient</th>
-                            <th className="text-left p-4">Amount</th>
-                            <th className="text-left p-4">Status</th>
-                            <th className="text-left p-4">Actions</th>
+                            <th className="text-left p-4">{t("invoiceNumber")}</th>
+                            <th className="text-left p-4">{t("patient")}</th>
+                            <th className="text-left p-4">{t("amount")}</th>
+                            <th className="text-left p-4">{t("status")}</th>
+                            <th className="text-left p-4">{t("actions")}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -379,21 +505,144 @@ const Index = () => {
                             <td className="p-4">Ahmed Al-Mansouri</td>
                             <td className="p-4">AED 350.00</td>
                             <td className="p-4">
-                              <Badge variant="secondary">Paid</Badge>
+                              <Badge variant="secondary">{t("paid")}</Badge>
                             </td>
                             <td className="p-4">
-                              <Button variant="outline" size="sm">View</Button>
+                              <Button variant="outline" size="sm">{t("view")}</Button>
                             </td>
                           </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="reports">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <BarChart3 className="w-5 h-5 mr-2" />
+                    {t("reportsAnalytics")}
+                  </CardTitle>
+                  <CardDescription>{t("generateReports")}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <Card className="border-l-4 border-l-blue-500">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium">{t("patientReports")}</p>
+                            <p className="text-sm text-gray-600">Demographics & Statistics</p>
+                          </div>
+                          <Users className="w-8 h-8 text-blue-500" />
+                        </div>
+                        <Button className="w-full mt-4" variant="outline">Generate Report</Button>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="border-l-4 border-l-green-500">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium">{t("financialReports")}</p>
+                            <p className="text-sm text-gray-600">Revenue & Billing</p>
+                          </div>
+                          <FileText className="w-8 h-8 text-green-500" />
+                        </div>
+                        <Button className="w-full mt-4" variant="outline">Generate Report</Button>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="border-l-4 border-l-purple-500">
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium">{t("appointmentReports")}</p>
+                            <p className="text-sm text-gray-600">Scheduling & Attendance</p>
+                          </div>
+                          <Calendar className="w-8 h-8 text-purple-500" />
+                        </div>
+                        <Button className="w-full mt-4" variant="outline">Generate Report</Button>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="inventory">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Package className="w-5 h-5 mr-2" />
+                    {t("inventoryManagement")}
+                  </CardTitle>
+                  <CardDescription>{t("manageSupplies")}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <Card className="border-l-4 border-l-blue-500">
+                        <CardContent className="p-4">
+                          <div className="flex items-center">
+                            <Package className="w-6 h-6 text-blue-500 mr-3" />
+                            <div>
+                              <p className="font-medium">{t("supplies")}</p>
+                              <p className="text-sm text-gray-600">245 items</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className="border-l-4 border-l-green-500">
+                        <CardContent className="p-4">
+                          <div className="flex items-center">
+                            <Activity className="w-6 h-6 text-green-500 mr-3" />
+                            <div>
+                              <p className="font-medium">{t("equipment")}</p>
+                              <p className="text-sm text-gray-600">67 devices</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className="border-l-4 border-l-red-500">
+                        <CardContent className="p-4">
+                          <div className="flex items-center">
+                            <AlertTriangle className="w-6 h-6 text-red-500 mr-3" />
+                            <div>
+                              <p className="font-medium">{t("lowStock")}</p>
+                              <p className="text-sm text-gray-600">12 items</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                    
+                    <div className="border rounded-lg">
+                      <table className="w-full">
+                        <thead className="border-b bg-gray-50">
+                          <tr>
+                            <th className="text-left p-4">Item</th>
+                            <th className="text-left p-4">Category</th>
+                            <th className="text-left p-4">Stock</th>
+                            <th className="text-left p-4">Status</th>
+                            <th className="text-left p-4">{t("actions")}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
                           <tr className="border-b">
-                            <td className="p-4">#INV-002</td>
-                            <td className="p-4">Fatima Hassan</td>
-                            <td className="p-4">AED 200.00</td>
+                            <td className="p-4">Surgical Gloves</td>
+                            <td className="p-4">Medical Supplies</td>
+                            <td className="p-4">45 boxes</td>
                             <td className="p-4">
-                              <Badge variant="destructive">Pending</Badge>
+                              <Badge>In Stock</Badge>
                             </td>
                             <td className="p-4">
-                              <Button variant="outline" size="sm">View</Button>
+                              <Button variant="outline" size="sm">{t("update")}</Button>
                             </td>
                           </tr>
                         </tbody>
@@ -407,34 +656,51 @@ const Index = () => {
             <TabsContent value="settings">
               <Card>
                 <CardHeader>
-                  <CardTitle>System Settings</CardTitle>
-                  <CardDescription>Configure clinic settings and preferences</CardDescription>
+                  <CardTitle className="flex items-center">
+                    <Settings className="w-5 h-5 mr-2" />
+                    {t("systemSettings")}
+                  </CardTitle>
+                  <CardDescription>{t("configureSettings")}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-lg font-medium">Clinic Information</h3>
+                      <h3 className="text-lg font-medium">{t("clinicInformation")}</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div>
-                          <Label>Clinic Name</Label>
+                          <Label>{t("clinicName")}</Label>
                           <Input defaultValue="Al-Shifa Medical Center" />
                         </div>
                         <div>
-                          <Label>License Number</Label>
+                          <Label>{t("licenseNumber")}</Label>
                           <Input defaultValue="DEMO-TRIAL-2024-ABCD" disabled />
                         </div>
                       </div>
                     </div>
                     
                     <div>
-                      <h3 className="text-lg font-medium">Language Settings</h3>
+                      <h3 className="text-lg font-medium">{t("languageSettings")}</h3>
                       <div className="mt-4">
-                        <Label>Default Language</Label>
+                        <Label>{t("defaultLanguage")}</Label>
                         <div className="flex space-x-4 mt-2">
-                          <Button variant="outline">English</Button>
-                          <Button variant="outline">العربية</Button>
+                          <Button 
+                            variant={currentLanguage === 'en' ? 'default' : 'outline'}
+                            onClick={() => changeLanguage('en')}
+                          >
+                            English
+                          </Button>
+                          <Button 
+                            variant={currentLanguage === 'ar' ? 'default' : 'outline'}
+                            onClick={() => changeLanguage('ar')}
+                          >
+                            العربية
+                          </Button>
                         </div>
                       </div>
+                    </div>
+                    
+                    <div className="pt-4">
+                      <Button>{t("save")} {t("settings")}</Button>
                     </div>
                   </div>
                 </CardContent>
