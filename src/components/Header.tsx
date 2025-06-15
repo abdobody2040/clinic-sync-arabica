@@ -1,17 +1,9 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { LogOut, User, Settings, Home, Calendar, Users, FileText, Package, BarChart } from 'lucide-react';
+import { LogOut, User, Settings, Home, Calendar, Users, FileText, Package, BarChart, Menu } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useAppSettings } from '@/hooks/useAppSettings';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -62,30 +54,25 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <NavigationMenu>
-              <NavigationMenuList>
-                {navigationItems.map((item) => (
-                  <NavigationMenuItem key={item.name}>
-                    <NavigationMenuLink
-                      href={item.href}
-                      className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                    >
-                      <item.icon className="h-4 w-4 mr-2" />
-                      {item.name}
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
+          <nav className="hidden lg:flex items-center space-x-1">
+            {navigationItems.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+              >
+                <item.icon className="h-4 w-4 mr-2" />
+                {item.name}
+              </a>
+            ))}
+          </nav>
           
-          {/* User Menu */}
-          <div className="flex items-center space-x-4">
+          {/* Right side - User Menu and Mobile Menu */}
+          <div className="flex items-center space-x-2">
             {currentUser && (
               <>
                 {/* Desktop User Info */}
-                <div className="hidden lg:flex items-center space-x-3">
+                <div className="hidden lg:flex items-center space-x-3 mr-2">
                   <div className="text-right">
                     <p className="text-sm font-medium text-gray-900">
                       {currentUser.name}
@@ -94,23 +81,22 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
                   </div>
                 </div>
 
-                {/* User Dropdown Menu */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="flex items-center space-x-2">
-                      <User className="h-4 w-4" />
-                      <span className="hidden sm:inline">{currentUser.name.split(' ')[0]}</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <div className="px-3 py-2 border-b">
-                      <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
-                      <p className="text-xs text-gray-500">{currentUser.role}</p>
-                      <p className="text-xs text-gray-500">{currentUser.email}</p>
-                    </div>
-                    
-                    {/* Mobile Navigation Items */}
-                    <div className="md:hidden">
+                {/* Mobile Menu (Navigation + User) */}
+                <div className="lg:hidden">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <Menu className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56 bg-white">
+                      <div className="px-3 py-2 border-b">
+                        <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
+                        <p className="text-xs text-gray-500">{currentUser.role}</p>
+                        <p className="text-xs text-gray-500">{currentUser.email}</p>
+                      </div>
+                      
+                      {/* Navigation Items for Mobile */}
                       <DropdownMenuSeparator />
                       {navigationItems.map((item) => (
                         <DropdownMenuItem key={item.name} className="flex items-center space-x-2">
@@ -118,20 +104,49 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
                           <span>{item.name}</span>
                         </DropdownMenuItem>
                       ))}
+                      
                       <DropdownMenuSeparator />
-                    </div>
-                    
-                    <DropdownMenuItem className="flex items-center space-x-2">
-                      <Settings className="h-4 w-4" />
-                      <span>Settings</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={onLogout} className="flex items-center space-x-2 text-red-600">
-                      <LogOut className="h-4 w-4" />
-                      <span>{t("logout")}</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      <DropdownMenuItem className="flex items-center space-x-2">
+                        <Settings className="h-4 w-4" />
+                        <span>Settings</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={onLogout} className="flex items-center space-x-2 text-red-600">
+                        <LogOut className="h-4 w-4" />
+                        <span>{t("logout")}</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                {/* Desktop User Dropdown Menu */}
+                <div className="hidden lg:block">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" className="flex items-center space-x-2">
+                        <User className="h-4 w-4" />
+                        <span>{currentUser.name.split(' ')[0]}</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56 bg-white">
+                      <div className="px-3 py-2 border-b">
+                        <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
+                        <p className="text-xs text-gray-500">{currentUser.role}</p>
+                        <p className="text-xs text-gray-500">{currentUser.email}</p>
+                      </div>
+                      
+                      <DropdownMenuItem className="flex items-center space-x-2">
+                        <Settings className="h-4 w-4" />
+                        <span>Settings</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={onLogout} className="flex items-center space-x-2 text-red-600">
+                        <LogOut className="h-4 w-4" />
+                        <span>{t("logout")}</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </>
             )}
           </div>
