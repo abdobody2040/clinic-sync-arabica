@@ -77,8 +77,8 @@ export const Dashboard: React.FC<DashboardProps> = (props) => {
     <div className={`min-h-screen bg-gray-50 ${isRTL ? 'font-arabic' : ''}`}>
       <Header currentUser={props.currentUser} onLogout={props.onLogout} />
       
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
+      <main className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
+        <div className="space-y-4 sm:space-y-6">
           <StatsCards patients={props.patients} appointments={props.appointments} />
           <MainTabs {...props} />
         </div>

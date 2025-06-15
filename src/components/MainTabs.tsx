@@ -75,17 +75,19 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
   const { t } = useLanguage();
 
   return (
-    <Tabs defaultValue="patients" className="space-y-6">
-      <TabsList className="grid w-full grid-cols-6">
-        <TabsTrigger value="patients">{t("patients")}</TabsTrigger>
-        <TabsTrigger value="appointments">{t("appointments")}</TabsTrigger>
-        <TabsTrigger value="billing">{t("billing")}</TabsTrigger>
-        <TabsTrigger value="reports">{t("reports")}</TabsTrigger>
-        <TabsTrigger value="inventory">{t("inventory")}</TabsTrigger>
-        <TabsTrigger value="settings">{t("settings")}</TabsTrigger>
-      </TabsList>
+    <Tabs defaultValue="patients" className="space-y-4 sm:space-y-6">
+      <div className="overflow-x-auto">
+        <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 min-w-[600px] sm:min-w-0">
+          <TabsTrigger value="patients" className="text-xs sm:text-sm">{t("patients")}</TabsTrigger>
+          <TabsTrigger value="appointments" className="text-xs sm:text-sm">{t("appointments")}</TabsTrigger>
+          <TabsTrigger value="billing" className="text-xs sm:text-sm">{t("billing")}</TabsTrigger>
+          <TabsTrigger value="reports" className="text-xs sm:text-sm">{t("reports")}</TabsTrigger>
+          <TabsTrigger value="inventory" className="text-xs sm:text-sm">{t("inventory")}</TabsTrigger>
+          <TabsTrigger value="settings" className="text-xs sm:text-sm">{t("settings")}</TabsTrigger>
+        </TabsList>
+      </div>
 
-      <TabsContent value="patients">
+      <TabsContent value="patients" className="space-y-4">
         <PatientsTab
           showPatientForm={props.showPatientForm}
           viewMode={props.viewMode}
@@ -102,7 +104,7 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
         />
       </TabsContent>
 
-      <TabsContent value="appointments">
+      <TabsContent value="appointments" className="space-y-4">
         <AppointmentsTab
           showAppointmentForm={props.showAppointmentForm}
           selectedAppointment={props.selectedAppointment}
@@ -115,7 +117,7 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
         />
       </TabsContent>
 
-      <TabsContent value="billing">
+      <TabsContent value="billing" className="space-y-4">
         <BillingTab
           showInvoiceForm={props.showInvoiceForm}
           onCreateInvoice={props.onCreateInvoice}
@@ -124,15 +126,15 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
         />
       </TabsContent>
 
-      <TabsContent value="reports">
+      <TabsContent value="reports" className="space-y-4">
         <ReportsGenerator />
       </TabsContent>
 
-      <TabsContent value="inventory">
+      <TabsContent value="inventory" className="space-y-4">
         <InventoryManager />
       </TabsContent>
 
-      <TabsContent value="settings">
+      <TabsContent value="settings" className="space-y-4">
         <SettingsTab />
       </TabsContent>
     </Tabs>

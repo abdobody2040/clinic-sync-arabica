@@ -47,17 +47,17 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ patients, appointments }
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
       {stats.map((stat, index) => {
         const IconComponent = stat.icon;
         return (
-          <Card key={index}>
-            <CardContent className="p-6">
+          <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center">
-                <IconComponent className={`w-8 h-8 text-${stat.color}-600`} />
-                <div className={`${isRTL ? 'mr-4' : 'ml-4'}`}>
-                  <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                  <p className={`text-2xl font-bold ${stat.valueColor ? `text-${stat.valueColor}-600` : 'text-gray-900'}`}>
+                <IconComponent className={`w-6 h-6 sm:w-8 sm:h-8 text-${stat.color}-600 flex-shrink-0`} />
+                <div className={`${isRTL ? 'mr-3 sm:mr-4' : 'ml-3 sm:ml-4'} min-w-0 flex-1`}>
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">{stat.title}</p>
+                  <p className={`text-xl sm:text-2xl font-bold ${stat.valueColor ? `text-${stat.valueColor}-600` : 'text-gray-900'}`}>
                     {stat.value}
                   </p>
                 </div>

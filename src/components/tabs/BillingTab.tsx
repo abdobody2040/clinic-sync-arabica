@@ -37,43 +37,53 @@ export const BillingTab: React.FC<BillingTabProps> = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center">
-          <FileText className="w-5 h-5 mr-2" />
+        <CardTitle className="flex items-center text-lg sm:text-xl">
+          <FileText className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
           {t("billingInvoices")}
         </CardTitle>
-        <CardDescription>{t("manageInvoices")}</CardDescription>
+        <CardDescription className="text-sm">{t("manageInvoices")}</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 sm:p-6">
         <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <Input placeholder={t("searchInvoices")} className="max-w-sm" />
-            <Button onClick={onCreateInvoice}>{t("createInvoice")}</Button>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <Input 
+              placeholder={t("searchInvoices")} 
+              className="w-full sm:max-w-sm" 
+            />
+            <Button onClick={onCreateInvoice} className="w-full sm:w-auto">
+              {t("createInvoice")}
+            </Button>
           </div>
-          <div className="border rounded-lg">
-            <table className="w-full">
-              <thead className="border-b bg-gray-50">
-                <tr>
-                  <th className="text-left p-4">{t("invoiceNumber")}</th>
-                  <th className="text-left p-4">{t("patient")}</th>
-                  <th className="text-left p-4">{t("amount")}</th>
-                  <th className="text-left p-4">{t("status")}</th>
-                  <th className="text-left p-4">{t("actions")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b">
-                  <td className="p-4">#INV-001</td>
-                  <td className="p-4">Ahmed Al-Mansouri</td>
-                  <td className="p-4">{formatAmount(350.00)}</td>
-                  <td className="p-4">
-                    <Badge variant="secondary">{t("paid")}</Badge>
-                  </td>
-                  <td className="p-4">
-                    <Button variant="outline" size="sm">{t("view")}</Button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          
+          <div className="overflow-x-auto">
+            <div className="border rounded-lg min-w-[600px]">
+              <table className="w-full">
+                <thead className="border-b bg-gray-50">
+                  <tr>
+                    <th className="text-left p-3 sm:p-4 text-sm font-medium">{t("invoiceNumber")}</th>
+                    <th className="text-left p-3 sm:p-4 text-sm font-medium">{t("patient")}</th>
+                    <th className="text-left p-3 sm:p-4 text-sm font-medium">{t("amount")}</th>
+                    <th className="text-left p-3 sm:p-4 text-sm font-medium">{t("status")}</th>
+                    <th className="text-left p-3 sm:p-4 text-sm font-medium">{t("actions")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="p-3 sm:p-4 text-sm">#INV-001</td>
+                    <td className="p-3 sm:p-4 text-sm">Ahmed Al-Mansouri</td>
+                    <td className="p-3 sm:p-4 text-sm font-medium">{formatAmount(350.00)}</td>
+                    <td className="p-3 sm:p-4">
+                      <Badge variant="secondary" className="text-xs">{t("paid")}</Badge>
+                    </td>
+                    <td className="p-3 sm:p-4">
+                      <Button variant="outline" size="sm" className="text-xs">
+                        {t("view")}
+                      </Button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </CardContent>
