@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -22,12 +21,168 @@ interface Patient {
   insuranceNumber?: string;
 }
 
+interface MedicalRecord {
+  id: number;
+  patientId: number;
+  patientName: string;
+  date: string;
+  type: string;
+  diagnosis: string;
+  treatment: string;
+  notes: string;
+}
+
+interface Prescription {
+  id: number;
+  patientId: number;
+  patientName: string;
+  medicationName: string;
+  dosage: string;
+  frequency: string;
+  startDate: string;
+  endDate: string;
+  status: 'active' | 'completed' | 'discontinued';
+  prescribedBy: string;
+}
+
+interface LabResult {
+  id: number;
+  patientId: number;
+  patientName: string;
+  testName: string;
+  testDate: string;
+  result: string;
+  normalRange: string;
+  status: 'completed' | 'pending' | 'in-progress';
+  orderedBy: string;
+}
+
 export const usePatients = () => {
   const [showPatientForm, setShowPatientForm] = useState(false);
   const [patients, setPatients] = useState<Patient[]>([
     { id: 1, name: "Ahmed Al-Mansouri", phone: "+971 50 123 4567", lastVisit: "2024-01-15" },
     { id: 2, name: "Fatima Hassan", phone: "+971 55 987 6543", lastVisit: "2024-01-14" }
   ]);
+
+  const [medicalRecords, setMedicalRecords] = useState<MedicalRecord[]>([
+    {
+      id: 1,
+      patientId: 1,
+      patientName: "Ahmed Al-Mansouri",
+      date: "2024-01-15",
+      type: "General Consultation",
+      diagnosis: "Hypertension",
+      treatment: "Lifestyle changes, medication",
+      notes: "Patient advised to reduce salt intake"
+    },
+    {
+      id: 2,
+      patientId: 1,
+      patientName: "Ahmed Al-Mansouri",
+      date: "2024-01-10",
+      type: "Follow-up",
+      diagnosis: "Diabetes Type 2",
+      treatment: "Metformin adjustment",
+      notes: "Blood sugar levels improving"
+    },
+    {
+      id: 3,
+      patientId: 2,
+      patientName: "Fatima Hassan",
+      date: "2024-01-14",
+      type: "Annual Checkup",
+      diagnosis: "Healthy",
+      treatment: "Preventive care",
+      notes: "All vitals normal"
+    }
+  ]);
+
+  const [prescriptions, setPrescriptions] = useState<Prescription[]>([
+    {
+      id: 1,
+      patientId: 1,
+      patientName: "Ahmed Al-Mansouri",
+      medicationName: "Lisinopril",
+      dosage: "10mg",
+      frequency: "Once daily",
+      startDate: "2024-01-15",
+      endDate: "2024-04-15",
+      status: "active",
+      prescribedBy: "Dr. Ahmed"
+    },
+    {
+      id: 2,
+      patientId: 1,
+      patientName: "Ahmed Al-Mansouri",
+      medicationName: "Metformin",
+      dosage: "500mg",
+      frequency: "Twice daily",
+      startDate: "2024-01-10",
+      endDate: "2024-07-10",
+      status: "active",
+      prescribedBy: "Dr. Ahmed"
+    },
+    {
+      id: 3,
+      patientId: 2,
+      patientName: "Fatima Hassan",
+      medicationName: "Vitamin D3",
+      dosage: "1000IU",
+      frequency: "Once daily",
+      startDate: "2024-01-14",
+      endDate: "2024-04-14",
+      status: "active",
+      prescribedBy: "Dr. Ahmed"
+    }
+  ]);
+
+  const [labResults, setLabResults] = useState<LabResult[]>([
+    {
+      id: 1,
+      patientId: 1,
+      patientName: "Ahmed Al-Mansouri",
+      testName: "Blood Glucose",
+      testDate: "2024-01-15",
+      result: "145 mg/dL",
+      normalRange: "70-140 mg/dL",
+      status: "completed",
+      orderedBy: "Dr. Ahmed"
+    },
+    {
+      id: 2,
+      patientId: 1,
+      patientName: "Ahmed Al-Mansouri",
+      testName: "HbA1c",
+      testDate: "2024-01-15",
+      result: "7.2%",
+      normalRange: "<7%",
+      status: "completed",
+      orderedBy: "Dr. Ahmed"
+    },
+    {
+      id: 3,
+      patientId: 2,
+      patientName: "Fatima Hassan",
+      testName: "Complete Blood Count",
+      testDate: "2024-01-16",
+      result: "",
+      normalRange: "Various",
+      status: "pending",
+      orderedBy: "Dr. Ahmed"
+    },
+    {
+      id: 4,
+      patientId: 2,
+      patientName: "Fatima Hassan",
+      testName: "Lipid Panel",
+      testDate: "2024-01-16",
+      result: "",
+      normalRange: "Various",
+      status: "pending",
+      orderedBy: "Dr. Ahmed"
+    }
+  ]);
+
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [viewMode, setViewMode] = useState('list');
   
@@ -143,6 +298,9 @@ export const usePatients = () => {
     patients,
     selectedPatient,
     viewMode,
+    medicalRecords,
+    prescriptions,
+    labResults,
     handleAddNewPatient,
     handlePatientSubmit,
     handleViewPatient,

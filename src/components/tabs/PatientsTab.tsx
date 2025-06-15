@@ -28,11 +28,50 @@ interface Patient {
   insuranceNumber?: string;
 }
 
+interface MedicalRecord {
+  id: number;
+  patientId: number;
+  patientName: string;
+  date: string;
+  type: string;
+  diagnosis: string;
+  treatment: string;
+  notes: string;
+}
+
+interface Prescription {
+  id: number;
+  patientId: number;
+  patientName: string;
+  medicationName: string;
+  dosage: string;
+  frequency: string;
+  startDate: string;
+  endDate: string;
+  status: 'active' | 'completed' | 'discontinued';
+  prescribedBy: string;
+}
+
+interface LabResult {
+  id: number;
+  patientId: number;
+  patientName: string;
+  testName: string;
+  testDate: string;
+  result: string;
+  normalRange: string;
+  status: 'completed' | 'pending' | 'in-progress';
+  orderedBy: string;
+}
+
 interface PatientsTabProps {
   showPatientForm: boolean;
   viewMode: string;
   selectedPatient: Patient | null;
   patients: Patient[];
+  medicalRecords: MedicalRecord[];
+  prescriptions: Prescription[];
+  labResults: LabResult[];
   onAddNewPatient: () => void;
   onPatientSubmit: (data: any) => void;
   onCancelPatientForm: () => void;
@@ -48,6 +87,9 @@ export const PatientsTab: React.FC<PatientsTabProps> = ({
   viewMode,
   selectedPatient,
   patients,
+  medicalRecords,
+  prescriptions,
+  labResults,
   onAddNewPatient,
   onPatientSubmit,
   onCancelPatientForm,
@@ -58,6 +100,11 @@ export const PatientsTab: React.FC<PatientsTabProps> = ({
   onEditFromView
 }) => {
   const { t } = useLanguage();
+
+  // Calculate real data counts
+  const totalMedicalRecords = medicalRecords.length;
+  const activePrescriptions = prescriptions.filter(p => p.status === 'active').length;
+  const pendingLabResults = labResults.filter(l => l.status === 'pending').length;
 
   if (showPatientForm) {
     return (
@@ -116,7 +163,7 @@ export const PatientsTab: React.FC<PatientsTabProps> = ({
                   <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-red-500 mr-2 sm:mr-3 flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="font-medium text-sm sm:text-base truncate">{t("medicalRecords")}</p>
-                    <p className="text-xs sm:text-sm text-gray-600">156 {t("records")}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{totalMedicalRecords} {t("records")}</p>
                   </div>
                 </div>
               </CardContent>
@@ -128,7 +175,7 @@ export const PatientsTab: React.FC<PatientsTabProps> = ({
                   <Pill className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mr-2 sm:mr-3 flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="font-medium text-sm sm:text-base truncate">{t("prescriptions")}</p>
-                    <p className="text-xs sm:text-sm text-gray-600">89 {t("active")}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{activePrescriptions} {t("active")}</p>
                   </div>
                 </div>
               </CardContent>
@@ -140,7 +187,7 @@ export const PatientsTab: React.FC<PatientsTabProps> = ({
                   <FlaskConical className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 mr-2 sm:mr-3 flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="font-medium text-sm sm:text-base truncate">{t("labResults")}</p>
-                    <p className="text-xs sm:text-sm text-gray-600">23 {t("pending")}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{pendingLabResults} {t("pending")}</p>
                   </div>
                 </div>
               </CardContent>

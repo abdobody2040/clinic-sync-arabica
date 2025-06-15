@@ -38,6 +38,42 @@ interface Appointment {
   notes: string;
 }
 
+interface MedicalRecord {
+  id: number;
+  patientId: number;
+  patientName: string;
+  date: string;
+  type: string;
+  diagnosis: string;
+  treatment: string;
+  notes: string;
+}
+
+interface Prescription {
+  id: number;
+  patientId: number;
+  patientName: string;
+  medicationName: string;
+  dosage: string;
+  frequency: string;
+  startDate: string;
+  endDate: string;
+  status: 'active' | 'completed' | 'discontinued';
+  prescribedBy: string;
+}
+
+interface LabResult {
+  id: number;
+  patientId: number;
+  patientName: string;
+  testName: string;
+  testDate: string;
+  result: string;
+  normalRange: string;
+  status: 'completed' | 'pending' | 'in-progress';
+  orderedBy: string;
+}
+
 interface MainTabsProps {
   activeTab: string;
   // Patient-related props
@@ -45,6 +81,9 @@ interface MainTabsProps {
   viewMode: string;
   selectedPatient: Patient | null;
   patients: Patient[];
+  medicalRecords?: MedicalRecord[];
+  prescriptions?: Prescription[];
+  labResults?: LabResult[];
   onAddNewPatient: () => void;
   onPatientSubmit: (data: any) => void;
   onCancelPatientForm: () => void;
@@ -80,6 +119,9 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
           viewMode={props.viewMode}
           selectedPatient={props.selectedPatient}
           patients={props.patients}
+          medicalRecords={props.medicalRecords || []}
+          prescriptions={props.prescriptions || []}
+          labResults={props.labResults || []}
           onAddNewPatient={props.onAddNewPatient}
           onPatientSubmit={props.onPatientSubmit}
           onCancelPatientForm={props.onCancelPatientForm}

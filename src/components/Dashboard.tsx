@@ -35,6 +35,42 @@ interface Appointment {
   notes: string;
 }
 
+interface MedicalRecord {
+  id: number;
+  patientId: number;
+  patientName: string;
+  date: string;
+  type: string;
+  diagnosis: string;
+  treatment: string;
+  notes: string;
+}
+
+interface Prescription {
+  id: number;
+  patientId: number;
+  patientName: string;
+  medicationName: string;
+  dosage: string;
+  frequency: string;
+  startDate: string;
+  endDate: string;
+  status: 'active' | 'completed' | 'discontinued';
+  prescribedBy: string;
+}
+
+interface LabResult {
+  id: number;
+  patientId: number;
+  patientName: string;
+  testName: string;
+  testDate: string;
+  result: string;
+  normalRange: string;
+  status: 'completed' | 'pending' | 'in-progress';
+  orderedBy: string;
+}
+
 interface DashboardProps {
   currentUser: { name: string; role: string; email: string } | null;
   onLogout: () => void;
@@ -48,6 +84,9 @@ interface DashboardProps {
   viewMode: string;
   selectedPatient: Patient | null;
   patients: Patient[];
+  medicalRecords?: MedicalRecord[];
+  prescriptions?: Prescription[];
+  labResults?: LabResult[];
   onAddNewPatient: () => void;
   onPatientSubmit: (data: any) => void;
   onCancelPatientForm: () => void;

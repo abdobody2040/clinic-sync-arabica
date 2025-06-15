@@ -30,6 +30,9 @@ const Index = () => {
     patients,
     selectedPatient,
     viewMode,
+    medicalRecords,
+    prescriptions,
+    labResults,
     handleAddNewPatient,
     handlePatientSubmit,
     handleViewPatient,
@@ -94,6 +97,9 @@ const Index = () => {
       viewMode={viewMode}
       selectedPatient={selectedPatient}
       patients={patients}
+      medicalRecords={medicalRecords}
+      prescriptions={prescriptions}
+      labResults={labResults}
       onAddNewPatient={handleAddNewPatient}
       onPatientSubmit={handlePatientSubmit}
       onCancelPatientForm={() => setShowPatientForm(false)}
