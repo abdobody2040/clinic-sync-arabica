@@ -39,6 +39,10 @@ interface DashboardProps {
   currentUser: { name: string; role: string; email: string } | null;
   onLogout: () => void;
   
+  // Tab-related props
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+  
   // Patient-related props
   showPatientForm: boolean;
   viewMode: string;
@@ -75,7 +79,12 @@ export const Dashboard: React.FC<DashboardProps> = (props) => {
 
   return (
     <div className={`min-h-screen bg-gray-50 ${isRTL ? 'font-arabic' : ''}`}>
-      <Header currentUser={props.currentUser} onLogout={props.onLogout} />
+      <Header 
+        currentUser={props.currentUser} 
+        onLogout={props.onLogout}
+        activeTab={props.activeTab}
+        onTabChange={props.onTabChange}
+      />
       
       <main className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
         <div className="space-y-4 sm:space-y-6">
