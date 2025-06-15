@@ -15,20 +15,28 @@ import {
 interface HeaderProps {
   currentUser: { name: string; role: string; email: string } | null;
   onLogout: () => void;
+  activeTab?: string;
+  onTabChange?: (tab: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
+export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab = 'patients', onTabChange }) => {
   const { t } = useLanguage();
   const { settings } = useAppSettings();
 
   const navigationItems = [
-    { name: 'Dashboard', icon: Home, href: '#dashboard' },
-    { name: 'Patients', icon: Users, href: '#patients' },
-    { name: 'Appointments', icon: Calendar, href: '#appointments' },
-    { name: 'Billing', icon: FileText, href: '#billing' },
-    { name: 'Inventory', icon: Package, href: '#inventory' },
-    { name: 'Reports', icon: BarChart, href: '#reports' },
+    { id: 'patients', name: t("patients"), icon: Users },
+    { id: 'appointments', name: t("appointments"), icon: Calendar },
+    { id: 'billing', name: t("billing"), icon: FileText },
+    { id: 'reports', name: t("reports"), icon: BarChart },
+    { id: 'inventory', name: t("inventory"), icon: Package },
+    { id: 'settings', name: t("settings"), icon: Settings },
   ];
+
+  const handleTabClick = (tabId: string) => {
+    if (onTabChange) {
+      onTabChange(tabId);
+    }
+  };
 
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
@@ -53,17 +61,21 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
             </div>
           </div>
 
-          {/* Desktop Navigation - Medium screens and up */}
-          <nav className="hidden md:flex items-center space-x-2 flex-1 justify-center max-w-4xl mx-6">
+          {/* Main Navigation Tabs - Medium screens and up */}
+          <nav className="hidden md:flex items-center space-x-1 flex-1 justify-center max-w-4xl mx-6">
             {navigationItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-200 whitespace-nowrap"
+              <button
+                key={item.id}
+                onClick={() => handleTabClick(item.id)}
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 whitespace-nowrap ${
+                  activeTab === item.id
+                    ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-500'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
               >
                 <item.icon className="h-4 w-4 mr-2 flex-shrink-0" />
                 <span className="hidden lg:inline">{item.name}</span>
-              </a>
+              </button>
             ))}
           </nav>
 
@@ -100,23 +112,19 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
                       {/* Navigation Items */}
                       <div className="py-1">
                         {navigationItems.map((item) => (
-                          <DropdownMenuItem key={item.name} asChild>
-                            <a href={item.href} className="flex items-center space-x-3 px-3 py-2 text-sm">
+                          <DropdownMenuItem key={item.id} onClick={() => handleTabClick(item.id)}>
+                            <div className="flex items-center space-x-3 px-3 py-2 text-sm w-full">
                               <item.icon className="h-4 w-4 text-gray-500" />
                               <span>{item.name}</span>
-                            </a>
+                            </div>
                           </DropdownMenuItem>
                         ))}
                       </div>
                       
                       <DropdownMenuSeparator />
                       
-                      {/* Settings and Logout */}
+                      {/* Logout */}
                       <div className="py-1">
-                        <DropdownMenuItem className="flex items-center space-x-3 px-3 py-2">
-                          <Settings className="h-4 w-4 text-gray-500" />
-                          <span>Settings</span>
-                        </DropdownMenuItem>
                         <DropdownMenuItem 
                           onClick={onLogout} 
                           className="flex items-center space-x-3 px-3 py-2 text-red-600 focus:text-red-600"

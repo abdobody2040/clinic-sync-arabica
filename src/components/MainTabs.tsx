@@ -1,7 +1,6 @@
 
 import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useLanguage } from '@/hooks/useLanguage';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { PatientsTab } from './tabs/PatientsTab';
 import { AppointmentsTab } from './tabs/AppointmentsTab';
 import { BillingTab } from './tabs/BillingTab';
@@ -40,6 +39,7 @@ interface Appointment {
 }
 
 interface MainTabsProps {
+  activeTab: string;
   // Patient-related props
   showPatientForm: boolean;
   viewMode: string;
@@ -72,21 +72,8 @@ interface MainTabsProps {
 }
 
 export const MainTabs: React.FC<MainTabsProps> = (props) => {
-  const { t } = useLanguage();
-
   return (
-    <Tabs defaultValue="patients" className="space-y-4 sm:space-y-6">
-      <div className="overflow-x-auto">
-        <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 min-w-[600px] sm:min-w-0">
-          <TabsTrigger value="patients" className="text-xs sm:text-sm">{t("patients")}</TabsTrigger>
-          <TabsTrigger value="appointments" className="text-xs sm:text-sm">{t("appointments")}</TabsTrigger>
-          <TabsTrigger value="billing" className="text-xs sm:text-sm">{t("billing")}</TabsTrigger>
-          <TabsTrigger value="reports" className="text-xs sm:text-sm">{t("reports")}</TabsTrigger>
-          <TabsTrigger value="inventory" className="text-xs sm:text-sm">{t("inventory")}</TabsTrigger>
-          <TabsTrigger value="settings" className="text-xs sm:text-sm">{t("settings")}</TabsTrigger>
-        </TabsList>
-      </div>
-
+    <Tabs value={props.activeTab} className="space-y-4 sm:space-y-6">
       <TabsContent value="patients" className="space-y-4">
         <PatientsTab
           showPatientForm={props.showPatientForm}
