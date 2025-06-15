@@ -35,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and App Name */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 flex-shrink-0">
             {settings.logoUrl && (
               <img 
                 src={settings.logoUrl} 
@@ -43,8 +43,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
                 className="h-8 w-8 object-contain flex-shrink-0"
               />
             )}
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">
+            <div className="min-w-0">
+              <h1 className="text-lg sm:text-xl font-bold text-gray-900 truncate">
                 {settings.appName}
               </h1>
               <p className="text-xs text-gray-500 hidden sm:block">
@@ -53,44 +53,28 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
             </div>
           </div>
 
-          {/* Desktop Navigation - Clean horizontal layout */}
-          <nav className="hidden lg:flex items-center">
-            <div className="flex items-center bg-gray-50 rounded-lg p-1 space-x-1">
+          {/* Center Navigation - Only visible on large screens */}
+          <nav className="hidden xl:flex items-center flex-1 justify-center max-w-2xl mx-8">
+            <div className="flex items-center bg-gray-50 rounded-lg p-1 w-full">
               {navigationItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-white rounded-md transition-all duration-200 whitespace-nowrap"
+                  className="flex items-center justify-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-white rounded-md transition-all duration-200 flex-1 min-w-0"
                 >
-                  <item.icon className="h-4 w-4 mr-2" />
-                  {item.name}
+                  <item.icon className="h-4 w-4 mr-2 flex-shrink-0" />
+                  <span className="truncate">{item.name}</span>
                 </a>
               ))}
             </div>
           </nav>
 
-          {/* Tablet Navigation - Compact buttons */}
-          <nav className="hidden md:flex lg:hidden items-center">
-            <div className="flex items-center space-x-1">
-              {navigationItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="flex items-center px-2 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
-                  title={item.name}
-                >
-                  <item.icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
-          </nav>
-          
-          {/* Right side - User Menu and Mobile Menu */}
-          <div className="flex items-center space-x-2">
+          {/* Right side - User Menu and Navigation */}
+          <div className="flex items-center space-x-2 flex-shrink-0">
             {currentUser && (
               <>
-                {/* Desktop User Info */}
-                <div className="hidden lg:flex items-center space-x-3 mr-2">
+                {/* User Info - Only on large screens */}
+                <div className="hidden xl:flex items-center space-x-3 mr-2">
                   <div className="text-right">
                     <p className="text-sm font-medium text-gray-900">
                       {currentUser.name}
@@ -99,8 +83,37 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
                   </div>
                 </div>
 
-                {/* Mobile Menu (Navigation + User) */}
-                <div className="md:hidden">
+                {/* Navigation Menu for medium screens */}
+                <div className="hidden lg:flex xl:hidden items-center space-x-1 mr-2">
+                  {navigationItems.slice(0, 4).map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className="flex items-center px-2 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+                      title={item.name}
+                    >
+                      <item.icon className="h-4 w-4" />
+                    </a>
+                  ))}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" className="px-2">
+                        <Menu className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48 bg-white z-50">
+                      {navigationItems.slice(4).map((item) => (
+                        <DropdownMenuItem key={item.name} className="flex items-center space-x-2">
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.name}</span>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                {/* Mobile/Tablet Menu - All navigation in dropdown */}
+                <div className="lg:hidden">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm">
@@ -137,13 +150,13 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
                   </DropdownMenu>
                 </div>
 
-                {/* Desktop User Dropdown Menu */}
-                <div className="hidden md:block">
+                {/* User Dropdown - Hidden on mobile since it's in the main menu */}
+                <div className="hidden lg:block">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="flex items-center space-x-2">
                         <User className="h-4 w-4" />
-                        <span className="hidden lg:inline">{currentUser.name.split(' ')[0]}</span>
+                        <span className="hidden xl:inline">{currentUser.name.split(' ')[0]}</span>
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-56 bg-white z-50">
