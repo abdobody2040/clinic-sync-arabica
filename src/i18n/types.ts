@@ -1,3 +1,4 @@
+
 export type Language = 'en' | 'ar';
 
 export type TranslationKey = 
@@ -43,7 +44,50 @@ export type TranslationKey =
   | "specialization"
   | "licenseInfo"
   | "profileUpdated"
-  | "appSettingsUpdated";
+  | "appSettingsUpdated"
+  | "signIn"
+  | "signInToAccount"
+  | "email"
+  | "password"
+  | "demoLogin"
+  | "enterLicenseKey"
+  | "licenseKey"
+  | "activateLicense"
+  | "demoLicense"
+  | "appointmentScheduling"
+  | "manageAppointments"
+  | "today"
+  | "week"
+  | "month"
+  | "newAppointment"
+  | "patient"
+  | "date"
+  | "time"
+  | "status"
+  | "actions"
+  | "edit"
+  | "view"
+  | "cancel"
+  | "billingInvoices"
+  | "manageInvoices"
+  | "searchInvoices"
+  | "createInvoice"
+  | "invoiceNumber"
+  | "amount"
+  | "paid"
+  | "patientManagement"
+  | "viewManagePatients"
+  | "searchPatients"
+  | "addNewPatient"
+  | "medicalRecords"
+  | "prescriptions"
+  | "labResults"
+  | "records"
+  | "active"
+  | "pending"
+  | "name"
+  | "phone"
+  | "lastVisit";
 
 export interface Translations {
   [key: string]: string;
