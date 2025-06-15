@@ -49,6 +49,30 @@ const Index = () => {
   ]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [viewMode, setViewMode] = useState('list'); // 'list', 'view', 'edit'
+  const [appointments, setAppointments] = useState([
+    { 
+      id: 1, 
+      patientName: "Ahmed Al-Mansouri", 
+      appointmentDate: "2024-01-15", 
+      appointmentTime: "09:00",
+      appointmentType: "consultation",
+      duration: "30",
+      status: "confirmed",
+      notes: "General checkup and consultation"
+    },
+    { 
+      id: 2, 
+      patientName: "Fatima Hassan", 
+      appointmentDate: "2024-01-15", 
+      appointmentTime: "10:00",
+      appointmentType: "followup",
+      duration: "30",
+      status: "completed",
+      notes: "Follow-up visit"
+    }
+  ]);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [appointmentViewMode, setAppointmentViewMode] = useState('list'); // 'list', 'edit'
   const { toast } = useToast();
   const { currentLanguage, changeLanguage, t, isRTL } = useLanguage();
 
@@ -188,11 +212,43 @@ const Index = () => {
 
   const handleAppointmentSubmit = (data: any) => {
     console.log("Appointment form submitted:", data);
+    
+    if (appointmentViewMode === 'edit' && selectedAppointment) {
+      // Update existing appointment
+      const updatedAppointment = {
+        ...selectedAppointment,
+        ...data
+      };
+      
+      setAppointments(prevAppointments => 
+        prevAppointments.map(appointment => 
+          appointment.id === selectedAppointment.id ? updatedAppointment : appointment
+        )
+      );
+      
+      setAppointmentViewMode('list');
+      setSelectedAppointment(null);
+      
+      toast({
+        title: t("success"),
+        description: "Appointment updated successfully!",
+      });
+    } else {
+      // Create new appointment
+      const newAppointment = {
+        id: appointments.length + 1,
+        ...data
+      };
+      
+      setAppointments(prevAppointments => [...prevAppointments, newAppointment]);
+      
+      toast({
+        title: t("success"),
+        description: "Appointment scheduled successfully!",
+      });
+    }
+    
     setShowAppointmentForm(false);
-    toast({
-      title: t("success"),
-      description: "Appointment scheduled successfully!",
-    });
   };
 
   const handleInvoiceSubmit = (data: any) => {
@@ -267,6 +323,34 @@ const Index = () => {
 
   const handleEditFromView = () => {
     setViewMode('edit');
+  };
+
+  const handleEditAppointment = (appointmentId: number) => {
+    console.log("Edit appointment clicked for ID:", appointmentId);
+    const appointment = appointments.find(a => a.id === appointmentId);
+    if (appointment) {
+      setSelectedAppointment(appointment);
+      setAppointmentViewMode('edit');
+      setShowAppointmentForm(true);
+    }
+  };
+
+  const handleDeleteAppointment = (appointmentId: number) => {
+    console.log("Delete appointment clicked for ID:", appointmentId);
+    setAppointments(prevAppointments => 
+      prevAppointments.filter(appointment => appointment.id !== appointmentId)
+    );
+    
+    toast({
+      title: t("success"),
+      description: "Appointment deleted successfully!",
+    });
+  };
+
+  const handleCancelAppointmentForm = () => {
+    setShowAppointmentForm(false);
+    setSelectedAppointment(null);
+    setAppointmentViewMode('list');
   };
 
   // License activation screen
@@ -601,8 +685,9 @@ const Index = () => {
             <TabsContent value="appointments">
               {showAppointmentForm ? (
                 <AppointmentForm 
+                  appointment={selectedAppointment}
                   onSubmit={handleAppointmentSubmit}
-                  onCancel={() => setShowAppointmentForm(false)}
+                  onCancel={handleCancelAppointmentForm}
                 />
               ) : (
                 <Card>
@@ -623,32 +708,53 @@ const Index = () => {
                         </div>
                         <Button onClick={handleNewAppointment}>{t("newAppointment")}</Button>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <Card className="border-l-4 border-l-blue-500">
-                          <CardContent className="p-4">
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <p className="font-medium">Ahmed Al-Mansouri</p>
-                                <p className="text-sm text-gray-600">General Checkup</p>
-                                <p className="text-sm text-gray-500">09:00 AM - 09:30 AM</p>
-                              </div>
-                              <Badge>{t("confirmed")}</Badge>
-                            </div>
-                          </CardContent>
-                        </Card>
-                        
-                        <Card className="border-l-4 border-l-green-500">
-                          <CardContent className="p-4">
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <p className="font-medium">Fatima Hassan</p>
-                                <p className="text-sm text-gray-600">Follow-up</p>
-                                <p className="text-sm text-gray-500">10:00 AM - 10:30 AM</p>
-                              </div>
-                              <Badge variant="secondary">{t("completed")}</Badge>
-                            </div>
-                          </CardContent>
-                        </Card>
+                      
+                      <div className="border rounded-lg">
+                        <table className="w-full">
+                          <thead className="border-b bg-gray-50">
+                            <tr>
+                              <th className="text-left p-4">{t("patient")}</th>
+                              <th className="text-left p-4">{t("date")}</th>
+                              <th className="text-left p-4">{t("time")}</th>
+                              <th className="text-left p-4">Type</th>
+                              <th className="text-left p-4">{t("status")}</th>
+                              <th className="text-left p-4">{t("actions")}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {appointments.map((appointment) => (
+                              <tr key={appointment.id} className="border-b">
+                                <td className="p-4">{appointment.patientName}</td>
+                                <td className="p-4">{appointment.appointmentDate}</td>
+                                <td className="p-4">{appointment.appointmentTime}</td>
+                                <td className="p-4">{appointment.appointmentType}</td>
+                                <td className="p-4">
+                                  <Badge variant={appointment.status === 'confirmed' ? 'default' : 'secondary'}>
+                                    {appointment.status}
+                                  </Badge>
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex space-x-2">
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm" 
+                                      onClick={() => handleEditAppointment(appointment.id)}
+                                    >
+                                      {t("edit")}
+                                    </Button>
+                                    <Button 
+                                      variant="destructive" 
+                                      size="sm" 
+                                      onClick={() => handleDeleteAppointment(appointment.id)}
+                                    >
+                                      Delete
+                                    </Button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </CardContent>

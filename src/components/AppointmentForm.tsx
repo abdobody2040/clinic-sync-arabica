@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -25,11 +24,12 @@ const appointmentSchema = z.object({
 type AppointmentFormData = z.infer<typeof appointmentSchema>;
 
 interface AppointmentFormProps {
+  appointment?: any; // Add appointment prop for editing
   onSubmit: (data: AppointmentFormData) => void;
   onCancel: () => void;
 }
 
-export const AppointmentForm: React.FC<AppointmentFormProps> = ({ onSubmit, onCancel }) => {
+export const AppointmentForm: React.FC<AppointmentFormProps> = ({ appointment, onSubmit, onCancel }) => {
   const { t } = useLanguage();
   const { toast } = useToast();
   
@@ -46,19 +46,36 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({ onSubmit, onCa
     }
   });
 
+  // Populate form when editing
+  useEffect(() => {
+    if (appointment) {
+      form.reset({
+        patientName: appointment.patientName || '',
+        appointmentDate: appointment.appointmentDate || '',
+        appointmentTime: appointment.appointmentTime || '',
+        appointmentType: appointment.appointmentType || '',
+        duration: appointment.duration || '30',
+        notes: appointment.notes || '',
+        status: appointment.status || 'scheduled',
+      });
+    }
+  }, [appointment, form]);
+
   const handleSubmit = (data: AppointmentFormData) => {
     console.log('Submitting appointment data:', data);
     onSubmit(data);
-    toast({
-      title: t("success"),
-      description: "Appointment scheduled successfully!",
-    });
+    if (!appointment) {
+      toast({
+        title: t("success"),
+        description: "Appointment scheduled successfully!",
+      });
+    }
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Schedule New Appointment</CardTitle>
+        <CardTitle>{appointment ? 'Edit Appointment' : 'Schedule New Appointment'}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
