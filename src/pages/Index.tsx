@@ -118,6 +118,47 @@ const Index = () => {
     });
   };
 
+  // Button click handlers
+  const handleAddNewPatient = () => {
+    console.log("Add New Patient button clicked");
+    toast({
+      title: "Add New Patient",
+      description: "This feature will be implemented soon",
+    });
+  };
+
+  const handleNewAppointment = () => {
+    console.log("New Appointment button clicked");
+    toast({
+      title: "New Appointment",
+      description: "This feature will be implemented soon",
+    });
+  };
+
+  const handleCreateInvoice = () => {
+    console.log("Create Invoice button clicked");
+    toast({
+      title: "Create Invoice",
+      description: "This feature will be implemented soon",
+    });
+  };
+
+  const handleViewPatient = (patientName: string) => {
+    console.log("View patient clicked for:", patientName);
+    toast({
+      title: "View Patient",
+      description: `Viewing details for ${patientName}`,
+    });
+  };
+
+  const handleEditPatient = (patientName: string) => {
+    console.log("Edit patient clicked for:", patientName);
+    toast({
+      title: "Edit Patient",
+      description: `Editing details for ${patientName}`,
+    });
+  };
+
   // License activation screen
   if (licenseStatus === "expired" || licenseStatus === "checking") {
     return (
@@ -354,7 +395,7 @@ const Index = () => {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <Input placeholder={t("searchPatients")} className="max-w-sm" />
-                      <Button>{t("addNewPatient")}</Button>
+                      <Button onClick={handleAddNewPatient}>{t("addNewPatient")}</Button>
                     </div>
                     
                     {/* Patient Quick Actions */}
@@ -413,8 +454,8 @@ const Index = () => {
                             <td className="p-4">2024-01-15</td>
                             <td className="p-4">
                               <div className="flex space-x-2">
-                                <Button variant="outline" size="sm">{t("view")}</Button>
-                                <Button variant="outline" size="sm">{t("edit")}</Button>
+                                <Button variant="outline" size="sm" onClick={() => handleViewPatient("Ahmed Al-Mansouri")}>{t("view")}</Button>
+                                <Button variant="outline" size="sm" onClick={() => handleEditPatient("Ahmed Al-Mansouri")}>{t("edit")}</Button>
                               </div>
                             </td>
                           </tr>
@@ -424,8 +465,8 @@ const Index = () => {
                             <td className="p-4">2024-01-14</td>
                             <td className="p-4">
                               <div className="flex space-x-2">
-                                <Button variant="outline" size="sm">{t("view")}</Button>
-                                <Button variant="outline" size="sm">{t("edit")}</Button>
+                                <Button variant="outline" size="sm" onClick={() => handleViewPatient("Fatima Hassan")}>{t("view")}</Button>
+                                <Button variant="outline" size="sm" onClick={() => handleEditPatient("Fatima Hassan")}>{t("edit")}</Button>
                               </div>
                             </td>
                           </tr>
@@ -454,7 +495,7 @@ const Index = () => {
                         <Button variant="outline">{t("week")}</Button>
                         <Button variant="outline">{t("month")}</Button>
                       </div>
-                      <Button>{t("newAppointment")}</Button>
+                      <Button onClick={handleNewAppointment}>{t("newAppointment")}</Button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       <Card className="border-l-4 border-l-blue-500">
@@ -501,7 +542,7 @@ const Index = () => {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <Input placeholder={t("searchInvoices")} className="max-w-sm" />
-                      <Button>{t("createInvoice")}</Button>
+                      <Button onClick={handleCreateInvoice}>{t("createInvoice")}</Button>
                     </div>
                     <div className="border rounded-lg">
                       <table className="w-full">
