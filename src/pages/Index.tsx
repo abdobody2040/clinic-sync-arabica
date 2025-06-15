@@ -141,6 +141,34 @@ const Index = () => {
     setShowInvoiceForm(true);
   };
 
+  // Added missing form submission handlers
+  const handlePatientSubmit = (data: any) => {
+    console.log("Patient form submitted:", data);
+    setShowPatientForm(false);
+    toast({
+      title: t("success"),
+      description: "Patient added successfully!",
+    });
+  };
+
+  const handleAppointmentSubmit = (data: any) => {
+    console.log("Appointment form submitted:", data);
+    setShowAppointmentForm(false);
+    toast({
+      title: t("success"),
+      description: "Appointment scheduled successfully!",
+    });
+  };
+
+  const handleInvoiceSubmit = (data: any) => {
+    console.log("Invoice form submitted:", data);
+    setShowInvoiceForm(false);
+    toast({
+      title: t("success"),
+      description: "Invoice created successfully!",
+    });
+  };
+
   const handleViewPatient = (patientName: string) => {
     console.log("View patient clicked for:", patientName);
     toast({
