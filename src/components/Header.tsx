@@ -53,18 +53,36 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
             </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
-            {navigationItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
-              >
-                <item.icon className="h-4 w-4 mr-2" />
-                {item.name}
-              </a>
-            ))}
+          {/* Desktop Navigation - Clean horizontal layout */}
+          <nav className="hidden lg:flex items-center">
+            <div className="flex items-center bg-gray-50 rounded-lg p-1 space-x-1">
+              {navigationItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-white rounded-md transition-all duration-200 whitespace-nowrap"
+                >
+                  <item.icon className="h-4 w-4 mr-2" />
+                  {item.name}
+                </a>
+              ))}
+            </div>
+          </nav>
+
+          {/* Tablet Navigation - Compact buttons */}
+          <nav className="hidden md:flex lg:hidden items-center">
+            <div className="flex items-center space-x-1">
+              {navigationItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="flex items-center px-2 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+                  title={item.name}
+                >
+                  <item.icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
           </nav>
           
           {/* Right side - User Menu and Mobile Menu */}
@@ -82,14 +100,14 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
                 </div>
 
                 {/* Mobile Menu (Navigation + User) */}
-                <div className="lg:hidden">
+                <div className="md:hidden">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm">
                         <Menu className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56 bg-white">
+                    <DropdownMenuContent align="end" className="w-56 bg-white z-50">
                       <div className="px-3 py-2 border-b">
                         <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
                         <p className="text-xs text-gray-500">{currentUser.role}</p>
@@ -120,15 +138,15 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
                 </div>
 
                 {/* Desktop User Dropdown Menu */}
-                <div className="hidden lg:block">
+                <div className="hidden md:block">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="flex items-center space-x-2">
                         <User className="h-4 w-4" />
-                        <span>{currentUser.name.split(' ')[0]}</span>
+                        <span className="hidden lg:inline">{currentUser.name.split(' ')[0]}</span>
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56 bg-white">
+                    <DropdownMenuContent align="end" className="w-56 bg-white z-50">
                       <div className="px-3 py-2 border-b">
                         <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
                         <p className="text-xs text-gray-500">{currentUser.role}</p>
