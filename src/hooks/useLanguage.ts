@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { translations, Language, TranslationKey } from '../i18n/translations';
 
 export const useLanguage = () => {
@@ -8,11 +8,13 @@ export const useLanguage = () => {
     return (stored as Language) || 'en';
   });
 
-  const t = (key: TranslationKey): string => {
-    return translations[currentLanguage][key] || translations.en[key] || key;
-  };
+  // Memoize the translation function to prevent recreating it on every render
+  const t = useCallback((key: TranslationKey): string => {
+    return translations[currentLanguage]?.[key] || translations.en[key] || key;
+  }, [currentLanguage]);
 
-  const changeLanguage = (language: Language) => {
+  // Memoize the changeLanguage function
+  const changeLanguage = useCallback((language: Language) => {
     setCurrentLanguage(language);
     localStorage.setItem('clinic_language', language);
     
@@ -24,10 +26,13 @@ export const useLanguage = () => {
       document.dir = 'ltr';
       document.documentElement.lang = 'en';
     }
-  };
+  }, []);
+
+  // Memoize the isRTL value
+  const isRTL = useMemo(() => currentLanguage === 'ar', [currentLanguage]);
 
   useEffect(() => {
-    // Set initial direction and language
+    // Set initial direction and language only once
     if (currentLanguage === 'ar') {
       document.dir = 'rtl';
       document.documentElement.lang = 'ar';
@@ -37,10 +42,10 @@ export const useLanguage = () => {
     }
   }, [currentLanguage]);
 
-  return {
+  return useMemo(() => ({
     currentLanguage,
     changeLanguage,
     t,
-    isRTL: currentLanguage === 'ar'
-  };
+    isRTL
+  }), [currentLanguage, changeLanguage, t, isRTL]);
 };
