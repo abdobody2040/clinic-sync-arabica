@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useUserProfile } from "@/hooks/useUserProfile";
 import { Dashboard } from "@/components/Dashboard";
 import { LicenseScreen } from "@/components/LicenseScreen";
 import { LoginScreen } from "@/components/LoginScreen";
@@ -11,6 +12,7 @@ const Index = () => {
   const [licenseStatus, setLicenseStatus] = useState("checking");
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [licenseKey, setLicenseKey] = useState("");
+  
   const [showPatientForm, setShowPatientForm] = useState(false);
   const [showAppointmentForm, setShowAppointmentForm] = useState(false);
   const [showInvoiceForm, setShowInvoiceForm] = useState(false);
@@ -46,6 +48,7 @@ const Index = () => {
   const [appointmentViewMode, setAppointmentViewMode] = useState('list');
   const { toast } = useToast();
   const { t } = useLanguage();
+  const { profile } = useUserProfile();
 
   console.log("Index component rendered, isAuthenticated:", isAuthenticated);
   console.log("License status:", licenseStatus);
@@ -57,7 +60,11 @@ const Index = () => {
     if (token) {
       console.log("Found auth token, setting authenticated");
       setIsAuthenticated(true);
-      setCurrentUser({ name: "Dr. Ahmed", role: "admin", email: "admin@test.com" });
+      setCurrentUser({ 
+        name: profile.name, 
+        role: "admin", 
+        email: profile.email 
+      });
       setLicenseStatus("active");
     } else {
       // Check if license is already activated
@@ -70,7 +77,7 @@ const Index = () => {
         setLicenseStatus("expired");
       }
     }
-  }, []);
+  }, [profile]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,7 +88,11 @@ const Index = () => {
       console.log("Login successful");
       localStorage.setItem("auth_token", "demo_token");
       setIsAuthenticated(true);
-      setCurrentUser({ name: "Dr. Ahmed", role: "admin", email: "admin@test.com" });
+      setCurrentUser({ 
+        name: profile.name, 
+        role: "admin", 
+        email: profile.email 
+      });
       toast({
         title: t("success"),
         description: t("welcomeBack"),

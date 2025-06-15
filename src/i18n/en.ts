@@ -1,10 +1,9 @@
-
 import { Translations } from './types';
 
 export const en: Translations = {
   // Auth & Navigation
   welcome: "Welcome",
-  welcomeBack: "Welcome Back",
+  welcomeBack: "Welcome back!",
   signIn: "Sign In",
   signInToAccount: "Sign in to your account",
   email: "Email",
@@ -101,7 +100,7 @@ export const en: Translations = {
   // Settings
   settings: "Settings",
   systemSettings: "System Settings",
-  configureSettings: "Configure system settings",
+  configureSettings: "Configure your system settings",
   clinicInformation: "Clinic Information",
   clinicName: "Clinic Name",
   licenseNumber: "License Number",
@@ -110,4 +109,20 @@ export const en: Translations = {
   currencySettings: "Currency Settings",
   defaultCurrency: "Default Currency",
   currency: "Currency",
+  
+  appCustomization: "App Customization",
+  applicationName: "Application Name",
+  logoUpload: "Logo Upload",
+  currentLogo: "Current Logo",
+  uploadNewLogo: "Upload New Logo",
+  profileSettings: "Profile Settings",
+  personalInformation: "Personal Information",
+  fullName: "Full Name",
+  emailAddress: "Email Address",
+  phoneNumber: "Phone Number",
+  address: "Address",
+  specialization: "Specialization",
+  licenseInfo: "License Information",
+  profileUpdated: "Profile updated successfully!",
+  appSettingsUpdated: "App settings updated successfully!"
 };

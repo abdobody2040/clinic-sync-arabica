@@ -79,7 +79,7 @@ export const Dashboard: React.FC<DashboardProps> = (props) => {
       
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <StatsCards />
+          <StatsCards patients={props.patients} appointments={props.appointments} />
           <MainTabs {...props} />
         </div>
       </main>

@@ -4,25 +4,36 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Users, Calendar, FileText, Settings } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
-export const StatsCards: React.FC = () => {
+interface StatsCardsProps {
+  patients: any[];
+  appointments: any[];
+}
+
+export const StatsCards: React.FC<StatsCardsProps> = ({ patients, appointments }) => {
   const { t, isRTL } = useLanguage();
 
+  // Calculate real statistics
+  const totalPatients = patients.length;
+  const today = new Date().toISOString().split('T')[0];
+  const todaysAppointments = appointments.filter(apt => apt.appointmentDate === today).length;
+  const pendingInvoices = Math.floor(totalPatients * 0.3); // Mock calculation
+  
   const stats = [
     {
       title: t("totalPatients"),
-      value: "1,234",
+      value: totalPatients.toString(),
       icon: Users,
       color: "blue"
     },
     {
       title: t("todaysAppointments"),
-      value: "28",
+      value: todaysAppointments.toString(),
       icon: Calendar,
       color: "green"
     },
     {
       title: t("pendingInvoices"),
-      value: "12",
+      value: pendingInvoices.toString(),
       icon: FileText,
       color: "purple"
     },

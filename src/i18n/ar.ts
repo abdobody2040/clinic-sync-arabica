@@ -1,10 +1,9 @@
-
 import { Translations } from './types';
 
 export const ar: Translations = {
   // Auth & Navigation
   welcome: "مرحباً",
-  welcomeBack: "مرحباً بعودتك",
+  welcomeBack: "مرحباً بعودتك!",
   signIn: "تسجيل الدخول",
   signInToAccount: "سجل دخولك إلى حسابك",
   email: "البريد الإلكتروني",
@@ -101,7 +100,7 @@ export const ar: Translations = {
   // Settings
   settings: "الإعدادات",
   systemSettings: "إعدادات النظام",
-  configureSettings: "تكوين إعدادات النظام",
+  configureSettings: "قم بتكوين إعدادات النظام الخاص بك",
   clinicInformation: "معلومات العيادة",
   clinicName: "اسم العيادة",
   licenseNumber: "رقم الترخيص",
@@ -110,4 +109,20 @@ export const ar: Translations = {
   currencySettings: "إعدادات العملة",
   defaultCurrency: "العملة الافتراضية",
   currency: "العملة",
+  
+  appCustomization: "تخصيص التطبيق",
+  applicationName: "اسم التطبيق",
+  logoUpload: "رفع الشعار",
+  currentLogo: "الشعار الحالي",
+  uploadNewLogo: "رفع شعار جديد",
+  profileSettings: "إعدادات الملف الشخصي",
+  personalInformation: "المعلومات الشخصية",
+  fullName: "الاسم الكامل",
+  emailAddress: "عنوان البريد الإلكتروني",
+  phoneNumber: "رقم الهاتف",
+  address: "العنوان",
+  specialization: "التخصص",
+  licenseInfo: "معلومات الترخيص",
+  profileUpdated: "تم تحديث الملف الشخصي بنجاح!",
+  appSettingsUpdated: "تم تحديث إعدادات التطبيق بنجاح!"
 };
