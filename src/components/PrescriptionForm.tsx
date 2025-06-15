@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,11 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { FileText, Printer } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import { FileText, Printer, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { generatePrescriptionPDF } from '@/utils/pdfGenerator';
 import { useAppSettings } from '@/hooks/useAppSettings';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import { useRegularPrescriptions } from '@/hooks/useRegularPrescriptions';
 import { useToast } from '@/hooks/use-toast';
 
 interface PrescriptionFormData {
@@ -57,6 +59,8 @@ export const PrescriptionForm: React.FC<PrescriptionFormProps> = ({
   const { settings } = useAppSettings();
   const { profile } = useUserProfile();
   const { toast } = useToast();
+  const { regularPrescriptions } = useRegularPrescriptions();
+  const [showRegularPrescriptions, setShowRegularPrescriptions] = useState(false);
 
   const addMedication = () => {
     setMedications([...medications, { name: '', dosage: '', frequency: '', duration: '', instructions: '' }]);
@@ -74,6 +78,27 @@ export const PrescriptionForm: React.FC<PrescriptionFormProps> = ({
     );
     setMedications(updated);
   };
+
+  const addRegularPrescription = (regularPrescription: any) => {
+    const newMedication = {
+      name: regularPrescription.name,
+      dosage: regularPrescription.dosage,
+      frequency: regularPrescription.frequency,
+      duration: regularPrescription.duration,
+      instructions: regularPrescription.instructions
+    };
+    setMedications([...medications, newMedication]);
+    setShowRegularPrescriptions(false);
+  };
+
+  const groupedPrescriptions = regularPrescriptions.reduce((acc: any, prescription) => {
+    const category = prescription.category || 'Other';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(prescription);
+    return acc;
+  }, {});
 
   const handleFormSubmit = (data: PrescriptionFormData) => {
     const prescriptionData = {
@@ -167,9 +192,65 @@ export const PrescriptionForm: React.FC<PrescriptionFormProps> = ({
           <div>
             <div className="flex justify-between items-center mb-4">
               <Label className="text-lg font-semibold">Medications</Label>
-              <Button type="button" onClick={addMedication} variant="outline" size="sm">
-                Add Medication
-              </Button>
+              <div className="flex gap-2">
+                <Dialog open={showRegularPrescriptions} onOpenChange={setShowRegularPrescriptions}>
+                  <DialogTrigger asChild>
+                    <Button type="button" variant="outline" size="sm">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add from Regular
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Select from Regular Prescriptions</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      {Object.keys(groupedPrescriptions).length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">
+                          No regular prescriptions available. Add some in Settings first.
+                        </div>
+                      ) : (
+                        Object.entries(groupedPrescriptions).map(([category, prescriptions]: [string, any]) => (
+                          <div key={category}>
+                            <h3 className="font-medium text-lg mb-3 text-blue-600">{category}</h3>
+                            <div className="grid gap-3">
+                              {prescriptions.map((prescription: any) => (
+                                <div
+                                  key={prescription.id}
+                                  className="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                                  onClick={() => addRegularPrescription(prescription)}
+                                >
+                                  <div className="flex justify-between items-start">
+                                    <div className="flex-1">
+                                      <h4 className="font-medium mb-1">{prescription.name}</h4>
+                                      <div className="text-sm text-gray-600 space-y-1">
+                                        <div><strong>Dosage:</strong> {prescription.dosage}</div>
+                                        <div><strong>Frequency:</strong> {prescription.frequency}</div>
+                                        {prescription.duration && (
+                                          <div><strong>Duration:</strong> {prescription.duration}</div>
+                                        )}
+                                        {prescription.instructions && (
+                                          <div><strong>Instructions:</strong> {prescription.instructions}</div>
+                                        )}
+                                      </div>
+                                    </div>
+                                    <Button size="sm" variant="outline">
+                                      Add
+                                    </Button>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </DialogContent>
+                </Dialog>
+                <Button type="button" onClick={addMedication} variant="outline" size="sm">
+                  Add Medication
+                </Button>
+              </div>
             </div>
             
             {medications.map((medication, index) => (
