@@ -37,6 +37,9 @@ export const en: Translations = {
   actions: "Actions",
   date: "Date",
   time: "Time",
+  cancel: "Cancel",
+  delete: "Delete",
+  download: "Download",
   
   // Dashboard
   totalPatients: "Total Patients",
@@ -104,4 +107,7 @@ export const en: Translations = {
   licenseNumber: "License Number",
   languageSettings: "Language Settings",
   defaultLanguage: "Default Language",
+  currencySettings: "Currency Settings",
+  defaultCurrency: "Default Currency",
+  currency: "Currency",
 };

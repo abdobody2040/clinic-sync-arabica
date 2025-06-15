@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useCurrency } from "@/hooks/useCurrency";
 import { PatientForm } from "@/components/PatientForm";
 import { AppointmentForm } from "@/components/AppointmentForm";
 import { InvoiceForm } from "@/components/InvoiceForm";
@@ -75,6 +76,7 @@ const Index = () => {
   const [appointmentViewMode, setAppointmentViewMode] = useState('list'); // 'list', 'edit'
   const { toast } = useToast();
   const { currentLanguage, changeLanguage, t, isRTL } = useLanguage();
+  const { currentCurrency, changeCurrency, formatAmount, currencies } = useCurrency();
 
   console.log("Index component rendered, isAuthenticated:", isAuthenticated);
   console.log("License status:", licenseStatus);
@@ -798,7 +800,7 @@ const Index = () => {
                             <tr className="border-b">
                               <td className="p-4">#INV-001</td>
                               <td className="p-4">Ahmed Al-Mansouri</td>
-                              <td className="p-4">AED 350.00</td>
+                              <td className="p-4">{formatAmount(350.00)}</td>
                               <td className="p-4">
                                 <Badge variant="secondary">{t("paid")}</Badge>
                               </td>
@@ -866,6 +868,25 @@ const Index = () => {
                             العربية
                           </Button>
                         </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-medium">{t("currencySettings")}</h3>
+                      <div className="mt-4">
+                        <Label>{t("defaultCurrency")}</Label>
+                        <Select value={currentCurrency} onValueChange={changeCurrency}>
+                          <SelectTrigger className="w-48 mt-2">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {currencies.map(currency => (
+                              <SelectItem key={currency.code} value={currency.code}>
+                                {currency.code} - {currency.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                     

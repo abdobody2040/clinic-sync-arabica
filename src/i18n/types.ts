@@ -37,6 +37,9 @@ export interface Translations {
   actions: string;
   date: string;
   time: string;
+  cancel: string;
+  delete: string;
+  download: string;
   
   // Dashboard
   totalPatients: string;
@@ -104,6 +107,9 @@ export interface Translations {
   licenseNumber: string;
   languageSettings: string;
   defaultLanguage: string;
+  currencySettings: string;
+  defaultCurrency: string;
+  currency: string;
 }
 
 export type TranslationKey = keyof Translations;

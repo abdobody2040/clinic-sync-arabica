@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,8 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useCurrency } from '@/hooks/useCurrency';
 import { Package, AlertTriangle, Plus, Edit, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { InventoryEditDialog } from './InventoryEditDialog';
 
 interface InventoryItem {
   id: string;
@@ -26,8 +27,10 @@ interface InventoryItem {
 export const InventoryManager: React.FC = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { formatAmount } = useCurrency();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
 
@@ -156,6 +159,18 @@ export const InventoryManager: React.FC = () => {
     });
   };
 
+  const handleEditItem = (item: InventoryItem) => {
+    setEditingItem(item);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveEdit = (updatedItem: InventoryItem) => {
+    setItems(prev => prev.map(item => 
+      item.id === updatedItem.id ? updatedItem : item
+    ));
+    setEditingItem(null);
+  };
+
   const getStockStatus = (item: InventoryItem) => {
     if (item.stock === 0) return { label: 'Out of Stock', color: 'destructive' };
     if (item.stock <= item.minStock) return { label: 'Low Stock', color: 'secondary' };
@@ -209,7 +224,7 @@ export const InventoryManager: React.FC = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Value</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  AED {items.reduce((sum, item) => sum + (item.stock * item.unitPrice), 0).toFixed(2)}
+                  {formatAmount(items.reduce((sum, item) => sum + (item.stock * item.unitPrice), 0))}
                 </p>
               </div>
             </div>
@@ -277,7 +292,7 @@ export const InventoryManager: React.FC = () => {
                   </div>
 
                   <div>
-                    <Label>Unit Price (AED)</Label>
+                    <Label>Unit Price</Label>
                     <Input 
                       type="number"
                       step="0.01"
@@ -382,10 +397,14 @@ export const InventoryManager: React.FC = () => {
                       <td className="p-4">
                         <Badge variant={status.color as any}>{status.label}</Badge>
                       </td>
-                      <td className="p-4">AED {item.unitPrice.toFixed(2)}</td>
+                      <td className="p-4">{formatAmount(item.unitPrice)}</td>
                       <td className="p-4">
                         <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handleEditItem(item)}
+                          >
                             <Edit className="w-4 h-4" />
                           </Button>
                           <Button 
@@ -405,6 +424,17 @@ export const InventoryManager: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      <InventoryEditDialog
+        item={editingItem}
+        isOpen={isEditDialogOpen}
+        onClose={() => {
+          setIsEditDialogOpen(false);
+          setEditingItem(null);
+        }}
+        onSave={handleSaveEdit}
+        categories={categories}
+      />
     </div>
   );
 };

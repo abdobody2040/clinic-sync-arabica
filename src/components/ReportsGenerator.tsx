@@ -30,6 +30,29 @@ export const ReportsGenerator: React.FC = () => {
     }, 2000);
   };
 
+  const handleDownloadReport = (reportName: string) => {
+    console.log('Downloading report:', reportName);
+    
+    // Create a sample CSV content
+    const csvContent = `Report Name,${reportName}\nGenerated Date,${new Date().toLocaleDateString()}\nData,Sample Data\n`;
+    
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${reportName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    
+    toast({
+      title: t("success"),
+      description: `${reportName} downloaded successfully!`,
+    });
+  };
+
   const reportTypes = [
     {
       id: 'patient-demographics',
@@ -116,13 +139,7 @@ export const ReportsGenerator: React.FC = () => {
                   <Button 
                     variant="outline" 
                     size="sm"
-                    onClick={() => {
-                      console.log('Downloading report:', report.title);
-                      toast({
-                        title: "Download Started",
-                        description: `${report.title} is being downloaded...`,
-                      });
-                    }}
+                    onClick={() => handleDownloadReport(report.title)}
                   >
                     <Download className="w-4 h-4" />
                   </Button>
@@ -152,7 +169,11 @@ export const ReportsGenerator: React.FC = () => {
                     <p className="text-sm text-gray-500">Generated on {report.date} • {report.size}</p>
                   </div>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => handleDownloadReport(report.name)}
+                >
                   <Download className="w-4 h-4" />
                 </Button>
               </div>

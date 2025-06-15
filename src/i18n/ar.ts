@@ -37,6 +37,9 @@ export const ar: Translations = {
   actions: "الإجراءات",
   date: "التاريخ",
   time: "الوقت",
+  cancel: "إلغاء",
+  delete: "حذف",
+  download: "تحميل",
   
   // Dashboard
   totalPatients: "إجمالي المرضى",
@@ -104,4 +107,7 @@ export const ar: Translations = {
   licenseNumber: "رقم الترخيص",
   languageSettings: "إعدادات اللغة",
   defaultLanguage: "اللغة الافتراضية",
+  currencySettings: "إعدادات العملة",
+  defaultCurrency: "العملة الافتراضية",
+  currency: "العملة",
 };
