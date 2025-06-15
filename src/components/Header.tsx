@@ -53,43 +53,43 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
             </div>
           </div>
 
-          {/* Desktop Navigation - Large screens */}
-          <nav className="hidden lg:flex items-center space-x-1 flex-1 justify-center max-w-3xl mx-8">
+          {/* Desktop Navigation - Medium screens and up */}
+          <nav className="hidden md:flex items-center space-x-2 flex-1 justify-center max-w-4xl mx-6">
             {navigationItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-200"
+                className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-200 whitespace-nowrap"
               >
-                <item.icon className="h-4 w-4 mr-2" />
-                <span className="hidden xl:inline">{item.name}</span>
+                <item.icon className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="hidden lg:inline">{item.name}</span>
               </a>
             ))}
           </nav>
 
           {/* Right side - User actions */}
-          <div className="flex items-center space-x-2 flex-shrink-0">
+          <div className="flex items-center space-x-3 flex-shrink-0">
             {currentUser && (
               <>
                 {/* User Info - Desktop only */}
-                <div className="hidden lg:flex items-center space-x-3 mr-4">
+                <div className="hidden lg:flex items-center space-x-3">
                   <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-gray-900 truncate max-w-32">
                       {currentUser.name}
                     </p>
-                    <p className="text-xs text-gray-500">{currentUser.role}</p>
+                    <p className="text-xs text-gray-500 truncate">{currentUser.role}</p>
                   </div>
                 </div>
 
-                {/* Mobile Navigation Menu */}
-                <div className="lg:hidden">
+                {/* Mobile Navigation Menu - Small screens only */}
+                <div className="md:hidden">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="h-9 w-9 p-0">
                         <Menu className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-64 bg-white border shadow-lg z-50">
+                    <DropdownMenuContent align="end" className="w-64 bg-white border shadow-lg z-[60]">
                       {/* User info header */}
                       <div className="px-3 py-3 border-b bg-gray-50">
                         <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
@@ -129,16 +129,16 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout }) => {
                   </DropdownMenu>
                 </div>
 
-                {/* Desktop User Menu */}
-                <div className="hidden lg:block">
+                {/* Desktop User Menu - Medium screens and up */}
+                <div className="hidden md:block">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="flex items-center space-x-2 h-9">
                         <User className="h-4 w-4" />
-                        <span className="hidden xl:inline">{currentUser.name.split(' ')[0]}</span>
+                        <span className="hidden lg:inline">{currentUser.name.split(' ')[0]}</span>
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56 bg-white border shadow-lg z-50">
+                    <DropdownMenuContent align="end" className="w-56 bg-white border shadow-lg z-[60]">
                       <div className="px-3 py-3 border-b bg-gray-50">
                         <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
                         <p className="text-xs text-gray-500">{currentUser.role}</p>
