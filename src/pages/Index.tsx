@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,6 +26,11 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/useLanguage";
+import { PatientForm } from "@/components/PatientForm";
+import { AppointmentForm } from "@/components/AppointmentForm";
+import { InvoiceForm } from "@/components/InvoiceForm";
+import { ReportsGenerator } from "@/components/ReportsGenerator";
+import { InventoryManager } from "@/components/InventoryManager";
 
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,6 +38,9 @@ const Index = () => {
   const [licenseStatus, setLicenseStatus] = useState("checking");
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [licenseKey, setLicenseKey] = useState("");
+  const [showPatientForm, setShowPatientForm] = useState(false);
+  const [showAppointmentForm, setShowAppointmentForm] = useState(false);
+  const [showInvoiceForm, setShowInvoiceForm] = useState(false);
   const { toast } = useToast();
   const { currentLanguage, changeLanguage, t, isRTL } = useLanguage();
 
@@ -118,29 +125,20 @@ const Index = () => {
     });
   };
 
-  // Button click handlers
+  // Updated button click handlers
   const handleAddNewPatient = () => {
     console.log("Add New Patient button clicked");
-    toast({
-      title: "Add New Patient",
-      description: "This feature will be implemented soon",
-    });
+    setShowPatientForm(true);
   };
 
   const handleNewAppointment = () => {
     console.log("New Appointment button clicked");
-    toast({
-      title: "New Appointment",
-      description: "This feature will be implemented soon",
-    });
+    setShowAppointmentForm(true);
   };
 
   const handleCreateInvoice = () => {
     console.log("Create Invoice button clicked");
-    toast({
-      title: "Create Invoice",
-      description: "This feature will be implemented soon",
-    });
+    setShowInvoiceForm(true);
   };
 
   const handleViewPatient = (patientName: string) => {
@@ -383,330 +381,225 @@ const Index = () => {
             </TabsList>
 
             <TabsContent value="patients">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Users className="w-5 h-5 mr-2" />
-                    {t("patientManagement")}
-                  </CardTitle>
-                  <CardDescription>{t("viewManagePatients")}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <Input placeholder={t("searchPatients")} className="max-w-sm" />
-                      <Button onClick={handleAddNewPatient}>{t("addNewPatient")}</Button>
-                    </div>
-                    
-                    {/* Patient Quick Actions */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                      <Card className="border-l-4 border-l-red-500">
-                        <CardContent className="p-4">
-                          <div className="flex items-center">
-                            <Heart className="w-6 h-6 text-red-500 mr-3" />
-                            <div>
-                              <p className="font-medium">{t("medicalRecords")}</p>
-                              <p className="text-sm text-gray-600">156 {t("records")}</p>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
+              {showPatientForm ? (
+                <PatientForm 
+                  onSubmit={handlePatientSubmit}
+                  onCancel={() => setShowPatientForm(false)}
+                />
+              ) : (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Users className="w-5 h-5 mr-2" />
+                      {t("patientManagement")}
+                    </CardTitle>
+                    <CardDescription>{t("viewManagePatients")}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <Input placeholder={t("searchPatients")} className="max-w-sm" />
+                        <Button onClick={handleAddNewPatient}>{t("addNewPatient")}</Button>
+                      </div>
                       
-                      <Card className="border-l-4 border-l-blue-500">
-                        <CardContent className="p-4">
-                          <div className="flex items-center">
-                            <Pill className="w-6 h-6 text-blue-500 mr-3" />
-                            <div>
-                              <p className="font-medium">{t("prescriptions")}</p>
-                              <p className="text-sm text-gray-600">89 {t("active")}</p>
+                      {/* Patient Quick Actions */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <Card className="border-l-4 border-l-red-500">
+                          <CardContent className="p-4">
+                            <div className="flex items-center">
+                              <Heart className="w-6 h-6 text-red-500 mr-3" />
+                              <div>
+                                <p className="font-medium">{t("medicalRecords")}</p>
+                                <p className="text-sm text-gray-600">156 {t("records")}</p>
+                              </div>
                             </div>
-                          </div>
-                        </CardContent>
-                      </Card>
+                          </CardContent>
+                        </Card>
+                        
+                        <Card className="border-l-4 border-l-blue-500">
+                          <CardContent className="p-4">
+                            <div className="flex items-center">
+                              <Pill className="w-6 h-6 text-blue-500 mr-3" />
+                              <div>
+                                <p className="font-medium">{t("prescriptions")}</p>
+                                <p className="text-sm text-gray-600">89 {t("active")}</p>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        
+                        <Card className="border-l-4 border-l-green-500">
+                          <CardContent className="p-4">
+                            <div className="flex items-center">
+                              <FlaskConical className="w-6 h-6 text-green-500 mr-3" />
+                              <div>
+                                <p className="font-medium">{t("labResults")}</p>
+                                <p className="text-sm text-gray-600">23 {t("pending")}</p>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
                       
-                      <Card className="border-l-4 border-l-green-500">
-                        <CardContent className="p-4">
-                          <div className="flex items-center">
-                            <FlaskConical className="w-6 h-6 text-green-500 mr-3" />
-                            <div>
-                              <p className="font-medium">{t("labResults")}</p>
-                              <p className="text-sm text-gray-600">23 {t("pending")}</p>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
+                      <div className="border rounded-lg">
+                        <table className="w-full">
+                          <thead className="border-b bg-gray-50">
+                            <tr>
+                              <th className="text-left p-4">{t("name")}</th>
+                              <th className="text-left p-4">{t("phone")}</th>
+                              <th className="text-left p-4">{t("lastVisit")}</th>
+                              <th className="text-left p-4">{t("actions")}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-b">
+                              <td className="p-4">Ahmed Al-Mansouri</td>
+                              <td className="p-4">+971 50 123 4567</td>
+                              <td className="p-4">2024-01-15</td>
+                              <td className="p-4">
+                                <div className="flex space-x-2">
+                                  <Button variant="outline" size="sm" onClick={() => handleViewPatient("Ahmed Al-Mansouri")}>{t("view")}</Button>
+                                  <Button variant="outline" size="sm" onClick={() => handleEditPatient("Ahmed Al-Mansouri")}>{t("edit")}</Button>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr className="border-b">
+                              <td className="p-4">Fatima Hassan</td>
+                              <td className="p-4">+971 55 987 6543</td>
+                              <td className="p-4">2024-01-14</td>
+                              <td className="p-4">
+                                <div className="flex space-x-2">
+                                  <Button variant="outline" size="sm" onClick={() => handleViewPatient("Fatima Hassan")}>{t("view")}</Button>
+                                  <Button variant="outline" size="sm" onClick={() => handleEditPatient("Fatima Hassan")}>{t("edit")}</Button>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                    
-                    <div className="border rounded-lg">
-                      <table className="w-full">
-                        <thead className="border-b bg-gray-50">
-                          <tr>
-                            <th className="text-left p-4">{t("name")}</th>
-                            <th className="text-left p-4">{t("phone")}</th>
-                            <th className="text-left p-4">{t("lastVisit")}</th>
-                            <th className="text-left p-4">{t("actions")}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr className="border-b">
-                            <td className="p-4">Ahmed Al-Mansouri</td>
-                            <td className="p-4">+971 50 123 4567</td>
-                            <td className="p-4">2024-01-15</td>
-                            <td className="p-4">
-                              <div className="flex space-x-2">
-                                <Button variant="outline" size="sm" onClick={() => handleViewPatient("Ahmed Al-Mansouri")}>{t("view")}</Button>
-                                <Button variant="outline" size="sm" onClick={() => handleEditPatient("Ahmed Al-Mansouri")}>{t("edit")}</Button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr className="border-b">
-                            <td className="p-4">Fatima Hassan</td>
-                            <td className="p-4">+971 55 987 6543</td>
-                            <td className="p-4">2024-01-14</td>
-                            <td className="p-4">
-                              <div className="flex space-x-2">
-                                <Button variant="outline" size="sm" onClick={() => handleViewPatient("Fatima Hassan")}>{t("view")}</Button>
-                                <Button variant="outline" size="sm" onClick={() => handleEditPatient("Fatima Hassan")}>{t("edit")}</Button>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              )}
             </TabsContent>
 
             <TabsContent value="appointments">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Calendar className="w-5 h-5 mr-2" />
-                    {t("appointmentScheduling")}
-                  </CardTitle>
-                  <CardDescription>{t("manageAppointments")}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <div className="flex space-x-2">
-                        <Button variant="outline">{t("today")}</Button>
-                        <Button variant="outline">{t("week")}</Button>
-                        <Button variant="outline">{t("month")}</Button>
+              {showAppointmentForm ? (
+                <AppointmentForm 
+                  onSubmit={handleAppointmentSubmit}
+                  onCancel={() => setShowAppointmentForm(false)}
+                />
+              ) : (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Calendar className="w-5 h-5 mr-2" />
+                      {t("appointmentScheduling")}
+                    </CardTitle>
+                    <CardDescription>{t("manageAppointments")}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <div className="flex space-x-2">
+                          <Button variant="outline">{t("today")}</Button>
+                          <Button variant="outline">{t("week")}</Button>
+                          <Button variant="outline">{t("month")}</Button>
+                        </div>
+                        <Button onClick={handleNewAppointment}>{t("newAppointment")}</Button>
                       </div>
-                      <Button onClick={handleNewAppointment}>{t("newAppointment")}</Button>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      <Card className="border-l-4 border-l-blue-500">
-                        <CardContent className="p-4">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <p className="font-medium">Ahmed Al-Mansouri</p>
-                              <p className="text-sm text-gray-600">General Checkup</p>
-                              <p className="text-sm text-gray-500">09:00 AM - 09:30 AM</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <Card className="border-l-4 border-l-blue-500">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <p className="font-medium">Ahmed Al-Mansouri</p>
+                                <p className="text-sm text-gray-600">General Checkup</p>
+                                <p className="text-sm text-gray-500">09:00 AM - 09:30 AM</p>
+                              </div>
+                              <Badge>{t("confirmed")}</Badge>
                             </div>
-                            <Badge>{t("confirmed")}</Badge>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      
-                      <Card className="border-l-4 border-l-green-500">
-                        <CardContent className="p-4">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <p className="font-medium">Fatima Hassan</p>
-                              <p className="text-sm text-gray-600">Follow-up</p>
-                              <p className="text-sm text-gray-500">10:00 AM - 10:30 AM</p>
+                          </CardContent>
+                        </Card>
+                        
+                        <Card className="border-l-4 border-l-green-500">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <p className="font-medium">Fatima Hassan</p>
+                                <p className="text-sm text-gray-600">Follow-up</p>
+                                <p className="text-sm text-gray-500">10:00 AM - 10:30 AM</p>
+                              </div>
+                              <Badge variant="secondary">{t("completed")}</Badge>
                             </div>
-                            <Badge variant="secondary">{t("completed")}</Badge>
-                          </div>
-                        </CardContent>
-                      </Card>
+                          </CardContent>
+                        </Card>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              )}
             </TabsContent>
 
             <TabsContent value="billing">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <FileText className="w-5 h-5 mr-2" />
-                    {t("billingInvoices")}
-                  </CardTitle>
-                  <CardDescription>{t("manageInvoices")}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <Input placeholder={t("searchInvoices")} className="max-w-sm" />
-                      <Button onClick={handleCreateInvoice}>{t("createInvoice")}</Button>
+              {showInvoiceForm ? (
+                <InvoiceForm 
+                  onSubmit={handleInvoiceSubmit}
+                  onCancel={() => setShowInvoiceForm(false)}
+                />
+              ) : (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <FileText className="w-5 h-5 mr-2" />
+                      {t("billingInvoices")}
+                    </CardTitle>
+                    <CardDescription>{t("manageInvoices")}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <Input placeholder={t("searchInvoices")} className="max-w-sm" />
+                        <Button onClick={handleCreateInvoice}>{t("createInvoice")}</Button>
+                      </div>
+                      <div className="border rounded-lg">
+                        <table className="w-full">
+                          <thead className="border-b bg-gray-50">
+                            <tr>
+                              <th className="text-left p-4">{t("invoiceNumber")}</th>
+                              <th className="text-left p-4">{t("patient")}</th>
+                              <th className="text-left p-4">{t("amount")}</th>
+                              <th className="text-left p-4">{t("status")}</th>
+                              <th className="text-left p-4">{t("actions")}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-b">
+                              <td className="p-4">#INV-001</td>
+                              <td className="p-4">Ahmed Al-Mansouri</td>
+                              <td className="p-4">AED 350.00</td>
+                              <td className="p-4">
+                                <Badge variant="secondary">{t("paid")}</Badge>
+                              </td>
+                              <td className="p-4">
+                                <Button variant="outline" size="sm">{t("view")}</Button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                    <div className="border rounded-lg">
-                      <table className="w-full">
-                        <thead className="border-b bg-gray-50">
-                          <tr>
-                            <th className="text-left p-4">{t("invoiceNumber")}</th>
-                            <th className="text-left p-4">{t("patient")}</th>
-                            <th className="text-left p-4">{t("amount")}</th>
-                            <th className="text-left p-4">{t("status")}</th>
-                            <th className="text-left p-4">{t("actions")}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr className="border-b">
-                            <td className="p-4">#INV-001</td>
-                            <td className="p-4">Ahmed Al-Mansouri</td>
-                            <td className="p-4">AED 350.00</td>
-                            <td className="p-4">
-                              <Badge variant="secondary">{t("paid")}</Badge>
-                            </td>
-                            <td className="p-4">
-                              <Button variant="outline" size="sm">{t("view")}</Button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              )}
             </TabsContent>
 
             <TabsContent value="reports">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <BarChart3 className="w-5 h-5 mr-2" />
-                    {t("reportsAnalytics")}
-                  </CardTitle>
-                  <CardDescription>{t("generateReports")}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <Card className="border-l-4 border-l-blue-500">
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium">{t("patientReports")}</p>
-                            <p className="text-sm text-gray-600">Demographics & Statistics</p>
-                          </div>
-                          <Users className="w-8 h-8 text-blue-500" />
-                        </div>
-                        <Button className="w-full mt-4" variant="outline">Generate Report</Button>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card className="border-l-4 border-l-green-500">
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium">{t("financialReports")}</p>
-                            <p className="text-sm text-gray-600">Revenue & Billing</p>
-                          </div>
-                          <FileText className="w-8 h-8 text-green-500" />
-                        </div>
-                        <Button className="w-full mt-4" variant="outline">Generate Report</Button>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card className="border-l-4 border-l-purple-500">
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium">{t("appointmentReports")}</p>
-                            <p className="text-sm text-gray-600">Scheduling & Attendance</p>
-                          </div>
-                          <Calendar className="w-8 h-8 text-purple-500" />
-                        </div>
-                        <Button className="w-full mt-4" variant="outline">Generate Report</Button>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </CardContent>
-              </Card>
+              <ReportsGenerator />
             </TabsContent>
 
             <TabsContent value="inventory">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Package className="w-5 h-5 mr-2" />
-                    {t("inventoryManagement")}
-                  </CardTitle>
-                  <CardDescription>{t("manageSupplies")}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <Card className="border-l-4 border-l-blue-500">
-                        <CardContent className="p-4">
-                          <div className="flex items-center">
-                            <Package className="w-6 h-6 text-blue-500 mr-3" />
-                            <div>
-                              <p className="font-medium">{t("supplies")}</p>
-                              <p className="text-sm text-gray-600">245 items</p>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      
-                      <Card className="border-l-4 border-l-green-500">
-                        <CardContent className="p-4">
-                          <div className="flex items-center">
-                            <Activity className="w-6 h-6 text-green-500 mr-3" />
-                            <div>
-                              <p className="font-medium">{t("equipment")}</p>
-                              <p className="text-sm text-gray-600">67 devices</p>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      
-                      <Card className="border-l-4 border-l-red-500">
-                        <CardContent className="p-4">
-                          <div className="flex items-center">
-                            <AlertTriangle className="w-6 h-6 text-red-500 mr-3" />
-                            <div>
-                              <p className="font-medium">{t("lowStock")}</p>
-                              <p className="text-sm text-gray-600">12 items</p>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                    
-                    <div className="border rounded-lg">
-                      <table className="w-full">
-                        <thead className="border-b bg-gray-50">
-                          <tr>
-                            <th className="text-left p-4">Item</th>
-                            <th className="text-left p-4">Category</th>
-                            <th className="text-left p-4">Stock</th>
-                            <th className="text-left p-4">Status</th>
-                            <th className="text-left p-4">{t("actions")}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr className="border-b">
-                            <td className="p-4">Surgical Gloves</td>
-                            <td className="p-4">Medical Supplies</td>
-                            <td className="p-4">45 boxes</td>
-                            <td className="p-4">
-                              <Badge>In Stock</Badge>
-                            </td>
-                            <td className="p-4">
-                              <Button variant="outline" size="sm">{t("update")}</Button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <InventoryManager />
             </TabsContent>
 
             <TabsContent value="settings">
