@@ -1,6 +1,5 @@
-
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { translations, Language, TranslationKey } from '../i18n/translations';
+import { translations, Language, TranslationKey } from '../i18n';
 
 export const useLanguage = () => {
   const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
