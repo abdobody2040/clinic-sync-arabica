@@ -41,6 +41,10 @@ const Index = () => {
   const [showPatientForm, setShowPatientForm] = useState(false);
   const [showAppointmentForm, setShowAppointmentForm] = useState(false);
   const [showInvoiceForm, setShowInvoiceForm] = useState(false);
+  const [patients, setPatients] = useState([
+    { id: 1, name: "Ahmed Al-Mansouri", phone: "+971 50 123 4567", lastVisit: "2024-01-15" },
+    { id: 2, name: "Fatima Hassan", phone: "+971 55 987 6543", lastVisit: "2024-01-14" }
+  ]);
   const { toast } = useToast();
   const { currentLanguage, changeLanguage, t, isRTL } = useLanguage();
 
@@ -141,10 +145,37 @@ const Index = () => {
     setShowInvoiceForm(true);
   };
 
-  // Added missing form submission handlers
+  // Updated form submission handlers
   const handlePatientSubmit = (data: any) => {
     console.log("Patient form submitted:", data);
+    
+    // Create new patient object
+    const newPatient = {
+      id: patients.length + 1,
+      name: `${data.firstName} ${data.lastName}`,
+      phone: data.phone,
+      lastVisit: new Date().toISOString().split('T')[0],
+      email: data.email,
+      dateOfBirth: data.dateOfBirth,
+      gender: data.gender,
+      address: data.address,
+      emergencyContact: data.emergencyContact,
+      emergencyPhone: data.emergencyPhone,
+      bloodType: data.bloodType,
+      allergies: data.allergies,
+      medications: data.medications,
+      medicalHistory: data.medicalHistory,
+      insuranceProvider: data.insuranceProvider,
+      insuranceNumber: data.insuranceNumber
+    };
+    
+    // Add to patients list
+    setPatients(prevPatients => [...prevPatients, newPatient]);
     setShowPatientForm(false);
+    
+    console.log("Patient added successfully:", newPatient);
+    console.log("Updated patients list:", [...patients, newPatient]);
+    
     toast({
       title: t("success"),
       description: "Patient added successfully!",
@@ -480,28 +511,19 @@ const Index = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="border-b">
-                              <td className="p-4">Ahmed Al-Mansouri</td>
-                              <td className="p-4">+971 50 123 4567</td>
-                              <td className="p-4">2024-01-15</td>
-                              <td className="p-4">
-                                <div className="flex space-x-2">
-                                  <Button variant="outline" size="sm" onClick={() => handleViewPatient("Ahmed Al-Mansouri")}>{t("view")}</Button>
-                                  <Button variant="outline" size="sm" onClick={() => handleEditPatient("Ahmed Al-Mansouri")}>{t("edit")}</Button>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr className="border-b">
-                              <td className="p-4">Fatima Hassan</td>
-                              <td className="p-4">+971 55 987 6543</td>
-                              <td className="p-4">2024-01-14</td>
-                              <td className="p-4">
-                                <div className="flex space-x-2">
-                                  <Button variant="outline" size="sm" onClick={() => handleViewPatient("Fatima Hassan")}>{t("view")}</Button>
-                                  <Button variant="outline" size="sm" onClick={() => handleEditPatient("Fatima Hassan")}>{t("edit")}</Button>
-                                </div>
-                              </td>
-                            </tr>
+                            {patients.map((patient) => (
+                              <tr key={patient.id} className="border-b">
+                                <td className="p-4">{patient.name}</td>
+                                <td className="p-4">{patient.phone}</td>
+                                <td className="p-4">{patient.lastVisit}</td>
+                                <td className="p-4">
+                                  <div className="flex space-x-2">
+                                    <Button variant="outline" size="sm" onClick={() => handleViewPatient(patient.name)}>{t("view")}</Button>
+                                    <Button variant="outline" size="sm" onClick={() => handleEditPatient(patient.name)}>{t("edit")}</Button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
