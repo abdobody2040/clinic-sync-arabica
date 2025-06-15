@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { Dashboard } from "@/components/Dashboard";
 import { LicenseScreen } from "@/components/LicenseScreen";
 import { LoginScreen } from "@/components/LoginScreen";
@@ -8,6 +9,8 @@ import { useAppointments } from "@/hooks/useAppointments";
 import { useInvoices } from "@/hooks/useInvoices";
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState("patients");
+
   const {
     isAuthenticated,
     currentUser,
@@ -85,6 +88,8 @@ const Index = () => {
     <Dashboard
       currentUser={currentUser}
       onLogout={handleLogout}
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
       showPatientForm={showPatientForm}
       viewMode={viewMode}
       selectedPatient={selectedPatient}
