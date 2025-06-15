@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { translations, Language, TranslationKey } from '../i18n/translations';
 
 export const useLanguage = () => {

@@ -1,234 +1,314 @@
 
-export const translations = {
+export type Language = 'en' | 'ar';
+
+export interface Translations {
+  // Auth & Navigation
+  welcome: string;
+  welcomeBack: string;
+  signIn: string;
+  signInToAccount: string;
+  email: string;
+  password: string;
+  logout: string;
+  demoLogin: string;
+  
+  // License
+  licenseActivation: string;
+  enterLicenseKey: string;
+  licenseKey: string;
+  activateLicense: string;
+  demoLicense: string;
+  licensed: string;
+  
+  // System
+  clinicManagementSystem: string;
+  systemStatus: string;
+  online: string;
+  loading: string;
+  error: string;
+  success: string;
+  save: string;
+  view: string;
+  edit: string;
+  update: string;
+  name: string;
+  phone: string;
+  status: string;
+  actions: string;
+  
+  // Dashboard
+  totalPatients: string;
+  todaysAppointments: string;
+  pendingInvoices: string;
+  
+  // Patients
+  patients: string;
+  patientManagement: string;
+  viewManagePatients: string;
+  searchPatients: string;
+  addNewPatient: string;
+  medicalRecords: string;
+  prescriptions: string;
+  labResults: string;
+  records: string;
+  active: string;
+  pending: string;
+  lastVisit: string;
+  
+  // Appointments
+  appointments: string;
+  appointmentScheduling: string;
+  manageAppointments: string;
+  newAppointment: string;
+  confirmed: string;
+  completed: string;
+  today: string;
+  week: string;
+  month: string;
+  
+  // Billing
+  billing: string;
+  billingInvoices: string;
+  manageInvoices: string;
+  searchInvoices: string;
+  createInvoice: string;
+  invoiceNumber: string;
+  patient: string;
+  amount: string;
+  paid: string;
+  
+  // Reports
+  reports: string;
+  reportsAnalytics: string;
+  generateReports: string;
+  patientReports: string;
+  financialReports: string;
+  appointmentReports: string;
+  
+  // Inventory
+  inventory: string;
+  inventoryManagement: string;
+  manageSupplies: string;
+  supplies: string;
+  equipment: string;
+  lowStock: string;
+  
+  // Settings
+  settings: string;
+  systemSettings: string;
+  configureSettings: string;
+  clinicInformation: string;
+  clinicName: string;
+  licenseNumber: string;
+  languageSettings: string;
+  defaultLanguage: string;
+}
+
+export type TranslationKey = keyof Translations;
+
+export const translations: Record<Language, Translations> = {
   en: {
-    // Authentication & License
+    // Auth & Navigation
+    welcome: "Welcome",
     welcomeBack: "Welcome Back",
-    signInToAccount: "Sign in to your clinic account",
+    signIn: "Sign In",
+    signInToAccount: "Sign in to your account",
     email: "Email",
     password: "Password",
-    signIn: "Sign In",
     logout: "Logout",
     demoLogin: "Demo Login",
+    
+    // License
     licenseActivation: "License Activation",
-    enterLicenseKey: "Enter your license key to activate",
+    enterLicenseKey: "Enter your license key to activate the system",
     licenseKey: "License Key",
     activateLicense: "Activate License",
     demoLicense: "Demo License",
     licensed: "Licensed",
     
-    // Navigation & Header
+    // System
     clinicManagementSystem: "Clinic Management System",
-    welcome: "Welcome",
+    systemStatus: "System Status",
+    online: "Online",
+    loading: "Loading",
+    error: "Error",
+    success: "Success",
+    save: "Save",
+    view: "View",
+    edit: "Edit",
+    update: "Update",
+    name: "Name",
+    phone: "Phone",
+    status: "Status",
+    actions: "Actions",
     
-    // Dashboard Stats
+    // Dashboard
     totalPatients: "Total Patients",
     todaysAppointments: "Today's Appointments",
     pendingInvoices: "Pending Invoices",
-    systemStatus: "System Status",
-    online: "Online",
     
-    // Main Tabs
+    // Patients
     patients: "Patients",
-    appointments: "Appointments",
-    billing: "Billing",
-    settings: "Settings",
-    reports: "Reports",
-    inventory: "Inventory",
-    
-    // Patient Management
     patientManagement: "Patient Management",
     viewManagePatients: "View and manage patient records",
     searchPatients: "Search patients...",
     addNewPatient: "Add New Patient",
-    name: "Name",
-    phone: "Phone",
+    medicalRecords: "Medical Records",
+    prescriptions: "Prescriptions",
+    labResults: "Lab Results",
+    records: "records",
+    active: "active",
+    pending: "pending",
     lastVisit: "Last Visit",
-    actions: "Actions",
-    view: "View",
-    edit: "Edit",
-    delete: "Delete",
     
     // Appointments
+    appointments: "Appointments",
     appointmentScheduling: "Appointment Scheduling",
-    manageAppointments: "Manage clinic appointments and schedules",
-    today: "Today",
-    week: "Week",
-    month: "Month",
+    manageAppointments: "Manage patient appointments",
     newAppointment: "New Appointment",
     confirmed: "Confirmed",
     completed: "Completed",
-    cancelled: "Cancelled",
-    pending: "Pending",
+    today: "Today",
+    week: "Week",
+    month: "Month",
     
     // Billing
+    billing: "Billing",
     billingInvoices: "Billing & Invoices",
-    manageInvoices: "Manage invoices and payments",
+    manageInvoices: "Manage billing and invoices",
     searchInvoices: "Search invoices...",
     createInvoice: "Create Invoice",
     invoiceNumber: "Invoice #",
     patient: "Patient",
     amount: "Amount",
-    status: "Status",
     paid: "Paid",
     
-    // Settings
-    systemSettings: "System Settings",
-    configureSettings: "Configure clinic settings and preferences",
-    clinicInformation: "Clinic Information",
-    clinicName: "Clinic Name",
-    licenseNumber: "License Number",
-    languageSettings: "Language Settings",
-    defaultLanguage: "Default Language",
-    
-    // New Features
-    medicalRecords: "Medical Records",
-    prescriptions: "Prescriptions",
-    labResults: "Lab Results",
-    vitals: "Vitals",
-    allergies: "Allergies",
-    medications: "Medications",
-    diagnosis: "Diagnosis",
-    treatment: "Treatment",
-    
     // Reports
+    reports: "Reports",
     reportsAnalytics: "Reports & Analytics",
-    generateReports: "Generate comprehensive reports",
+    generateReports: "Generate clinic reports",
     patientReports: "Patient Reports",
     financialReports: "Financial Reports",
     appointmentReports: "Appointment Reports",
     
     // Inventory
+    inventory: "Inventory",
     inventoryManagement: "Inventory Management",
     manageSupplies: "Manage medical supplies and equipment",
     supplies: "Supplies",
     equipment: "Equipment",
     lowStock: "Low Stock",
     
-    // Common
-    save: "Save",
-    cancel: "Cancel",
-    close: "Close",
-    update: "Update",
-    create: "Create",
-    loading: "Loading...",
-    error: "Error",
-    success: "Success"
+    // Settings
+    settings: "Settings",
+    systemSettings: "System Settings",
+    configureSettings: "Configure system settings",
+    clinicInformation: "Clinic Information",
+    clinicName: "Clinic Name",
+    licenseNumber: "License Number",
+    languageSettings: "Language Settings",
+    defaultLanguage: "Default Language",
   },
   ar: {
-    // Authentication & License
+    // Auth & Navigation
+    welcome: "مرحباً",
     welcomeBack: "مرحباً بعودتك",
-    signInToAccount: "تسجيل الدخول إلى حساب العيادة",
+    signIn: "تسجيل الدخول",
+    signInToAccount: "سجل دخولك إلى حسابك",
     email: "البريد الإلكتروني",
     password: "كلمة المرور",
-    signIn: "تسجيل الدخول",
     logout: "تسجيل الخروج",
     demoLogin: "تسجيل دخول تجريبي",
+    
+    // License
     licenseActivation: "تفعيل الترخيص",
-    enterLicenseKey: "أدخل مفتاح الترخيص للتفعيل",
+    enterLicenseKey: "أدخل مفتاح الترخيص لتفعيل النظام",
     licenseKey: "مفتاح الترخيص",
     activateLicense: "تفعيل الترخيص",
     demoLicense: "ترخيص تجريبي",
     licensed: "مرخص",
     
-    // Navigation & Header
+    // System
     clinicManagementSystem: "نظام إدارة العيادة",
-    welcome: "مرحباً",
+    systemStatus: "حالة النظام",
+    online: "متصل",
+    loading: "جاري التحميل",
+    error: "خطأ",
+    success: "نجح",
+    save: "حفظ",
+    view: "عرض",
+    edit: "تعديل",
+    update: "تحديث",
+    name: "الاسم",
+    phone: "الهاتف",
+    status: "الحالة",
+    actions: "الإجراءات",
     
-    // Dashboard Stats
+    // Dashboard
     totalPatients: "إجمالي المرضى",
     todaysAppointments: "مواعيد اليوم",
     pendingInvoices: "الفواتير المعلقة",
-    systemStatus: "حالة النظام",
-    online: "متصل",
     
-    // Main Tabs
+    // Patients
     patients: "المرضى",
-    appointments: "المواعيد",
-    billing: "الفواتير",
-    settings: "الإعدادات",
-    reports: "التقارير",
-    inventory: "المخزون",
-    
-    // Patient Management
     patientManagement: "إدارة المرضى",
     viewManagePatients: "عرض وإدارة سجلات المرضى",
     searchPatients: "البحث عن المرضى...",
     addNewPatient: "إضافة مريض جديد",
-    name: "الاسم",
-    phone: "الهاتف",
+    medicalRecords: "السجلات الطبية",
+    prescriptions: "الوصفات الطبية",
+    labResults: "نتائج المختبر",
+    records: "سجلات",
+    active: "نشط",
+    pending: "معلق",
     lastVisit: "آخر زيارة",
-    actions: "الإجراءات",
-    view: "عرض",
-    edit: "تعديل",
-    delete: "حذف",
     
     // Appointments
+    appointments: "المواعيد",
     appointmentScheduling: "جدولة المواعيد",
-    manageAppointments: "إدارة مواعيد ومواقيت العيادة",
-    today: "اليوم",
-    week: "الأسبوع",
-    month: "الشهر",
+    manageAppointments: "إدارة مواعيد المرضى",
     newAppointment: "موعد جديد",
     confirmed: "مؤكد",
     completed: "مكتمل",
-    cancelled: "ملغي",
-    pending: "معلق",
+    today: "اليوم",
+    week: "الأسبوع",
+    month: "الشهر",
     
     // Billing
-    billingInvoices: "الفواتير والمدفوعات",
-    manageInvoices: "إدارة الفواتير والمدفوعات",
+    billing: "الفواتير",
+    billingInvoices: "الفواتير والمحاسبة",
+    manageInvoices: "إدارة الفواتير والمحاسبة",
     searchInvoices: "البحث في الفواتير...",
     createInvoice: "إنشاء فاتورة",
     invoiceNumber: "رقم الفاتورة",
     patient: "المريض",
     amount: "المبلغ",
-    status: "الحالة",
     paid: "مدفوع",
     
-    // Settings
-    systemSettings: "إعدادات النظام",
-    configureSettings: "تكوين إعدادات وتفضيلات العيادة",
-    clinicInformation: "معلومات العيادة",
-    clinicName: "اسم العيادة",
-    licenseNumber: "رقم الترخيص",
-    languageSettings: "إعدادات اللغة",
-    defaultLanguage: "اللغة الافتراضية",
-    
-    // New Features
-    medicalRecords: "السجلات الطبية",
-    prescriptions: "الوصفات الطبية",
-    labResults: "نتائج المختبر",
-    vitals: "العلامات الحيوية",
-    allergies: "الحساسية",
-    medications: "الأدوية",
-    diagnosis: "التشخيص",
-    treatment: "العلاج",
-    
     // Reports
+    reports: "التقارير",
     reportsAnalytics: "التقارير والتحليلات",
-    generateReports: "إنشاء تقارير شاملة",
+    generateReports: "إنشاء تقارير العيادة",
     patientReports: "تقارير المرضى",
     financialReports: "التقارير المالية",
     appointmentReports: "تقارير المواعيد",
     
     // Inventory
+    inventory: "المخزون",
     inventoryManagement: "إدارة المخزون",
-    manageSupplies: "إدارة المعدات والمستلزمات الطبية",
+    manageSupplies: "إدارة المستلزمات الطبية والمعدات",
     supplies: "المستلزمات",
     equipment: "المعدات",
     lowStock: "مخزون منخفض",
     
-    // Common
-    save: "حفظ",
-    cancel: "إلغاء",
-    close: "إغلاق",
-    update: "تحديث",
-    create: "إنشاء",
-    loading: "جاري التحميل...",
-    error: "خطأ",
-    success: "نجح"
-  }
+    // Settings
+    settings: "الإعدادات",
+    systemSettings: "إعدادات النظام",
+    configureSettings: "تكوين إعدادات النظام",
+    clinicInformation: "معلومات العيادة",
+    clinicName: "اسم العيادة",
+    licenseNumber: "رقم الترخيص",
+    languageSettings: "إعدادات اللغة",
+    defaultLanguage: "اللغة الافتراضية",
+  },
 };
-
-export type TranslationKey = keyof typeof translations.en;
-export type Language = keyof typeof translations;
