@@ -1,11 +1,13 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Stethoscope, Shield } from 'lucide-react';
+import { Stethoscope, Shield, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface LicenseScreenProps {
   licenseKey: string;
@@ -19,6 +21,105 @@ export const LicenseScreen: React.FC<LicenseScreenProps> = ({
   onLicenseActivation
 }) => {
   const { t, currentLanguage, changeLanguage } = useLanguage();
+  const { toast } = useToast();
+  const [isValidating, setIsValidating] = useState(false);
+
+  const handleLicenseValidation = async () => {
+    if (!licenseKey.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a license key",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsValidating(true);
+
+    try {
+      const { data, error } = await supabase.rpc('validate_license', {
+        input_license_key: licenseKey.trim()
+      });
+
+      if (error) {
+        console.error('License validation error:', error);
+        toast({
+          title: "Validation Error",
+          description: "Unable to validate license. Please try again.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const licenseData = data?.[0];
+
+      if (!licenseData || !licenseData.is_valid) {
+        const errorMessage = licenseData?.status === 'not_found' 
+          ? "License key not found" 
+          : licenseData?.status === 'expired'
+          ? "License has expired"
+          : "Invalid license key";
+
+        toast({
+          title: "Invalid License",
+          description: errorMessage,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // License is valid, store license info and proceed
+      localStorage.setItem('clinic_license', JSON.stringify({
+        license_key: licenseKey,
+        customer_name: licenseData.customer_name,
+        license_type: licenseData.license_type,
+        expires_at: licenseData.expires_at,
+        features: licenseData.features
+      }));
+
+      toast({
+        title: "License Activated",
+        description: `Welcome ${licenseData.customer_name}! License: ${licenseData.license_type}`,
+      });
+
+      onLicenseActivation();
+
+    } catch (error) {
+      console.error('License validation failed:', error);
+      toast({
+        title: "Validation Failed",
+        description: "An error occurred while validating the license",
+        variant: "destructive"
+      });
+    } finally {
+      setIsValidating(false);
+    }
+  };
+  
+  // Get a real demo license key from the database
+  const getDemoLicenseKey = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('licenses')
+        .select('license_key')
+        .eq('status', 'active')
+        .limit(1)
+        .single();
+
+      if (data && !error) {
+        return data.license_key;
+      }
+    } catch (error) {
+      console.error('Error fetching demo license:', error);
+    }
+    return 'TRIAL-2025-DEMO1234'; // Fallback
+  };
+
+  const [demoKey, setDemoKey] = useState<string>('Loading...');
+
+  React.useEffect(() => {
+    getDemoLicenseKey().then(setDemoKey);
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -38,14 +139,23 @@ export const LicenseScreen: React.FC<LicenseScreenProps> = ({
               placeholder={t("licenseKey")}
               value={licenseKey}
               onChange={(e) => setLicenseKey(e.target.value)}
+              disabled={isValidating}
             />
           </div>
-          <Button onClick={onLicenseActivation} className="w-full">
-            <Shield className="w-4 h-4 mr-2" />
-            {t("activateLicense")}
+          <Button 
+            onClick={handleLicenseValidation} 
+            className="w-full"
+            disabled={isValidating}
+          >
+            {isValidating ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Shield className="w-4 h-4 mr-2" />
+            )}
+            {isValidating ? 'Validating...' : t("activateLicense")}
           </Button>
           <div className="text-sm text-muted-foreground text-center">
-            {t("demoLicense")}: <code className="bg-muted px-2 py-1 rounded">DEMO-TRIAL-2024-ABCD</code>
+            {t("demoLicense")}: <code className="bg-muted px-2 py-1 rounded cursor-pointer" onClick={() => setLicenseKey(demoKey)}>{demoKey}</code>
           </div>
           
           <div className="flex justify-center space-x-2">
@@ -53,6 +163,7 @@ export const LicenseScreen: React.FC<LicenseScreenProps> = ({
               variant={currentLanguage === 'en' ? 'default' : 'outline'} 
               size="sm"
               onClick={() => changeLanguage('en')}
+              disabled={isValidating}
             >
               English
             </Button>
@@ -60,6 +171,7 @@ export const LicenseScreen: React.FC<LicenseScreenProps> = ({
               variant={currentLanguage === 'ar' ? 'default' : 'outline'} 
               size="sm"
               onClick={() => changeLanguage('ar')}
+              disabled={isValidating}
             >
               العربية
             </Button>
