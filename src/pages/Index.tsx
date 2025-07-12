@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Dashboard } from "@/components/Dashboard";
 import { LicenseScreen } from "@/components/LicenseScreen";
 import { LoginScreen } from "@/components/LoginScreen";

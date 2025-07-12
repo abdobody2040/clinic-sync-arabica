@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,6 +23,7 @@ export const LicenseScreen: React.FC<LicenseScreenProps> = ({
   const { t, currentLanguage, changeLanguage } = useLanguage();
   const { toast } = useToast();
   const [isValidating, setIsValidating] = useState(false);
+  const [demoKey, setDemoKey] = useState<string>('Loading...');
 
   const handleLicenseValidation = async () => {
     if (!licenseKey.trim()) {
@@ -115,9 +116,7 @@ export const LicenseScreen: React.FC<LicenseScreenProps> = ({
     return 'TRIAL-2025-DEMO1234'; // Fallback
   };
 
-  const [demoKey, setDemoKey] = useState<string>('Loading...');
-
-  React.useEffect(() => {
+  useEffect(() => {
     getDemoLicenseKey().then(setDemoKey);
   }, []);
 
