@@ -118,6 +118,21 @@ export type Database = {
         Args: { license_type?: string }
         Returns: string
       }
+      get_all_licenses: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          license_id: string
+          customer_name: string
+          contact_email: string
+          license_key: string
+          license_type: string
+          status: string
+          expires_at: string
+          max_users: number
+          max_patients: number
+          created_at: string
+        }[]
+      }
       validate_license: {
         Args: { input_license_key: string }
         Returns: {
