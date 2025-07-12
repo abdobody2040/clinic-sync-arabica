@@ -40,6 +40,15 @@ export const ar: Translations = {
   cancel: "إلغاء",
   delete: "حذف",
   download: "تحميل",
+  search: "بحث",
+  add: "إضافة",
+  new: "جديد",
+  create: "إنشاء",
+  close: "إغلاق",
+  next: "التالي",
+  previous: "السابق",
+  submit: "إرسال",
+  confirm: "تأكيد",
   
   // Dashboard
   totalPatients: "إجمالي المرضى",
@@ -59,6 +68,18 @@ export const ar: Translations = {
   active: "نشط",
   pending: "معلق",
   lastVisit: "آخر زيارة",
+  patientDetails: "تفاصيل المريض",
+  personalInfo: "المعلومات الشخصية",
+  medicalHistory: "التاريخ المرضي",
+  allergies: "الحساسية",
+  medications: "الأدوية",
+  emergencyContact: "الاتصال الطارئ",
+  bloodType: "فصيلة الدم",
+  dateOfBirth: "تاريخ الميلاد",
+  gender: "الجنس",
+  male: "ذكر",
+  female: "أنثى",
+  other: "أخرى",
   
   // Appointments
   appointments: "المواعيد",
@@ -70,6 +91,11 @@ export const ar: Translations = {
   today: "اليوم",
   week: "الأسبوع",
   month: "الشهر",
+  appointmentType: "نوع الموعد",
+  appointmentTime: "وقت الموعد",
+  appointmentDate: "تاريخ الموعد",
+  duration: "المدة",
+  notes: "ملاحظات",
   
   // Billing
   billing: "الفواتير",
@@ -81,6 +107,11 @@ export const ar: Translations = {
   patient: "المريض",
   amount: "المبلغ",
   paid: "مدفوع",
+  unpaid: "غير مدفوع",
+  total: "الإجمالي",
+  subtotal: "المجموع الفرعي",
+  tax: "الضريبة",
+  discount: "الخصم",
   
   // Reports
   reports: "التقارير",
@@ -97,6 +128,8 @@ export const ar: Translations = {
   supplies: "المستلزمات",
   equipment: "المعدات",
   lowStock: "مخزون منخفض",
+  inStock: "متوفر",
+  outOfStock: "غير متوفر",
   
   // Settings
   settings: "الإعدادات",
@@ -125,5 +158,59 @@ export const ar: Translations = {
   specialization: "التخصص",
   licenseInfo: "معلومات الترخيص",
   profileUpdated: "تم تحديث الملف الشخصي بنجاح!",
-  appSettingsUpdated: "تم تحديث إعدادات التطبيق بنجاح!"
+  appSettingsUpdated: "تم تحديث إعدادات التطبيق بنجاح!",
+  
+  // Common UI Elements
+  pleaseWait: "يرجى الانتظار...",
+  noDataAvailable: "لا توجد بيانات متاحة",
+  selectOption: "اختر خياراً",
+  required: "مطلوب",
+  optional: "اختياري",
+  yes: "نعم",
+  no: "لا",
+  ok: "موافق",
+  back: "العودة",
+  continue: "متابعة",
+  finish: "إنهاء",
+  
+  // Messages
+  confirmDelete: "هل أنت متأكد من الحذف؟",
+  deleteWarning: "لا يمكن التراجع عن هذا الإجراء",
+  saveSuccess: "تم الحفظ بنجاح",
+  updateSuccess: "تم التحديث بنجاح",
+  deleteSuccess: "تم الحذف بنجاح",
+  errorOccurred: "حدث خطأ، يرجى المحاولة مرة أخرى",
+  noResultsFound: "لم يتم العثور على نتائج",
+  
+  // License Generator (Admin)
+  licenseGenerator: "منشئ التراخيص",
+  generateLicense: "إنشاء ترخيص",
+  customerInformation: "معلومات العميل",
+  contactEmail: "البريد الإلكتروني للتواصل",
+  contactPhone: "هاتف التواصل",
+  licenseType: "نوع الترخيص",
+  trial: "تجريبي",
+  premium: "مميز",
+  expiryDate: "تاريخ الانتهاء",
+  features: "المميزات",
+  basicFeatures: "المميزات الأساسية",
+  apiAccess: "الوصول لواجهة البرمجة",
+  prioritySupport: "الدعم المميز",
+  advancedAnalytics: "التحليلات المتقدمة",
+  backupFeatures: "مميزات النسخ الاحتياطي",
+  maxUsers: "الحد الأقصى للمستخدمين",
+  maxPatients: "الحد الأقصى للمرضى",
+  licenseGenerated: "تم إنشاء الترخيص بنجاح!",
+  copyLicenseKey: "نسخ مفتاح الترخيص",
+  
+  // License Management
+  manageExistingLicenses: "إدارة التراخيص الموجودة",
+  activeLicenses: "التراخيص النشطة",
+  expiredLicenses: "التراخيص المنتهية",
+  createdDate: "تاريخ الإنشاء",
+  expirationDate: "تاريخ الانتهاء",
+  customerName: "اسم العميل",
+  renewLicense: "تجديد الترخيص",
+  revokeLicense: "إلغاء الترخيص",
+  extendLicense: "تمديد الترخيص"
 };

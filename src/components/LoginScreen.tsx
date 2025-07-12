@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Stethoscope } from 'lucide-react';
+import { Stethoscope, Globe } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface LoginScreenProps {
@@ -18,7 +18,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
   setLoginForm,
   onLogin
 }) => {
-  const { t, currentLanguage, changeLanguage } = useLanguage();
+  const { t, currentLanguage, changeLanguage, isRTL } = useLanguage();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -28,12 +28,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
             <Stethoscope className="w-8 h-8 text-white" />
           </div>
           <CardTitle className="text-2xl">{t("welcomeBack")}</CardTitle>
-          <CardDescription>{t("signInToAccount")}</CardDescription>
+          <CardDescription className={isRTL ? 'text-right' : ''}>{t("signInToAccount")}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={onLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">{t("email")}</Label>
+              <Label htmlFor="email" className={isRTL ? 'text-right block' : ''}>{t("email")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -41,10 +41,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                 value={loginForm.email}
                 onChange={(e) => setLoginForm(prev => ({ ...prev, email: e.target.value }))}
                 required
+                className={isRTL ? 'text-right' : ''}
+                dir={isRTL ? 'rtl' : 'ltr'}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">{t("password")}</Label>
+              <Label htmlFor="password" className={isRTL ? 'text-right block' : ''}>{t("password")}</Label>
               <Input
                 id="password"
                 type="password"
@@ -52,31 +54,50 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                 value={loginForm.password}
                 onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
                 required
+                className={isRTL ? 'text-right' : ''}
+                dir={isRTL ? 'rtl' : 'ltr'}
               />
             </div>
             <Button type="submit" className="w-full">
               {t("signIn")}
             </Button>
           </form>
-          <div className="mt-4 text-sm text-muted-foreground text-center">
-            {t("demoLogin")}: <code className="bg-muted px-2 py-1 rounded">admin@test.com / password123</code>
+          
+          <div className={`mt-4 text-sm text-muted-foreground text-center ${isRTL ? 'text-right' : ''}`}>
+            <div className="mb-2">
+              {t("demoLogin")}:
+            </div>
+            <code className="bg-muted px-2 py-1 rounded text-xs block">
+              admin@test.com / password123
+            </code>
           </div>
           
-          <div className="flex justify-center space-x-2 mt-4">
-            <Button 
-              variant={currentLanguage === 'en' ? 'default' : 'outline'} 
-              size="sm"
-              onClick={() => changeLanguage('en')}
-            >
-              English
-            </Button>
-            <Button 
-              variant={currentLanguage === 'ar' ? 'default' : 'outline'} 
-              size="sm"
-              onClick={() => changeLanguage('ar')}
-            >
-              العربية
-            </Button>
+          {/* Language Selector */}
+          <div className="mt-6 pt-4 border-t">
+            <div className={`flex items-center justify-center mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Globe className={`w-4 h-4 text-gray-500 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              <span className="text-sm font-medium text-gray-700">
+                {isRTL ? "اختر اللغة" : "Choose Language"}
+              </span>
+            </div>
+            <div className={`flex justify-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
+              <Button 
+                variant={currentLanguage === 'en' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => changeLanguage('en')}
+                className="min-w-[80px]"
+              >
+                English
+              </Button>
+              <Button 
+                variant={currentLanguage === 'ar' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => changeLanguage('ar')}
+                className="min-w-[80px]"
+              >
+                العربية
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

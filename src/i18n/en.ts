@@ -40,6 +40,15 @@ export const en: Translations = {
   cancel: "Cancel",
   delete: "Delete",
   download: "Download",
+  search: "Search",
+  add: "Add",
+  new: "New",
+  create: "Create",
+  close: "Close",
+  next: "Next",
+  previous: "Previous",
+  submit: "Submit",
+  confirm: "Confirm",
   
   // Dashboard
   totalPatients: "Total Patients",
@@ -59,6 +68,18 @@ export const en: Translations = {
   active: "active",
   pending: "pending",
   lastVisit: "Last Visit",
+  patientDetails: "Patient Details",
+  personalInfo: "Personal Information",
+  medicalHistory: "Medical History",
+  allergies: "Allergies",
+  medications: "Medications",
+  emergencyContact: "Emergency Contact",
+  bloodType: "Blood Type",
+  dateOfBirth: "Date of Birth",
+  gender: "Gender",
+  male: "Male",
+  female: "Female",
+  other: "Other",
   
   // Appointments
   appointments: "Appointments",
@@ -70,6 +91,11 @@ export const en: Translations = {
   today: "Today",
   week: "Week",
   month: "Month",
+  appointmentType: "Appointment Type",
+  appointmentTime: "Appointment Time",
+  appointmentDate: "Appointment Date",
+  duration: "Duration",
+  notes: "Notes",
   
   // Billing
   billing: "Billing",
@@ -81,6 +107,11 @@ export const en: Translations = {
   patient: "Patient",
   amount: "Amount",
   paid: "Paid",
+  unpaid: "Unpaid",
+  total: "Total",
+  subtotal: "Subtotal",
+  tax: "Tax",
+  discount: "Discount",
   
   // Reports
   reports: "Reports",
@@ -97,6 +128,8 @@ export const en: Translations = {
   supplies: "Supplies",
   equipment: "Equipment",
   lowStock: "Low Stock",
+  inStock: "In Stock",
+  outOfStock: "Out of Stock",
   
   // Settings
   settings: "Settings",
@@ -125,5 +158,59 @@ export const en: Translations = {
   specialization: "Specialization",
   licenseInfo: "License Information",
   profileUpdated: "Profile updated successfully!",
-  appSettingsUpdated: "App settings updated successfully!"
+  appSettingsUpdated: "App settings updated successfully!",
+  
+  // Common UI Elements
+  pleaseWait: "Please wait...",
+  noDataAvailable: "No data available",
+  selectOption: "Select an option",
+  required: "Required",
+  optional: "Optional",
+  yes: "Yes",
+  no: "No",
+  ok: "OK",
+  back: "Back",
+  continue: "Continue",
+  finish: "Finish",
+  
+  // Messages
+  confirmDelete: "Are you sure you want to delete?",
+  deleteWarning: "This action cannot be undone",
+  saveSuccess: "Saved successfully",
+  updateSuccess: "Updated successfully",
+  deleteSuccess: "Deleted successfully",
+  errorOccurred: "An error occurred, please try again",
+  noResultsFound: "No results found",
+  
+  // License Generator (Admin)
+  licenseGenerator: "License Generator",
+  generateLicense: "Generate License",
+  customerInformation: "Customer Information",
+  contactEmail: "Contact Email",
+  contactPhone: "Contact Phone",
+  licenseType: "License Type",
+  trial: "Trial",
+  premium: "Premium",
+  expiryDate: "Expiry Date",
+  features: "Features",
+  basicFeatures: "Basic Features",
+  apiAccess: "API Access",
+  prioritySupport: "Priority Support",
+  advancedAnalytics: "Advanced Analytics",
+  backupFeatures: "Backup Features",
+  maxUsers: "Max Users",
+  maxPatients: "Max Patients",
+  licenseGenerated: "License generated successfully!",
+  copyLicenseKey: "Copy License Key",
+  
+  // License Management
+  manageExistingLicenses: "Manage Existing Licenses",
+  activeLicenses: "Active Licenses",
+  expiredLicenses: "Expired Licenses",
+  createdDate: "Created Date",
+  expirationDate: "Expiration Date",
+  customerName: "Customer Name",
+  renewLicense: "Renew License",
+  revokeLicense: "Revoke License",
+  extendLicense: "Extend License"
 };

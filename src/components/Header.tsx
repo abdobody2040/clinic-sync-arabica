@@ -20,7 +20,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab = 'patients', onTabChange }) => {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const { settings } = useAppSettings();
 
   const navigationItems = [
@@ -41,9 +41,9 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className={`flex justify-between items-center h-16 ${isRTL ? 'flex-row-reverse' : ''}`}>
           {/* Logo and App Name */}
-          <div className="flex items-center space-x-3 flex-shrink-0">
+          <div className={`flex items-center flex-shrink-0 ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
             {settings.logoUrl && (
               <img 
                 src={settings.logoUrl} 
@@ -51,7 +51,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab
                 className="h-8 w-8 object-contain flex-shrink-0"
               />
             )}
-            <div className="min-w-0">
+            <div className={`min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
               <h1 className="text-lg sm:text-xl font-bold text-gray-900 truncate">
                 {settings.appName}
               </h1>
@@ -62,7 +62,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab
           </div>
 
           {/* Main Navigation Tabs - Medium screens and up */}
-          <nav className="hidden md:flex items-center space-x-1 flex-1 justify-center max-w-4xl mx-6">
+          <nav className={`hidden md:flex items-center flex-1 justify-center max-w-4xl mx-6 ${isRTL ? 'space-x-reverse space-x-1' : 'space-x-1'}`}>
             {navigationItems.map((item) => (
               <button
                 key={item.id}
@@ -71,21 +71,21 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab
                   activeTab === item.id
                     ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-500'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
+                } ${isRTL ? 'flex-row-reverse' : ''}`}
               >
-                <item.icon className="h-4 w-4 mr-2 flex-shrink-0" />
+                <item.icon className={`h-4 w-4 flex-shrink-0 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                 <span className="hidden lg:inline">{item.name}</span>
               </button>
             ))}
           </nav>
 
           {/* Right side - User actions */}
-          <div className="flex items-center space-x-3 flex-shrink-0">
+          <div className={`flex items-center flex-shrink-0 ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
             {currentUser && (
               <>
                 {/* User Info - Desktop only */}
-                <div className="hidden lg:flex items-center space-x-3">
-                  <div className="text-right">
+                <div className={`hidden lg:flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
+                  <div className={isRTL ? 'text-left' : 'text-right'}>
                     <p className="text-sm font-medium text-gray-900 truncate max-w-32">
                       {currentUser.name}
                     </p>
@@ -101,7 +101,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab
                         <Menu className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-64 bg-white border shadow-lg z-[60]">
+                    <DropdownMenuContent align={isRTL ? "start" : "end"} className="w-64 bg-white border shadow-lg z-[60]">
                       {/* User info header */}
                       <div className="px-3 py-3 border-b bg-gray-50">
                         <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
@@ -112,8 +112,12 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab
                       {/* Navigation Items */}
                       <div className="py-1">
                         {navigationItems.map((item) => (
-                          <DropdownMenuItem key={item.id} onClick={() => handleTabClick(item.id)}>
-                            <div className="flex items-center space-x-3 px-3 py-2 text-sm w-full">
+                          <DropdownMenuItem 
+                            key={item.id} 
+                            onClick={() => handleTabClick(item.id)}
+                            className={isRTL ? 'flex-row-reverse' : ''}
+                          >
+                            <div className={`flex items-center px-3 py-2 text-sm w-full ${isRTL ? 'space-x-reverse space-x-3 flex-row-reverse' : 'space-x-3'}`}>
                               <item.icon className="h-4 w-4 text-gray-500" />
                               <span>{item.name}</span>
                             </div>
@@ -127,7 +131,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab
                       <div className="py-1">
                         <DropdownMenuItem 
                           onClick={onLogout} 
-                          className="flex items-center space-x-3 px-3 py-2 text-red-600 focus:text-red-600"
+                          className={`flex items-center px-3 py-2 text-red-600 focus:text-red-600 ${isRTL ? 'space-x-reverse space-x-3 flex-row-reverse' : 'space-x-3'}`}
                         >
                           <LogOut className="h-4 w-4" />
                           <span>{t("logout")}</span>
@@ -141,12 +145,12 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab
                 <div className="hidden md:block">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm" className="flex items-center space-x-2 h-9">
+                      <Button variant="outline" size="sm" className={`flex items-center h-9 ${isRTL ? 'space-x-reverse space-x-2 flex-row-reverse' : 'space-x-2'}`}>
                         <User className="h-4 w-4" />
                         <span className="hidden lg:inline">{currentUser.name.split(' ')[0]}</span>
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56 bg-white border shadow-lg z-[60]">
+                    <DropdownMenuContent align={isRTL ? "start" : "end"} className="w-56 bg-white border shadow-lg z-[60]">
                       <div className="px-3 py-3 border-b bg-gray-50">
                         <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
                         <p className="text-xs text-gray-500">{currentUser.role}</p>
@@ -154,14 +158,14 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, onLogout, activeTab
                       </div>
                       
                       <div className="py-1">
-                        <DropdownMenuItem className="flex items-center space-x-3 px-3 py-2">
+                        <DropdownMenuItem className={`flex items-center px-3 py-2 ${isRTL ? 'space-x-reverse space-x-3 flex-row-reverse' : 'space-x-3'}`}>
                           <Settings className="h-4 w-4 text-gray-500" />
-                          <span>Settings</span>
+                          <span>{t("settings")}</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem 
                           onClick={onLogout} 
-                          className="flex items-center space-x-3 px-3 py-2 text-red-600 focus:text-red-600"
+                          className={`flex items-center px-3 py-2 text-red-600 focus:text-red-600 ${isRTL ? 'space-x-reverse space-x-3 flex-row-reverse' : 'space-x-3'}`}
                         >
                           <LogOut className="h-4 w-4" />
                           <span>{t("logout")}</span>
