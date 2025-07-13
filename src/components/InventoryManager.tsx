@@ -172,9 +172,9 @@ export const InventoryManager: React.FC = () => {
   };
 
   const getStockStatus = (item: InventoryItem) => {
-    if (item.stock === 0) return { label: 'Out of Stock', color: 'destructive' };
-    if (item.stock <= item.minStock) return { label: 'Low Stock', color: 'secondary' };
-    return { label: 'In Stock', color: 'default' };
+    if (item.stock === 0) return { label: t("outOfStock"), color: 'destructive' };
+    if (item.stock <= item.minStock) return { label: t("lowStock"), color: 'secondary' };
+    return { label: t("inStock"), color: 'default' };
   };
 
   return (
@@ -186,7 +186,7 @@ export const InventoryManager: React.FC = () => {
             <div className="flex items-center">
               <Package className="w-8 h-8 text-blue-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Items</p>
+                <p className="text-sm font-medium text-gray-600">{t("totalItems")}</p>
                 <p className="text-2xl font-bold text-gray-900">{items.length}</p>
               </div>
             </div>
@@ -198,7 +198,7 @@ export const InventoryManager: React.FC = () => {
             <div className="flex items-center">
               <AlertTriangle className="w-8 h-8 text-red-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Low Stock Items</p>
+                <p className="text-sm font-medium text-gray-600">{t("lowStockItems")}</p>
                 <p className="text-2xl font-bold text-gray-900">{lowStockItems.length}</p>
               </div>
             </div>
@@ -210,7 +210,7 @@ export const InventoryManager: React.FC = () => {
             <div className="flex items-center">
               <Package className="w-8 h-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Categories</p>
+                <p className="text-sm font-medium text-gray-600">{t("categories")}</p>
                 <p className="text-2xl font-bold text-gray-900">{categories.length}</p>
               </div>
             </div>
@@ -222,7 +222,7 @@ export const InventoryManager: React.FC = () => {
             <div className="flex items-center">
               <Package className="w-8 h-8 text-purple-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Value</p>
+                <p className="text-sm font-medium text-gray-600">{t("totalValue")}</p>
                 <p className="text-2xl font-bold text-gray-900">
                   {formatAmount(items.reduce((sum, item) => sum + (item.stock * item.unitPrice), 0))}
                 </p>
@@ -236,33 +236,33 @@ export const InventoryManager: React.FC = () => {
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>Inventory Management</CardTitle>
+            <CardTitle>{t("inventoryManagement")}</CardTitle>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button>
                   <Plus className="w-4 h-4 mr-2" />
-                  Add New Item
+                  {t("addNewItem")}
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-md">
                 <DialogHeader>
-                  <DialogTitle>Add New Inventory Item</DialogTitle>
+                  <DialogTitle>{t("addNewInventoryItem")}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label>Item Name *</Label>
+                    <Label>{t("itemName")} *</Label>
                     <Input 
                       value={newItem.name || ''}
                       onChange={(e) => setNewItem(prev => ({ ...prev, name: e.target.value }))}
-                      placeholder="Enter item name"
+                      placeholder={t("enterItemName")}
                     />
                   </div>
 
                   <div>
-                    <Label>Category *</Label>
+                    <Label>{t("category")} *</Label>
                     <Select onValueChange={(value) => setNewItem(prev => ({ ...prev, category: value }))}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
+                        <SelectValue placeholder={t("selectCategory")} />
                       </SelectTrigger>
                       <SelectContent>
                         {categories.map(category => (
@@ -274,7 +274,7 @@ export const InventoryManager: React.FC = () => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label>Current Stock</Label>
+                      <Label>{t("currentStock")}</Label>
                       <Input 
                         type="number"
                         value={newItem.stock || 0}
@@ -282,7 +282,7 @@ export const InventoryManager: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <Label>Min Stock</Label>
+                      <Label>{t("minStock")}</Label>
                       <Input 
                         type="number"
                         value={newItem.minStock || 0}
@@ -292,7 +292,7 @@ export const InventoryManager: React.FC = () => {
                   </div>
 
                   <div>
-                    <Label>Unit Price</Label>
+                    <Label>{t("unitPrice")}</Label>
                     <Input 
                       type="number"
                       step="0.01"
@@ -302,25 +302,25 @@ export const InventoryManager: React.FC = () => {
                   </div>
 
                   <div>
-                    <Label>Supplier</Label>
+                    <Label>{t("supplier")}</Label>
                     <Input 
                       value={newItem.supplier || ''}
                       onChange={(e) => setNewItem(prev => ({ ...prev, supplier: e.target.value }))}
-                      placeholder="Supplier name"
+                      placeholder={t("supplierName")}
                     />
                   </div>
 
                   <div>
-                    <Label>Location</Label>
+                    <Label>{t("location")}</Label>
                     <Input 
                       value={newItem.location || ''}
                       onChange={(e) => setNewItem(prev => ({ ...prev, location: e.target.value }))}
-                      placeholder="Storage location"
+                      placeholder={t("storageLocation")}
                     />
                   </div>
 
                   <div>
-                    <Label>Expiry Date (optional)</Label>
+                    <Label>{t("expiryDate")} ({t("optional")})</Label>
                     <Input 
                       type="date"
                       value={newItem.expiryDate || ''}
@@ -330,10 +330,10 @@ export const InventoryManager: React.FC = () => {
 
                   <div className="flex justify-end space-x-2">
                     <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                      Cancel
+                      {t("cancel")}
                     </Button>
                     <Button onClick={handleAddItem}>
-                      Add Item
+                      {t("addItem")}
                     </Button>
                   </div>
                 </div>
@@ -344,7 +344,7 @@ export const InventoryManager: React.FC = () => {
         <CardContent>
           <div className="flex space-x-4 mb-4">
             <Input 
-              placeholder="Search items..."
+              placeholder={t("searchItems")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="max-w-sm"
@@ -354,7 +354,7 @@ export const InventoryManager: React.FC = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="all">{t("allCategories")}</SelectItem>
                 {categories.map(category => (
                   <SelectItem key={category} value={category}>{category}</SelectItem>
                 ))}
@@ -366,12 +366,12 @@ export const InventoryManager: React.FC = () => {
             <table className="w-full">
               <thead className="border-b bg-gray-50">
                 <tr>
-                  <th className="text-left p-4">Item</th>
-                  <th className="text-left p-4">Category</th>
-                  <th className="text-left p-4">Stock</th>
-                  <th className="text-left p-4">Status</th>
-                  <th className="text-left p-4">Unit Price</th>
-                  <th className="text-left p-4">Actions</th>
+                  <th className="text-left p-4">{t("item")}</th>
+                  <th className="text-left p-4">{t("category")}</th>
+                  <th className="text-left p-4">{t("stock")}</th>
+                  <th className="text-left p-4">{t("status")}</th>
+                  <th className="text-left p-4">{t("unitPrice")}</th>
+                  <th className="text-left p-4">{t("actions")}</th>
                 </tr>
               </thead>
               <tbody>

@@ -53,47 +53,47 @@ export const ReportsGenerator: React.FC = () => {
     });
   };
 
-  const reportTypes = [
+  const reportTypes = React.useMemo(() => [
     {
       id: 'patient-demographics',
-      title: 'Patient Demographics',
-      description: 'Age, gender, location statistics',
+      title: t("patientDemographics"),
+      description: t("ageGenderLocationStatistics"),
       icon: Users,
       color: 'blue'
     },
     {
       id: 'appointment-summary',
-      title: 'Appointment Summary',
-      description: 'Scheduled, completed, cancelled appointments',
+      title: t("appointmentSummary"),
+      description: t("scheduledCompletedCancelledAppointments"),
       icon: Calendar,
       color: 'green'
     },
     {
       id: 'financial-report',
-      title: 'Financial Report',
-      description: 'Revenue, expenses, payment status',
+      title: t("financialReport"),
+      description: t("revenueExpensesPaymentStatus"),
       icon: BarChart3,
       color: 'purple'
     },
     {
       id: 'medical-records',
-      title: 'Medical Records Summary',
-      description: 'Diagnoses, treatments, prescriptions',
+      title: t("medicalRecordsSummary"),
+      description: t("diagnosesTreatmentsPrescriptions"),
       icon: FileText,
       color: 'orange'
     }
-  ];
+  ], [t]);
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Generate Reports</CardTitle>
+          <CardTitle>{t("generateReports")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label>Start Date</Label>
+              <Label>{t("startDate")}</Label>
               <Input 
                 type="date" 
                 value={dateRange.start}
@@ -101,7 +101,7 @@ export const ReportsGenerator: React.FC = () => {
               />
             </div>
             <div>
-              <Label>End Date</Label>
+              <Label>{t("endDate")}</Label>
               <Input 
                 type="date" 
                 value={dateRange.end}
@@ -134,7 +134,7 @@ export const ReportsGenerator: React.FC = () => {
                     disabled={isGenerating}
                     className="flex-1"
                   >
-                    {isGenerating ? 'Generating...' : 'Generate'}
+                    {isGenerating ? t("generating") : t("generate")}
                   </Button>
                   <Button 
                     variant="outline" 
@@ -152,7 +152,7 @@ export const ReportsGenerator: React.FC = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Reports</CardTitle>
+          <CardTitle>{t("recentReports")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -166,7 +166,7 @@ export const ReportsGenerator: React.FC = () => {
                   <FileText className="w-4 h-4 text-gray-500" />
                   <div>
                     <p className="font-medium">{report.name}</p>
-                    <p className="text-sm text-gray-500">Generated on {report.date} • {report.size}</p>
+                    <p className="text-sm text-gray-500">{t("generatedOn")} {report.date} • {report.size}</p>
                   </div>
                 </div>
                 <Button 

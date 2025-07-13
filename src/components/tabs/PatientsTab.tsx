@@ -254,7 +254,7 @@ export const PatientsTab: React.FC<PatientsTabProps> = ({
                             className="text-xs w-full sm:w-auto"
                           >
                             <FileText className="w-3 h-3 mr-1" />
-                            Prescription
+                            {t("prescription")}
                           </Button>
                         </div>
                       </td>

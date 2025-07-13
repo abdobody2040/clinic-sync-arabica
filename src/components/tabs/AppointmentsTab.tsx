@@ -81,7 +81,7 @@ export const AppointmentsTab: React.FC<AppointmentsTabProps> = ({
                     <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-medium">{t("patient")}</th>
                     <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-medium">{t("date")}</th>
                     <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-medium">{t("time")}</th>
-                    <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-medium">Type</th>
+                    <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-medium">{t("type")}</th>
                     <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-medium">{t("status")}</th>
                     <th className="text-left p-3 sm:p-4 text-xs sm:text-sm font-medium">{t("actions")}</th>
                   </tr>
@@ -117,7 +117,7 @@ export const AppointmentsTab: React.FC<AppointmentsTabProps> = ({
                             onClick={() => onDeleteAppointment(appointment.id)}
                             className="text-xs w-full sm:w-auto"
                           >
-                            Delete
+                            {t("delete")}
                           </Button>
                         </div>
                       </td>

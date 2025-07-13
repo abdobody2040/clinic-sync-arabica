@@ -211,7 +211,78 @@ export type TranslationKey =
   | "customerName"
   | "renewLicense"
   | "revokeLicense"
-  | "extendLicense";
+  | "extendLicense"
+
+  // Inventory specific translations
+  | "totalItems"
+  | "lowStockItems"
+  | "totalValue"
+  | "addNewItem"
+  | "addNewInventoryItem"
+  | "itemName"
+  | "enterItemName"
+  | "selectCategory"
+  | "currentStock"
+  | "minStock"
+  | "unitPrice"
+  | "supplier"
+  | "supplierName"
+  | "storageLocation"
+  | "addItem"
+  | "searchItems"
+  | "allCategories"
+  | "item"
+  | "stock"
+  | "medicalSupplies"
+  | "officeSupplies"
+  | "categories"
+  | "category"
+  | "location"
+  
+  // Reports specific translations
+  | "startDate"
+  | "endDate"
+  | "patientDemographics"
+  | "ageGenderLocationStatistics"
+  | "appointmentSummary"
+  | "scheduledCompletedCancelledAppointments"
+  | "financialReport"
+  | "revenueExpensesPaymentStatus"
+  | "medicalRecordsSummary"
+  | "diagnosesTreatmentsPrescriptions"
+  | "generating"
+  | "generate"
+  | "recentReports"
+  | "generatedOn"
+  
+  // Appointments specific translations
+  | "type"
+  | "consultation"
+  | "generalCheckup"
+  | "followup"
+  | "emergency"
+  | "procedure"
+  | "scheduled"
+  | "cancelled"
+  | "minutes"
+  | "hour"
+  | "hours"
+  
+  // Patient specific translations
+  | "prescription"
+  | "writePrescription"
+  
+  // Forms and validation
+  | "pleaseSelectPatient"
+  | "selectPatient"
+  | "selectAppointmentType"
+  | "selectDuration"
+  | "statusRequired"
+  | "patientRequired"
+  | "appointmentTypeRequired"
+  | "dateRequired"
+  | "timeRequired"
+  | "durationRequired";
 
 export interface Translations {
   [key: string]: string;
