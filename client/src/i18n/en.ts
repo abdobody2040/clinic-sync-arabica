@@ -1,6 +1,6 @@
 import { Translations } from './types';
 
-export const en: Translations = {
+const en = {
   // Auth & Navigation
   welcome: "Welcome",
   welcomeBack: "Welcome back!",
@@ -364,5 +364,8 @@ export const en: Translations = {
   trace: "Trace",
   notice: "Notice",
   alert: "Alert",
-  critical: "Critical"
+  critical: "Critical",
+  currencyInReports: "Currency settings will affect all reports and invoices"
 };
+
+export default en;

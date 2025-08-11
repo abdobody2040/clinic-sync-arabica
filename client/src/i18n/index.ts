@@ -1,7 +1,6 @@
-
 import { Language, Translations, TranslationKey } from './types';
-import { en } from './en';
-import { ar } from './ar';
+import en from './en';
+import ar from './ar';
 
 export type { Language, Translations, TranslationKey };
 

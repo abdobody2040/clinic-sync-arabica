@@ -54,6 +54,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/rpc/get_all_licenses", async (req, res) => {
     try {
       const storage = await getStorage();
+      if (!storage) {
+        throw new Error('Storage not available');
+      }
       const licenses = await storage.getAllLicenses();
       
       // Transform to match Supabase format
@@ -85,6 +88,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validatedData = validateLicenseSchema.parse(req.body);
       
       const storage = await getStorage();
+      if (!storage) {
+        throw new Error('Storage not available');
+      }
       const result = await storage.validateLicense(validatedData.input_license_key);
       
       if (!result) {

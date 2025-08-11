@@ -1,6 +1,6 @@
 import { Translations } from './types';
 
-export const ar: Translations = {
+const ar: Translations = {
   // Auth & Navigation
   welcome: "مرحباً",
   welcomeBack: "مرحباً بعودتك!",
@@ -235,7 +235,7 @@ export const ar: Translations = {
   stock: "المخزون",
   medicalSupplies: "المستلزمات الطبية",
   officeSupplies: "مستلزمات المكتب",
-  categories: "الفئات", 
+  categories: "الفئات",
   category: "الفئة",
   location: "الموقع",
 
@@ -365,4 +365,7 @@ export const ar: Translations = {
   critical: "حرج",
   managePersonalAndProfessionalInfo: "إدارة معلوماتك الشخصية والمهنية",
   saving: "جاري الحفظ...",
+  currencyInReports: "إعدادات العملة ستؤثر على جميع التقارير والفواتير"
 };
+
+export default ar;
