@@ -1,7 +1,6 @@
-
 export type Language = 'en' | 'ar';
 
-export type TranslationKey = 
+export type TranslationKey =
   // Auth & Navigation
   | "welcome"
   | "welcomeBack"
@@ -11,7 +10,7 @@ export type TranslationKey =
   | "password"
   | "logout"
   | "demoLogin"
-  
+
   // License
   | "licenseActivation"
   | "enterLicenseKey"
@@ -19,7 +18,7 @@ export type TranslationKey =
   | "activateLicense"
   | "demoLicense"
   | "licensed"
-  
+
   // System
   | "clinicManagementSystem"
   | "systemStatus"
@@ -49,12 +48,12 @@ export type TranslationKey =
   | "previous"
   | "submit"
   | "confirm"
-  
+
   // Dashboard
   | "totalPatients"
   | "todaysAppointments"
   | "pendingInvoices"
-  
+
   // Patients
   | "patients"
   | "patientManagement"
@@ -80,7 +79,7 @@ export type TranslationKey =
   | "male"
   | "female"
   | "other"
-  
+
   // Appointments
   | "appointments"
   | "appointmentScheduling"
@@ -96,7 +95,7 @@ export type TranslationKey =
   | "appointmentDate"
   | "duration"
   | "notes"
-  
+
   // Billing
   | "billing"
   | "billingInvoices"
@@ -112,7 +111,7 @@ export type TranslationKey =
   | "subtotal"
   | "tax"
   | "discount"
-  
+
   // Reports
   | "reports"
   | "reportsAnalytics"
@@ -120,7 +119,7 @@ export type TranslationKey =
   | "patientReports"
   | "financialReports"
   | "appointmentReports"
-  
+
   // Inventory
   | "inventory"
   | "inventoryManagement"
@@ -130,7 +129,7 @@ export type TranslationKey =
   | "lowStock"
   | "inStock"
   | "outOfStock"
-  
+
   // Settings
   | "settings"
   | "systemSettings"
@@ -158,7 +157,7 @@ export type TranslationKey =
   | "licenseInfo"
   | "profileUpdated"
   | "appSettingsUpdated"
-  
+
   // Common UI Elements
   | "pleaseWait"
   | "noDataAvailable"
@@ -171,7 +170,7 @@ export type TranslationKey =
   | "back"
   | "continue"
   | "finish"
-  
+
   // Messages
   | "confirmDelete"
   | "deleteWarning"
@@ -180,7 +179,7 @@ export type TranslationKey =
   | "deleteSuccess"
   | "errorOccurred"
   | "noResultsFound"
-  
+
   // License Generator (Admin)
   | "licenseGenerator"
   | "generateLicense"
@@ -201,7 +200,7 @@ export type TranslationKey =
   | "maxPatients"
   | "licenseGenerated"
   | "copyLicenseKey"
-  
+
   // License Management
   | "manageExistingLicenses"
   | "activeLicenses"
@@ -238,7 +237,7 @@ export type TranslationKey =
   | "categories"
   | "category"
   | "location"
-  
+
   // Reports specific translations
   | "startDate"
   | "endDate"
@@ -254,7 +253,7 @@ export type TranslationKey =
   | "generate"
   | "recentReports"
   | "generatedOn"
-  
+
   // Appointments specific translations
   | "type"
   | "consultation"
@@ -267,11 +266,11 @@ export type TranslationKey =
   | "minutes"
   | "hour"
   | "hours"
-  
+
   // Patient specific translations
   | "prescription"
   | "writePrescription"
-  
+
   // Forms and validation
   | "pleaseSelectPatient"
   | "selectPatient"
@@ -283,7 +282,7 @@ export type TranslationKey =
   | "dateRequired"
   | "timeRequired"
   | "durationRequired"
-  
+
   // Additional UI translations
   | "dashboard"
   | "profile"
@@ -295,6 +294,8 @@ export type TranslationKey =
   | "theme"
   | "light"
   | "dark"
+  | "managePersonalAndProfessionalInfo"
+  | "saving"
   | "auto"
   | "refresh"
   | "reload"

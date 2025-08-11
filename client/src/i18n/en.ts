@@ -1,4 +1,3 @@
-
 import { Translations } from './types';
 
 export const en: Translations = {
@@ -11,7 +10,7 @@ export const en: Translations = {
   password: "Password",
   logout: "Logout",
   demoLogin: "Demo Login",
-  
+
   // License
   licenseActivation: "License Activation",
   enterLicenseKey: "Enter your license key to activate the system",
@@ -19,7 +18,7 @@ export const en: Translations = {
   activateLicense: "Activate License",
   demoLicense: "Demo License",
   licensed: "Licensed",
-  
+
   // System
   clinicManagementSystem: "Clinic Management System",
   systemStatus: "System Status",
@@ -49,12 +48,12 @@ export const en: Translations = {
   previous: "Previous",
   submit: "Submit",
   confirm: "Confirm",
-  
+
   // Dashboard
   totalPatients: "Total Patients",
   todaysAppointments: "Today's Appointments",
   pendingInvoices: "Pending Invoices",
-  
+
   // Patients
   patients: "Patients",
   patientManagement: "Patient Management",
@@ -80,7 +79,7 @@ export const en: Translations = {
   male: "Male",
   female: "Female",
   other: "Other",
-  
+
   // Appointments
   appointments: "Appointments",
   appointmentScheduling: "Appointment Scheduling",
@@ -96,7 +95,7 @@ export const en: Translations = {
   appointmentDate: "Appointment Date",
   duration: "Duration",
   notes: "Notes",
-  
+
   // Billing
   billing: "Billing",
   billingInvoices: "Billing & Invoices",
@@ -112,7 +111,7 @@ export const en: Translations = {
   subtotal: "Subtotal",
   tax: "Tax",
   discount: "Discount",
-  
+
   // Reports
   reports: "Reports",
   reportsAnalytics: "Reports & Analytics",
@@ -120,7 +119,7 @@ export const en: Translations = {
   patientReports: "Patient Reports",
   financialReports: "Financial Reports",
   appointmentReports: "Appointment Reports",
-  
+
   // Inventory
   inventory: "Inventory",
   inventoryManagement: "Inventory Management",
@@ -130,7 +129,7 @@ export const en: Translations = {
   lowStock: "Low Stock",
   inStock: "In Stock",
   outOfStock: "Out of Stock",
-  
+
   // Settings
   settings: "Settings",
   systemSettings: "System Settings",
@@ -143,7 +142,7 @@ export const en: Translations = {
   currencySettings: "Currency Settings",
   defaultCurrency: "Default Currency",
   currency: "Currency",
-  
+
   appCustomization: "App Customization",
   applicationName: "Application Name",
   logoUpload: "Logo Upload",
@@ -159,7 +158,7 @@ export const en: Translations = {
   licenseInfo: "License Information",
   profileUpdated: "Profile updated successfully!",
   appSettingsUpdated: "App settings updated successfully!",
-  
+
   // Common UI Elements
   pleaseWait: "Please wait...",
   noDataAvailable: "No data available",
@@ -172,7 +171,7 @@ export const en: Translations = {
   back: "Back",
   continue: "Continue",
   finish: "Finish",
-  
+
   // Messages
   confirmDelete: "Are you sure you want to delete?",
   deleteWarning: "This action cannot be undone",
@@ -181,7 +180,7 @@ export const en: Translations = {
   deleteSuccess: "Deleted successfully",
   errorOccurred: "An error occurred, please try again",
   noResultsFound: "No results found",
-  
+
   // License Generator (Admin)
   licenseGenerator: "License Generator",
   generateLicense: "Generate License",
@@ -202,7 +201,7 @@ export const en: Translations = {
   maxPatients: "Max Patients",
   licenseGenerated: "License generated successfully!",
   copyLicenseKey: "Copy License Key",
-  
+
   // License Management
   manageExistingLicenses: "Manage Existing Licenses",
   activeLicenses: "Active Licenses",
@@ -237,9 +236,9 @@ export const en: Translations = {
   medicalSupplies: "Medical Supplies",
   officeSupplies: "Office Supplies",
   categories: "Categories",
-  category: "Category", 
+  category: "Category",
   location: "Location",
-  
+
   // Reports specific translations
   startDate: "Start Date",
   endDate: "End Date",
@@ -255,7 +254,7 @@ export const en: Translations = {
   generate: "Generate",
   recentReports: "Recent Reports",
   generatedOn: "Generated on",
-  
+
   // Appointments specific translations
   type: "Type",
   consultation: "Consultation",
@@ -268,11 +267,11 @@ export const en: Translations = {
   minutes: "minutes",
   hour: "hour",
   hours: "hours",
-  
+
   // Patient specific translations
   prescription: "Prescription",
   writePrescription: "Write Prescription",
-  
+
   // Forms and validation
   pleaseSelectPatient: "Please select a patient",
   selectPatient: "Select patient",
@@ -284,7 +283,7 @@ export const en: Translations = {
   dateRequired: "Date is required",
   timeRequired: "Time is required",
   durationRequired: "Duration is required",
-  
+
   // Additional UI translations
   dashboard: "Dashboard",
   profile: "Profile",
@@ -296,6 +295,8 @@ export const en: Translations = {
   theme: "Theme",
   light: "Light",
   dark: "Dark",
+  managePersonalAndProfessionalInfo: "Manage your personal information and professional details",
+  saving: "Saving...",
   auto: "Auto",
   refresh: "Refresh",
   reload: "Reload",

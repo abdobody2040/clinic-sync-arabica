@@ -1,4 +1,3 @@
-
 import { Translations } from './types';
 
 export const ar: Translations = {
@@ -11,7 +10,7 @@ export const ar: Translations = {
   password: "كلمة المرور",
   logout: "تسجيل الخروج",
   demoLogin: "تسجيل دخول تجريبي",
-  
+
   // License
   licenseActivation: "تفعيل الترخيص",
   enterLicenseKey: "أدخل مفتاح الترخيص لتفعيل النظام",
@@ -19,7 +18,7 @@ export const ar: Translations = {
   activateLicense: "تفعيل الترخيص",
   demoLicense: "ترخيص تجريبي",
   licensed: "مرخص",
-  
+
   // System
   clinicManagementSystem: "نظام إدارة العيادة",
   systemStatus: "حالة النظام",
@@ -49,12 +48,12 @@ export const ar: Translations = {
   previous: "السابق",
   submit: "إرسال",
   confirm: "تأكيد",
-  
+
   // Dashboard
   totalPatients: "إجمالي المرضى",
   todaysAppointments: "مواعيد اليوم",
   pendingInvoices: "الفواتير المعلقة",
-  
+
   // Patients
   patients: "المرضى",
   patientManagement: "إدارة المرضى",
@@ -80,7 +79,7 @@ export const ar: Translations = {
   male: "ذكر",
   female: "أنثى",
   other: "أخرى",
-  
+
   // Appointments
   appointments: "المواعيد",
   appointmentScheduling: "جدولة المواعيد",
@@ -96,7 +95,7 @@ export const ar: Translations = {
   appointmentDate: "تاريخ الموعد",
   duration: "المدة",
   notes: "ملاحظات",
-  
+
   // Billing
   billing: "الفواتير",
   billingInvoices: "الفواتير والمحاسبة",
@@ -112,7 +111,7 @@ export const ar: Translations = {
   subtotal: "المجموع الفرعي",
   tax: "الضريبة",
   discount: "الخصم",
-  
+
   // Reports
   reports: "التقارير",
   reportsAnalytics: "التقارير والتحليلات",
@@ -120,7 +119,7 @@ export const ar: Translations = {
   patientReports: "تقارير المرضى",
   financialReports: "التقارير المالية",
   appointmentReports: "تقارير المواعيد",
-  
+
   // Inventory
   inventory: "المخزون",
   inventoryManagement: "إدارة المخزون",
@@ -130,7 +129,7 @@ export const ar: Translations = {
   lowStock: "مخزون منخفض",
   inStock: "متوفر",
   outOfStock: "غير متوفر",
-  
+
   // Settings
   settings: "الإعدادات",
   systemSettings: "إعدادات النظام",
@@ -143,7 +142,7 @@ export const ar: Translations = {
   currencySettings: "إعدادات العملة",
   defaultCurrency: "العملة الافتراضية",
   currency: "العملة",
-  
+
   appCustomization: "تخصيص التطبيق",
   applicationName: "اسم التطبيق",
   logoUpload: "رفع الشعار",
@@ -159,7 +158,7 @@ export const ar: Translations = {
   licenseInfo: "معلومات الترخيص",
   profileUpdated: "تم تحديث الملف الشخصي بنجاح!",
   appSettingsUpdated: "تم تحديث إعدادات التطبيق بنجاح!",
-  
+
   // Common UI Elements
   pleaseWait: "يرجى الانتظار...",
   noDataAvailable: "لا توجد بيانات متاحة",
@@ -172,7 +171,7 @@ export const ar: Translations = {
   back: "العودة",
   continue: "متابعة",
   finish: "إنهاء",
-  
+
   // Messages
   confirmDelete: "هل أنت متأكد من الحذف؟",
   deleteWarning: "لا يمكن التراجع عن هذا الإجراء",
@@ -181,7 +180,7 @@ export const ar: Translations = {
   deleteSuccess: "تم الحذف بنجاح",
   errorOccurred: "حدث خطأ، يرجى المحاولة مرة أخرى",
   noResultsFound: "لم يتم العثور على نتائج",
-  
+
   // License Generator (Admin)
   licenseGenerator: "منشئ التراخيص",
   generateLicense: "إنشاء ترخيص",
@@ -202,7 +201,7 @@ export const ar: Translations = {
   maxPatients: "الحد الأقصى للمرضى",
   licenseGenerated: "تم إنشاء الترخيص بنجاح!",
   copyLicenseKey: "نسخ مفتاح الترخيص",
-  
+
   // License Management
   manageExistingLicenses: "إدارة التراخيص الموجودة",
   activeLicenses: "التراخيص النشطة",
@@ -239,7 +238,7 @@ export const ar: Translations = {
   categories: "الفئات", 
   category: "الفئة",
   location: "الموقع",
-  
+
   // Reports specific translations
   startDate: "تاريخ البداية",
   endDate: "تاريخ النهاية",
@@ -255,7 +254,7 @@ export const ar: Translations = {
   generate: "إنشاء",
   recentReports: "التقارير الحديثة",
   generatedOn: "تم إنشاؤه في",
-  
+
   // Appointments specific translations
   type: "النوع",
   consultation: "استشارة",
@@ -268,11 +267,11 @@ export const ar: Translations = {
   minutes: "دقيقة",
   hour: "ساعة",
   hours: "ساعات",
-  
+
   // Patient specific translations
   prescription: "وصفة طبية",
   writePrescription: "كتابة وصفة طبية",
-  
+
   // Forms and validation
   pleaseSelectPatient: "يرجى اختيار مريض",
   selectPatient: "اختر مريض",
@@ -284,7 +283,7 @@ export const ar: Translations = {
   dateRequired: "التاريخ مطلوب",
   timeRequired: "الوقت مطلوب",
   durationRequired: "المدة مطلوبة",
-  
+
   // Additional UI translations
   dashboard: "لوحة التحكم",
   profile: "الملف الشخصي",
@@ -363,5 +362,7 @@ export const ar: Translations = {
   trace: "تتبع",
   notice: "إشعار",
   alert: "تنبيه",
-  critical: "حرج"
+  critical: "حرج",
+  managePersonalAndProfessionalInfo: "إدارة معلوماتك الشخصية والمهنية",
+  saving: "جاري الحفظ...",
 };

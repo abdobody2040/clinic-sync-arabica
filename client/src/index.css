@@ -274,6 +274,20 @@
     transform: scaleX(-1);
   }
 
+  /* Smooth transitions for language changes */
+  * {
+    transition: text-align 0.2s ease, direction 0.2s ease;
+  }
+
+  /* Force re-render for language changes */
+  [data-dir="rtl"] * {
+    direction: rtl;
+  }
+
+  [data-dir="ltr"] * {
+    direction: ltr;
+  }
+
   /* RTL margin and padding corrections */
   [dir="rtl"] .ml-2 { margin-left: 0; margin-right: 0.5rem; }
   [dir="rtl"] .mr-2 { margin-right: 0; margin-left: 0.5rem; }

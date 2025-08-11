@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,23 +30,23 @@ export const SystemSettingsSection: React.FC = () => {
             <div className="mt-4">
               <Label>{t("defaultLanguage")}</Label>
               <div className={`flex mt-2 ${isRTL ? 'space-x-reverse space-x-4 flex-row-reverse' : 'space-x-4'}`}>
-                <Button 
+                <Button
                   variant={currentLanguage === 'en' ? 'default' : 'outline'}
                   onClick={() => changeLanguage('en')}
                   className="min-w-[100px]"
                 >
-                  English
+                  {t("english")}
                 </Button>
-                <Button 
+                <Button
                   variant={currentLanguage === 'ar' ? 'default' : 'outline'}
                   onClick={() => changeLanguage('ar')}
                   className="min-w-[100px]"
                 >
-                  العربية
+                  {t("arabic")}
                 </Button>
               </div>
               <p className="text-xs text-gray-500 mt-2">
-                {isRTL 
+                {isRTL
                   ? "سيتم تطبيق اللغة المختارة على جميع واجهات النظام"
                   : "Selected language will be applied to all system interfaces"
                 }
@@ -80,26 +79,17 @@ export const SystemSettingsSection: React.FC = () => {
           <div className="pt-6 border-t">
             <div className="bg-blue-50 p-4 rounded-lg">
               <h4 className="font-medium text-blue-900 mb-2">
-                {isRTL ? "معلومات مهمة" : "Important Information"}
+                {t("importantInformation")}
               </h4>
               <ul className={`text-sm text-blue-800 space-y-1 ${isRTL ? 'text-right' : ''}`}>
                 <li>
-                  {isRTL 
-                    ? "• سيتم حفظ إعداداتك تلقائياً" 
-                    : "• Your settings will be saved automatically"
-                  }
+                  {t("autoSaveSettings")}
                 </li>
                 <li>
-                  {isRTL 
-                    ? "• تغيير اللغة سيؤثر على جميع أجزاء النظام" 
-                    : "• Language changes will affect all parts of the system"
-                  }
+                  {t("languageAffectsAll")}
                 </li>
                 <li>
-                  {isRTL 
-                    ? "• العملة المختارة ستظهر في جميع التقارير المالية" 
-                    : "• Selected currency will appear in all financial reports"
-                  }
+                  {t("currencyInReports")}
                 </li>
               </ul>
             </div>
