@@ -17,7 +17,7 @@ export const useLanguage = () => {
     console.log('Changing language to:', language);
     setCurrentLanguage(language);
     localStorage.setItem('clinic_language', language);
-    
+
     // Update document direction for RTL languages
     if (language === 'ar') {
       document.dir = 'rtl';
@@ -36,7 +36,7 @@ export const useLanguage = () => {
       // Add data attribute for styling
       document.documentElement.setAttribute('data-dir', 'ltr');
     }
-    
+
     // Force a re-render by triggering a window resize event
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
@@ -48,23 +48,30 @@ export const useLanguage = () => {
   // Memoize the isRTL value
   const isRTL = useMemo(() => currentLanguage === 'ar', [currentLanguage]);
 
+  // Set initial language from localStorage or default to 'en'
   useEffect(() => {
-    // Set initial direction and language only once
     console.log('Setting initial language:', currentLanguage);
+
+    // Clean up existing classes
+    document.body.classList.remove('rtl', 'ltr', 'ar', 'en');
+    document.documentElement.classList.remove('rtl', 'ltr', 'ar', 'en');
+
     if (currentLanguage === 'ar') {
       document.dir = 'rtl';
       document.documentElement.dir = 'rtl';
       document.documentElement.lang = 'ar';
-      document.body.classList.remove('ltr');
-      document.body.classList.add('rtl');
+      document.body.classList.add('rtl', 'ar');
+      document.documentElement.classList.add('rtl', 'ar');
       document.documentElement.setAttribute('data-dir', 'rtl');
+      document.documentElement.setAttribute('data-lang', 'ar');
     } else {
       document.dir = 'ltr';
       document.documentElement.dir = 'ltr';
       document.documentElement.lang = 'en';
-      document.body.classList.remove('rtl');
-      document.body.classList.add('ltr');
+      document.body.classList.add('ltr', 'en');
+      document.documentElement.classList.add('ltr', 'en');
       document.documentElement.setAttribute('data-dir', 'ltr');
+      document.documentElement.setAttribute('data-lang', 'en');
     }
   }, [currentLanguage]);
 
