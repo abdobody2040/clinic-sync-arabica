@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { getStorage } from "./storage";
 import { insertCustomerSchema, insertLicenseSchema } from "@shared/schema";
 import { z } from "zod";
 
@@ -25,6 +25,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = createCustomerLicenseSchema.parse(req.body);
       
+      const storage = await getStorage();
       const result = await storage.createCustomerLicense({
         clinic_name: validatedData.p_clinic_name,
         contact_email: validatedData.p_contact_email,
@@ -52,6 +53,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all licenses (replaces Supabase RPC)
   app.get("/api/rpc/get_all_licenses", async (req, res) => {
     try {
+      const storage = await getStorage();
       const licenses = await storage.getAllLicenses();
       
       // Transform to match Supabase format
@@ -82,6 +84,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = validateLicenseSchema.parse(req.body);
       
+      const storage = await getStorage();
       const result = await storage.validateLicense(validatedData.input_license_key);
       
       if (!result) {

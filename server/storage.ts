@@ -11,6 +11,7 @@ export interface IStorage {
   // Customer operations
   createCustomer(customer: InsertCustomer): Promise<Customer>;
   getCustomerByEmail(email: string): Promise<Customer | undefined>;
+  getAllCustomers(): Promise<Customer[]>;
   
   // License operations
   createLicense(license: InsertLicense): Promise<License>;
@@ -312,6 +313,10 @@ export class MemStorage implements IStorage {
     );
   }
 
+  async getAllCustomers(): Promise<Customer[]> {
+    return Array.from(this.customers.values());
+  }
+
   async createLicense(license: InsertLicense): Promise<License> {
     const id = crypto.randomUUID();
     const now = new Date();
@@ -452,7 +457,73 @@ export class MemStorage implements IStorage {
       expires_at: expiresAt.toISOString(),
     };
   }
+
+  async getAllCustomers(): Promise<Customer[]> {
+    return await db.select().from(customers);
+  }
 }
 
-// Use MemStorage as fallback for now, can switch to DatabaseStorage once DB is working
-export const storage = new MemStorage();
+// Initialize storage with database connection
+const initializeStorage = async (): Promise<IStorage> => {
+  try {
+    const dbStorage = new DatabaseStorage();
+    
+    // Test the connection by checking if we have any customers
+    try {
+      const customers = await dbStorage.getAllCustomers();
+      console.log('Database connected successfully, found', customers.length, 'customers');
+      
+      // If no demo data exists, create it
+      if (customers.length === 0) {
+        console.log('No demo data found, creating demo customer and license...');
+        
+        const demoCustomer = await dbStorage.createCustomer({
+          clinic_name: 'Demo Clinic',
+          contact_email: 'demo@clinic.com',
+          contact_phone: '+971 50 123 4567',
+          address: 'Dubai Healthcare City',
+        });
+
+        await dbStorage.createLicense({
+          customer_id: demoCustomer.id,
+          license_key: 'TRL-2025-DEMO1234',
+          license_type: 'trial',
+          status: 'active',
+          expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+          max_users: 1,
+          max_patients: 50,
+          features: { basic_features: true },
+        });
+        
+        console.log('Demo data created successfully');
+      }
+      
+      return dbStorage;
+    } catch (dbError) {
+      console.warn('Database operations failed, falling back to memory storage:', dbError);
+      const memStorage = new MemStorage();
+      return memStorage;
+    }
+  } catch (error) {
+    console.warn('Database connection failed, using memory storage:', error);
+    return new MemStorage();
+  }
+};
+
+// Initialize storage asynchronously
+let storage: IStorage;
+const storagePromise = initializeStorage().then(s => {
+  storage = s;
+  return s;
+});
+
+// Export a function that ensures storage is initialized
+export const getStorage = async (): Promise<IStorage> => {
+  if (!storage) {
+    storage = await storagePromise;
+  }
+  return storage;
+};
+
+// For backwards compatibility, export storage directly (will be undefined initially)
+export { storage };
