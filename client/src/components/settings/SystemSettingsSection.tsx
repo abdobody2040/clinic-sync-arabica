@@ -29,20 +29,20 @@ export const SystemSettingsSection: React.FC = () => {
             </div>
             <div className="mt-4">
               <Label>{t("defaultLanguage")}</Label>
-              <div className={`flex mt-2 ${isRTL ? 'space-x-reverse space-x-4 flex-row-reverse' : 'space-x-4'}`}>
+              <div className={`flex mt-2 gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Button
                   variant={currentLanguage === 'en' ? 'default' : 'outline'}
                   onClick={() => changeLanguage('en')}
-                  className="min-w-[100px]"
+                  className={`min-w-[100px] ${isRTL ? 'font-arabic' : ''}`}
                 >
-                  {t("english")}
+                  English
                 </Button>
                 <Button
                   variant={currentLanguage === 'ar' ? 'default' : 'outline'}
                   onClick={() => changeLanguage('ar')}
-                  className="min-w-[100px]"
+                  className={`min-w-[100px] font-arabic`}
                 >
-                  {t("arabic")}
+                  العربية
                 </Button>
               </div>
               <p className="text-xs text-gray-500 mt-2">

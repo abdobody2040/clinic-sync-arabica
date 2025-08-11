@@ -5,6 +5,8 @@ const ar: Translations = {
   welcome: "مرحباً",
   welcomeBack: "مرحباً بعودتك!",
   signIn: "تسجيل الدخول",
+  english: "English",
+  arabic: "العربية",
   signInToAccount: "سجل دخولك إلى حسابك",
   email: "البريد الإلكتروني",
   password: "كلمة المرور",
