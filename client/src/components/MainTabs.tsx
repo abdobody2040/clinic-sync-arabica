@@ -132,7 +132,7 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
     <div className={`min-h-screen bg-gray-50 ${isRTL ? 'font-arabic' : ''}`}>
       <main className={`container mx-auto px-4 py-6 ${isRTL ? 'rtl' : 'ltr'}`}>
         <div className="mb-6">
-          <StatsCards />
+          <StatsCards patients={props.patients} appointments={props.appointments} />
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
