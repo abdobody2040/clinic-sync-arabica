@@ -5,8 +5,6 @@ const en = {
   welcome: "Welcome",
   welcomeBack: "Welcome back!",
   signIn: "Sign In",
-  english: "English",
-  arabic: "العربية",
   signInToAccount: "Sign in to your account",
   email: "Email",
   password: "Password",

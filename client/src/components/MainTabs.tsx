@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import React from 'react';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { PatientsTab } from './tabs/PatientsTab';
 import { AppointmentsTab } from './tabs/AppointmentsTab';
 import { BillingTab } from './tabs/BillingTab';
 import { SettingsTab } from './tabs/SettingsTab';
 import { ReportsGenerator } from './ReportsGenerator';
 import { InventoryManager } from './InventoryManager';
-import { useAuth } from "../hooks/useAuth";
-import { useLicense } from "../hooks/useLicense";
-import { useLanguage } from "../hooks/useLanguage";
-import { Card, CardContent } from "./ui/card";
-import { Badge } from "./ui/badge";
-import StatsCards from "./StatsCards";
-import { Home, Users, Calendar, FileText, BarChart3, Settings } from "lucide-react";
 
 interface Patient {
   id: number;
@@ -98,13 +91,13 @@ interface MainTabsProps {
   onPatientUpdate: (data: any) => void;
   onClosePatientView: () => void;
   onEditFromView: () => void;
-
+  
   // Prescription-related props
   showPrescriptionForm?: boolean;
   onWritePrescription?: (patient: Patient) => void;
   onPrescriptionSubmit?: (data: any) => void;
   onCancelPrescriptionForm?: () => void;
-
+  
   // Appointment-related props
   showAppointmentForm: boolean;
   selectedAppointment: Appointment | null;
@@ -114,7 +107,7 @@ interface MainTabsProps {
   onCancelAppointmentForm: () => void;
   onEditAppointment: (appointmentId: number) => void;
   onDeleteAppointment: (appointmentId: number) => void;
-
+  
   // Billing-related props
   showInvoiceForm: boolean;
   onCreateInvoice: () => void;
@@ -123,113 +116,65 @@ interface MainTabsProps {
 }
 
 export const MainTabs: React.FC<MainTabsProps> = (props) => {
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const { user } = useAuth();
-  const { licenseStatus } = useLicense();
-  const { isRTL, t } = useLanguage();
-
   return (
-    <div className={`min-h-screen bg-gray-50 ${isRTL ? 'font-arabic' : ''}`}>
-      <main className={`container mx-auto px-4 py-6 ${isRTL ? 'rtl' : 'ltr'}`}>
-        <div className="mb-6">
-          <StatsCards patients={props.patients} appointments={props.appointments} />
-        </div>
+    <Tabs value={props.activeTab} className="space-y-4 sm:space-y-6">
+      <TabsContent value="patients" className="space-y-4">
+        <PatientsTab
+          showPatientForm={props.showPatientForm}
+          viewMode={props.viewMode}
+          selectedPatient={props.selectedPatient}
+          patients={props.patients}
+          medicalRecords={props.medicalRecords || []}
+          prescriptions={props.prescriptions || []}
+          labResults={props.labResults || []}
+          onAddNewPatient={props.onAddNewPatient}
+          onPatientSubmit={props.onPatientSubmit}
+          onCancelPatientForm={props.onCancelPatientForm}
+          onViewPatient={props.onViewPatient}
+          onEditPatient={props.onEditPatient}
+          onPatientUpdate={props.onPatientUpdate}
+          onClosePatientView={props.onClosePatientView}
+          onEditFromView={props.onEditFromView}
+          showPrescriptionForm={props.showPrescriptionForm}
+          onWritePrescription={props.onWritePrescription}
+          onPrescriptionSubmit={props.onPrescriptionSubmit}
+          onCancelPrescriptionForm={props.onCancelPrescriptionForm}
+        />
+      </TabsContent>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className={`grid w-full grid-cols-6 lg:grid-cols-6 ${isRTL ? 'rtl-flex-reverse' : ''}`}>
-            <TabsTrigger value="dashboard" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Home className="w-4 h-4" />
-              <span className="hidden sm:inline">{t("dashboard")}</span>
-            </TabsTrigger>
-            <TabsTrigger value="patients" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Users className="w-4 h-4" />
-              <span className="hidden sm:inline">{t("patients")}</span>
-            </TabsTrigger>
-            <TabsTrigger value="appointments" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Calendar className="w-4 h-4" />
-              <span className="hidden sm:inline">{t("appointments")}</span>
-            </TabsTrigger>
-            <TabsTrigger value="billing" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <FileText className="w-4 h-4" />
-              <span className="hidden sm:inline">{t("billing")}</span>
-            </TabsTrigger>
-            <TabsTrigger value="reports" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <BarChart3 className="w-4 h-4" />
-              <span className="hidden sm:inline">{t("reports")}</span>
-            </TabsTrigger>
-            <TabsTrigger value="settings" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Settings className="w-4 h-4" />
-              <span className="hidden sm:inline">{t("settings")}</span>
-            </TabsTrigger>
-          </TabsList>
+      <TabsContent value="appointments" className="space-y-4">
+        <AppointmentsTab
+          showAppointmentForm={props.showAppointmentForm}
+          selectedAppointment={props.selectedAppointment}
+          appointments={props.appointments}
+          onNewAppointment={props.onNewAppointment}
+          onAppointmentSubmit={props.onAppointmentSubmit}
+          onCancelAppointmentForm={props.onCancelAppointmentForm}
+          onEditAppointment={props.onEditAppointment}
+          onDeleteAppointment={props.onDeleteAppointment}
+        />
+      </TabsContent>
 
-          <TabsContent value="dashboard" className="space-y-4">
-            {/* Dashboard content would go here */}
-            <div>Dashboard Content</div>
-          </TabsContent>
+      <TabsContent value="billing" className="space-y-4">
+        <BillingTab
+          showInvoiceForm={props.showInvoiceForm}
+          onCreateInvoice={props.onCreateInvoice}
+          onInvoiceSubmit={props.onInvoiceSubmit}
+          onCancelInvoiceForm={props.onCancelInvoiceForm}
+        />
+      </TabsContent>
 
-          <TabsContent value="patients" className="space-y-4">
-            <PatientsTab
-              showPatientForm={props.showPatientForm}
-              viewMode={props.viewMode}
-              selectedPatient={props.selectedPatient}
-              patients={props.patients}
-              medicalRecords={props.medicalRecords || []}
-              prescriptions={props.prescriptions || []}
-              labResults={props.labResults || []}
-              onAddNewPatient={props.onAddNewPatient}
-              onPatientSubmit={props.onPatientSubmit}
-              onCancelPatientForm={props.onCancelPatientForm}
-              onViewPatient={props.onViewPatient}
-              onEditPatient={props.onEditPatient}
-              onPatientUpdate={props.onPatientUpdate}
-              onClosePatientView={props.onClosePatientView}
-              onEditFromView={props.onEditFromView}
-              showPrescriptionForm={props.showPrescriptionForm}
-              onWritePrescription={props.onWritePrescription}
-              onPrescriptionSubmit={props.onPrescriptionSubmit}
-              onCancelPrescriptionForm={props.onCancelPrescriptionForm}
-            />
-          </TabsContent>
+      <TabsContent value="reports" className="space-y-4">
+        <ReportsGenerator />
+      </TabsContent>
 
-          <TabsContent value="appointments" className="space-y-4">
-            <AppointmentsTab
-              showAppointmentForm={props.showAppointmentForm}
-              selectedAppointment={props.selectedAppointment}
-              appointments={props.appointments}
-              onNewAppointment={props.onNewAppointment}
-              onAppointmentSubmit={props.onAppointmentSubmit}
-              onCancelAppointmentForm={props.onCancelAppointmentForm}
-              onEditAppointment={props.onEditAppointment}
-              onDeleteAppointment={props.onDeleteAppointment}
-            />
-          </TabsContent>
+      <TabsContent value="inventory" className="space-y-4">
+        <InventoryManager />
+      </TabsContent>
 
-          <TabsContent value="billing" className="space-y-4">
-            <BillingTab
-              showInvoiceForm={props.showInvoiceForm}
-              onCreateInvoice={props.onCreateInvoice}
-              onInvoiceSubmit={props.onInvoiceSubmit}
-              onCancelInvoiceForm={props.onCancelInvoiceForm}
-            />
-          </TabsContent>
-
-          <TabsContent value="reports" className="space-y-4">
-            <ReportsGenerator />
-          </TabsContent>
-
-          <TabsContent value="inventory" className="space-y-4">
-            <InventoryManager />
-          </TabsContent>
-
-          <TabsContent value="settings" className="space-y-4">
-            <SettingsTab />
-          </TabsContent>
-        </Tabs>
-      </main>
-    </div>
+      <TabsContent value="settings" className="space-y-4">
+        <SettingsTab />
+      </TabsContent>
+    </Tabs>
   );
 };
-
-
-

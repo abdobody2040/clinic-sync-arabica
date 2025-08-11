@@ -73,82 +73,17 @@
 
   /* Arabic font and RTL support */
   [dir="rtl"] {
-    font-family: 'Tajawal', 'Arabic UI Text', 'SF Arabic', 'Segoe UI Arabic', 'Tahoma', sans-serif;
-    font-feature-settings: "liga" 1, "kern" 1, "calt" 1;
-    font-variant-ligatures: common-ligatures contextual;
-    text-rendering: optimizeLegibility;
+    font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
   [dir="rtl"] .font-arabic {
-    font-family: 'Tajawal', 'Arabic UI Text', 'SF Arabic', 'Segoe UI Arabic', 'Tahoma', sans-serif;
-    font-weight: 400;
-    line-height: 1.6;
-  }
-
-  /* Better Arabic text sizing and spacing */
-  [dir="rtl"] body {
-    font-size: 14px;
-    line-height: 1.7;
-    letter-spacing: 0.01em;
-  }
-
-  [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6 {
-    font-weight: 600;
-    line-height: 1.4;
-    margin-bottom: 0.5em;
-  }
-
-  [dir="rtl"] .text-sm {
-    font-size: 13px;
-    line-height: 1.6;
-  }
-
-  [dir="rtl"] .text-lg {
-    font-size: 16px;
-    line-height: 1.5;
-  }
-
-  [dir="rtl"] .text-xl {
-    font-size: 18px;
-    line-height: 1.4;
+    font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
   /* RTL-specific adjustments */
   [dir="rtl"] input,
   [dir="rtl"] textarea,
   [dir="rtl"] select {
-    text-align: right;
-    direction: rtl;
-  }
-
-  /* RTL button styling */
-  [dir="rtl"] button {
-    font-weight: 500;
-    text-align: center;
-    letter-spacing: 0.01em;
-  }
-
-  /* RTL card and content improvements */
-  [dir="rtl"] .card {
-    direction: rtl;
-    text-align: right;
-  }
-
-  [dir="rtl"] .card-header {
-    text-align: right;
-  }
-
-  [dir="rtl"] .card-content {
-    direction: rtl;
-    text-align: right;
-    line-height: 1.7;
-  }
-
-  [dir="rtl"] .card-title {
-    text-align: right;
-  }
-
-  [dir="rtl"] .card-description {
     text-align: right;
   }
 
@@ -166,32 +101,6 @@
   /* RTL flexbox corrections - more selective */
   [dir="rtl"] .flex-row-reverse-rtl {
     flex-direction: row-reverse;
-  }
-
-  /* Enhanced flex direction handling */
-  [dir="rtl"] .flex {
-    direction: rtl;
-  }
-
-  [dir="rtl"] .flex-col {
-    direction: rtl;
-  }
-
-  [dir="rtl"] .grid {
-    direction: rtl;
-  }
-
-  /* RTL specific utility classes */
-  [dir="rtl"] .rtl-flex-reverse {
-    flex-direction: row-reverse;
-  }
-
-  [dir="rtl"] .items-start {
-    align-items: flex-start;
-  }
-
-  [dir="rtl"] .items-end {
-    align-items: flex-end;
   }
 
   [dir="rtl"] .text-left {
@@ -237,48 +146,6 @@
   [dir="rtl"] .dropdown-menu {
     left: auto;
     right: 0;
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .dropdown-menu-content {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .dropdown-menu-item {
-    text-align: right;
-    direction: rtl;
-  }
-
-  /* Navigation improvements */
-  [dir="rtl"] .nav-link {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .navbar {
-    direction: rtl;
-  }
-
-  [dir="rtl"] .navbar-nav {
-    direction: rtl;
-  }
-
-  /* Sidebar RTL support */
-  [dir="rtl"] .sidebar {
-    direction: rtl;
-    text-align: right;
-  }
-
-  [dir="rtl"] .sidebar-menu {
-    direction: rtl;
-    text-align: right;
-  }
-
-  [dir="rtl"] .sidebar-item {
-    text-align: right;
-    direction: rtl;
   }
 
   /* RTL icons that need flipping */
@@ -413,50 +280,9 @@
   [dir="rtl"] input[type="password"],
   [dir="rtl"] input[type="tel"],
   [dir="rtl"] input[type="search"],
-  [dir="rtl"] input[type="number"],
-  [dir="rtl"] input[type="date"],
-  [dir="rtl"] input[type="time"],
   [dir="rtl"] textarea,
   [dir="rtl"] select {
     text-align: right;
-    direction: rtl;
-  }
-
-  /* Form labels and field sets */
-  [dir="rtl"] label {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] fieldset {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] legend {
-    text-align: right;
-    direction: rtl;
-  }
-
-  /* Form groups and containers */
-  [dir="rtl"] .form-group {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .form-control {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .form-label {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .form-text {
-    text-align: right;
-    direction: rtl;
   }
 
   /* RTL dropdown and select elements */
@@ -473,45 +299,10 @@
   /* RTL modal and dialog positioning */
   [dir="rtl"] .dialog-content {
     text-align: right;
-    direction: rtl;
   }
 
   [dir="rtl"] .dialog-header {
     text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .dialog-title {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .dialog-description {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .dialog-footer {
-    text-align: left;
-    direction: rtl;
-    justify-content: flex-start;
-  }
-
-  /* Alert Dialog RTL */
-  [dir="rtl"] .alert-dialog-content {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .alert-dialog-header {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .alert-dialog-footer {
-    text-align: left;
-    direction: rtl;
-    justify-content: flex-start;
   }
 
   /* RTL navigation and tabs */
@@ -627,61 +418,6 @@
 
   [dir="rtl"] ::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
-  }
-
-  /* RTL placeholder styling */
-  [dir="rtl"] input::placeholder,
-  [dir="rtl"] textarea::placeholder {
-    text-align: right;
-    direction: rtl;
-  }
-
-  /* RTL validation and error messages */
-  [dir="rtl"] .error-message {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .field-error {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .help-text {
-    text-align: right;
-    direction: rtl;
-  }
-
-  /* RTL toast and notification styling */
-  [dir="rtl"] .toast {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .toast-title {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .toast-description {
-    text-align: right;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .notification {
-    text-align: right;
-    direction: rtl;
-  }
-
-  /* RTL badge and tag styling */
-  [dir="rtl"] .badge {
-    text-align: center;
-    direction: rtl;
-  }
-
-  [dir="rtl"] .tag {
-    text-align: center;
-    direction: rtl;
   }
 
   /* Smooth transitions for language changes */
