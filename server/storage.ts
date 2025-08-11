@@ -1,0 +1,429 @@
+import { users, customers, licenses, type User, type InsertUser, type Customer, type InsertCustomer, type License, type InsertLicense } from "@shared/schema";
+
+// modify the interface with any CRUD methods
+// you might need
+
+export interface IStorage {
+  getUser(id: number): Promise<User | undefined>;
+  getUserByUsername(username: string): Promise<User | undefined>;
+  createUser(user: InsertUser): Promise<User>;
+  
+  // Customer operations
+  createCustomer(customer: InsertCustomer): Promise<Customer>;
+  getCustomerByEmail(email: string): Promise<Customer | undefined>;
+  
+  // License operations
+  createLicense(license: InsertLicense): Promise<License>;
+  getLicenseByKey(licenseKey: string): Promise<License | undefined>;
+  getAllLicenses(): Promise<Array<License & { customer: Customer }>>;
+  validateLicense(licenseKey: string): Promise<{
+    is_valid: boolean;
+    customer_name: string;
+    license_type: string;
+    status: string;
+    expires_at: string | null;
+    features: any;
+  } | null>;
+  createCustomerLicense(params: {
+    clinic_name: string;
+    contact_email: string;
+    contact_phone?: string;
+    address?: string;
+    license_type: string;
+    duration_days?: number;
+  }): Promise<{
+    customer_id: string;
+    license_key: string;
+    expires_at: string;
+  }>;
+}
+
+import { drizzle } from "drizzle-orm/neon-serverless";
+import { eq, and, gte } from "drizzle-orm";
+
+const db = drizzle(process.env.DATABASE_URL!);
+
+export class DatabaseStorage implements IStorage {
+  async getUser(id: number): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    return result[0];
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.username, username)).limit(1);
+    return result[0];
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const result = await db.insert(users).values(insertUser).returning();
+    return result[0];
+  }
+
+  async createCustomer(customer: InsertCustomer): Promise<Customer> {
+    const result = await db.insert(customers).values(customer).returning();
+    return result[0];
+  }
+
+  async getCustomerByEmail(email: string): Promise<Customer | undefined> {
+    const result = await db.select().from(customers).where(eq(customers.contact_email, email)).limit(1);
+    return result[0];
+  }
+
+  async createLicense(license: InsertLicense): Promise<License> {
+    const result = await db.insert(licenses).values(license).returning();
+    return result[0];
+  }
+
+  async getLicenseByKey(licenseKey: string): Promise<License | undefined> {
+    const result = await db.select().from(licenses).where(eq(licenses.license_key, licenseKey)).limit(1);
+    return result[0];
+  }
+
+  async getAllLicenses(): Promise<Array<License & { customer: Customer }>> {
+    const result = await db.select({
+      id: licenses.id,
+      customer_id: licenses.customer_id,
+      license_key: licenses.license_key,
+      license_type: licenses.license_type,
+      status: licenses.status,
+      expires_at: licenses.expires_at,
+      max_users: licenses.max_users,
+      max_patients: licenses.max_patients,
+      features: licenses.features,
+      created_at: licenses.created_at,
+      updated_at: licenses.updated_at,
+      customer: {
+        id: customers.id,
+        clinic_name: customers.clinic_name,
+        contact_email: customers.contact_email,
+        contact_phone: customers.contact_phone,
+        address: customers.address,
+        created_at: customers.created_at,
+        updated_at: customers.updated_at,
+      }
+    })
+    .from(licenses)
+    .leftJoin(customers, eq(licenses.customer_id, customers.id))
+    .orderBy(licenses.created_at);
+    
+    return result.map(row => ({
+      ...row,
+      customer: row.customer!
+    }));
+  }
+
+  async validateLicense(licenseKey: string): Promise<{
+    is_valid: boolean;
+    customer_name: string;
+    license_type: string;
+    status: string;
+    expires_at: string | null;
+    features: any;
+  } | null> {
+    const result = await db.select({
+      license_type: licenses.license_type,
+      status: licenses.status,
+      expires_at: licenses.expires_at,
+      features: licenses.features,
+      customer_name: customers.clinic_name,
+    })
+    .from(licenses)
+    .leftJoin(customers, eq(licenses.customer_id, customers.id))
+    .where(eq(licenses.license_key, licenseKey))
+    .limit(1);
+
+    if (!result[0]) {
+      return {
+        is_valid: false,
+        customer_name: '',
+        license_type: '',
+        status: 'not_found',
+        expires_at: null,
+        features: {}
+      };
+    }
+
+    const license = result[0];
+    const isActive = license.status === 'active';
+    const isNotExpired = !license.expires_at || new Date(license.expires_at) > new Date();
+    
+    return {
+      is_valid: isActive && isNotExpired,
+      customer_name: license.customer_name || '',
+      license_type: license.license_type,
+      status: license.status,
+      expires_at: license.expires_at ? license.expires_at.toISOString() : null,
+      features: license.features || {}
+    };
+  }
+
+  private generateLicenseKey(licenseType: string): string {
+    const prefix = licenseType === 'trial' ? 'TRL' : 'PRO';
+    const year = new Date().getFullYear();
+    const randomPart = Math.random().toString(36).substring(2, 12).toUpperCase();
+    return `${prefix}-${year}-${randomPart}`;
+  }
+
+  async createCustomerLicense(params: {
+    clinic_name: string;
+    contact_email: string;
+    contact_phone?: string;
+    address?: string;
+    license_type: string;
+    duration_days?: number;
+  }): Promise<{
+    customer_id: string;
+    license_key: string;
+    expires_at: string;
+  }> {
+    // Create customer first
+    const customer = await this.createCustomer({
+      clinic_name: params.clinic_name,
+      contact_email: params.contact_email,
+      contact_phone: params.contact_phone || null,
+      address: params.address || null,
+    });
+
+    // Generate unique license key
+    let licenseKey: string;
+    let isUnique = false;
+    do {
+      licenseKey = this.generateLicenseKey(params.license_type);
+      const existing = await this.getLicenseByKey(licenseKey);
+      isUnique = !existing;
+    } while (!isUnique);
+
+    // Calculate expiry date
+    const durationDays = params.license_type === 'premium' ? 365 : (params.duration_days || 30);
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + durationDays);
+
+    // Determine features and limits based on license type
+    const maxUsers = params.license_type === 'trial' ? 1 : 20;
+    const maxPatients = params.license_type === 'trial' ? 50 : 10000;
+    const features = params.license_type === 'trial' 
+      ? { basic_features: true }
+      : { 
+          basic_features: true, 
+          reports: true, 
+          backup: true, 
+          api_access: true, 
+          priority_support: true, 
+          advanced_analytics: true 
+        };
+
+    // Create license
+    const license = await this.createLicense({
+      customer_id: customer.id,
+      license_key: licenseKey,
+      license_type: params.license_type,
+      status: 'active',
+      expires_at: expiresAt,
+      max_users: maxUsers,
+      max_patients: maxPatients,
+      features: features,
+    });
+
+    return {
+      customer_id: customer.id,
+      license_key: license.license_key,
+      expires_at: expiresAt.toISOString(),
+    };
+  }
+}
+
+export class MemStorage implements IStorage {
+  private users: Map<number, User>;
+  private customers: Map<string, Customer>;
+  private licensesList: Array<License & { customer: Customer }>;
+  currentId: number;
+
+  constructor() {
+    this.users = new Map();
+    this.customers = new Map();
+    this.licensesList = [];
+    this.currentId = 1;
+  }
+
+  async getUser(id: number): Promise<User | undefined> {
+    return this.users.get(id);
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(
+      (user) => user.username === username,
+    );
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const id = this.currentId++;
+    const user: User = { ...insertUser, id };
+    this.users.set(id, user);
+    return user;
+  }
+
+  async createCustomer(customer: InsertCustomer): Promise<Customer> {
+    const id = crypto.randomUUID();
+    const now = new Date();
+    const newCustomer: Customer = {
+      id,
+      clinic_name: customer.clinic_name,
+      contact_email: customer.contact_email,
+      contact_phone: customer.contact_phone || null,
+      address: customer.address || null,
+      created_at: now,
+      updated_at: now,
+    };
+    this.customers.set(id, newCustomer);
+    return newCustomer;
+  }
+
+  async getCustomerByEmail(email: string): Promise<Customer | undefined> {
+    return Array.from(this.customers.values()).find(
+      (customer) => customer.contact_email === email,
+    );
+  }
+
+  async createLicense(license: InsertLicense): Promise<License> {
+    const id = crypto.randomUUID();
+    const now = new Date();
+    const newLicense: License = {
+      id,
+      customer_id: license.customer_id,
+      license_key: license.license_key,
+      license_type: license.license_type || 'trial',
+      status: license.status || 'active',
+      expires_at: license.expires_at || null,
+      max_users: license.max_users || null,
+      max_patients: license.max_patients || null,
+      features: license.features || {},
+      created_at: now,
+      updated_at: now,
+    };
+    return newLicense;
+  }
+
+  async getLicenseByKey(licenseKey: string): Promise<License | undefined> {
+    return this.licensesList.find((item) => item.license_key === licenseKey);
+  }
+
+  async getAllLicenses(): Promise<Array<License & { customer: Customer }>> {
+    return [...this.licensesList];
+  }
+
+  async validateLicense(licenseKey: string): Promise<{
+    is_valid: boolean;
+    customer_name: string;
+    license_type: string;
+    status: string;
+    expires_at: string | null;
+    features: any;
+  } | null> {
+    const licenseItem = this.licensesList.find(item => item.license_key === licenseKey);
+    
+    if (!licenseItem) {
+      return {
+        is_valid: false,
+        customer_name: '',
+        license_type: '',
+        status: 'not_found',
+        expires_at: null,
+        features: {}
+      };
+    }
+
+    const isActive = licenseItem.status === 'active';
+    const isNotExpired = !licenseItem.expires_at || new Date(licenseItem.expires_at) > new Date();
+    
+    return {
+      is_valid: isActive && isNotExpired,
+      customer_name: licenseItem.customer.clinic_name,
+      license_type: licenseItem.license_type,
+      status: licenseItem.status,
+      expires_at: licenseItem.expires_at ? licenseItem.expires_at.toISOString() : null,
+      features: licenseItem.features || {}
+    };
+  }
+
+  private generateLicenseKey(licenseType: string): string {
+    const prefix = licenseType === 'trial' ? 'TRL' : 'PRO';
+    const year = new Date().getFullYear();
+    const randomPart = Math.random().toString(36).substring(2, 12).toUpperCase();
+    return `${prefix}-${year}-${randomPart}`;
+  }
+
+  async createCustomerLicense(params: {
+    clinic_name: string;
+    contact_email: string;
+    contact_phone?: string;
+    address?: string;
+    license_type: string;
+    duration_days?: number;
+  }): Promise<{
+    customer_id: string;
+    license_key: string;
+    expires_at: string;
+  }> {
+    // Create customer first
+    const customer = await this.createCustomer({
+      clinic_name: params.clinic_name,
+      contact_email: params.contact_email,
+      contact_phone: params.contact_phone || null,
+      address: params.address || null,
+    });
+
+    // Generate unique license key
+    let licenseKey: string;
+    let isUnique = false;
+    do {
+      licenseKey = this.generateLicenseKey(params.license_type);
+      const existing = await this.getLicenseByKey(licenseKey);
+      isUnique = !existing;
+    } while (!isUnique);
+
+    // Calculate expiry date
+    const durationDays = params.license_type === 'premium' ? 365 : (params.duration_days || 30);
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + durationDays);
+
+    // Determine features and limits based on license type
+    const maxUsers = params.license_type === 'trial' ? 1 : 20;
+    const maxPatients = params.license_type === 'trial' ? 50 : 10000;
+    const features = params.license_type === 'trial' 
+      ? { basic_features: true }
+      : { 
+          basic_features: true, 
+          reports: true, 
+          backup: true, 
+          api_access: true, 
+          priority_support: true, 
+          advanced_analytics: true 
+        };
+
+    // Create license
+    const license = await this.createLicense({
+      customer_id: customer.id,
+      license_key: licenseKey,
+      license_type: params.license_type,
+      status: 'active',
+      expires_at: expiresAt,
+      max_users: maxUsers,
+      max_patients: maxPatients,
+      features: features,
+    });
+
+    // Add to licenses list with customer info
+    this.licensesList.push({
+      ...license,
+      customer
+    });
+
+    return {
+      customer_id: customer.id,
+      license_key: license.license_key,
+      expires_at: expiresAt.toISOString(),
+    };
+  }
+}
+
+export const storage = new DatabaseStorage();

@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Plus, Copy, Check, Key } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { apiRequest } from '@/lib/queryClient';
 
 interface LicenseForm {
   clinic_name: string;
@@ -59,24 +59,17 @@ export const LicenseGenerator: React.FC = () => {
     setIsGenerating(true);
 
     try {
-      const { data, error } = await supabase.rpc('create_customer_license', {
-        p_clinic_name: form.clinic_name,
-        p_contact_email: form.contact_email,
-        p_contact_phone: form.contact_phone || null,
-        p_address: form.address || null,
-        p_license_type: form.license_type,
-        p_duration_days: form.license_type === 'trial' ? (form.duration_days || 30) : 365
+      const data = await apiRequest('/api/rpc/create_customer_license', {
+        method: 'POST',
+        body: JSON.stringify({
+          p_clinic_name: form.clinic_name,
+          p_contact_email: form.contact_email,
+          p_contact_phone: form.contact_phone || null,
+          p_address: form.address || null,
+          p_license_type: form.license_type,
+          p_duration_days: form.license_type === 'trial' ? (form.duration_days || 30) : 365
+        })
       });
-
-      if (error) {
-        console.error('License generation error:', error);
-        toast({
-          title: "Generation Failed",
-          description: error.message || "Failed to generate license",
-          variant: "destructive"
-        });
-        return;
-      }
 
       const licenseData = data?.[0];
       if (licenseData) {

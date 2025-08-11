@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Stethoscope, Shield, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { supabase } from '@/integrations/supabase/client';
+import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 
 interface LicenseScreenProps {
@@ -38,19 +38,12 @@ export const LicenseScreen: React.FC<LicenseScreenProps> = ({
     setIsValidating(true);
 
     try {
-      const { data, error } = await supabase.rpc('validate_license', {
-        input_license_key: licenseKey.trim()
+      const data = await apiRequest('/api/rpc/validate_license', {
+        method: 'POST',
+        body: JSON.stringify({
+          input_license_key: licenseKey.trim()
+        })
       });
-
-      if (error) {
-        console.error('License validation error:', error);
-        toast({
-          title: "Validation Error",
-          description: "Unable to validate license. Please try again.",
-          variant: "destructive"
-        });
-        return;
-      }
 
       const licenseData = data?.[0];
 
@@ -100,20 +93,14 @@ export const LicenseScreen: React.FC<LicenseScreenProps> = ({
   // Get a real demo license key from the database
   const getDemoLicenseKey = async () => {
     try {
-      const { data, error } = await supabase
-        .from('licenses')
-        .select('license_key')
-        .eq('status', 'active')
-        .limit(1)
-        .single();
-
-      if (data && !error) {
-        return data.license_key;
+      const data = await apiRequest('/api/rpc/get_all_licenses');
+      if (data && data.length > 0) {
+        return data[0].license_key;
       }
     } catch (error) {
       console.error('Error fetching demo license:', error);
     }
-    return 'TRIAL-2025-DEMO1234'; // Fallback
+    return 'TRL-2025-DEMO1234'; // Fallback
   };
 
   useEffect(() => {

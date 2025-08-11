@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Search, RefreshCw, Eye, Copy, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { apiRequest } from '@/lib/queryClient';
 
 interface License {
   license_id: string;
@@ -33,17 +33,7 @@ export const LicenseManager: React.FC = () => {
   const fetchLicenses = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.rpc('get_all_licenses');
-
-      if (error) {
-        console.error('Failed to fetch licenses:', error);
-        toast({
-          title: "Error",
-          description: "Failed to fetch licenses",
-          variant: "destructive"
-        });
-        return;
-      }
+      const data = await apiRequest('/api/rpc/get_all_licenses');
 
       setLicenses(data || []);
       setFilteredLicenses(data || []);
