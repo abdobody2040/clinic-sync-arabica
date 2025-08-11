@@ -21,17 +21,27 @@ export const useLanguage = () => {
     // Update document direction for RTL languages
     if (language === 'ar') {
       document.dir = 'rtl';
+      document.documentElement.dir = 'rtl';
       document.documentElement.lang = 'ar';
-      document.body.className = document.body.className.replace('ltr', '') + ' rtl';
+      document.body.classList.remove('ltr');
+      document.body.classList.add('rtl');
+      // Add data attribute for styling
+      document.documentElement.setAttribute('data-dir', 'rtl');
     } else {
       document.dir = 'ltr';
+      document.documentElement.dir = 'ltr';
       document.documentElement.lang = 'en';
-      document.body.className = document.body.className.replace('rtl', '') + ' ltr';
+      document.body.classList.remove('rtl');
+      document.body.classList.add('ltr');
+      // Add data attribute for styling
+      document.documentElement.setAttribute('data-dir', 'ltr');
     }
     
     // Force a re-render by triggering a window resize event
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
+      // Also trigger a custom event for components to listen to
+      window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language } }));
     }, 100);
   }, []);
 
@@ -43,12 +53,18 @@ export const useLanguage = () => {
     console.log('Setting initial language:', currentLanguage);
     if (currentLanguage === 'ar') {
       document.dir = 'rtl';
+      document.documentElement.dir = 'rtl';
       document.documentElement.lang = 'ar';
-      document.body.className = document.body.className.replace('ltr', '') + ' rtl';
+      document.body.classList.remove('ltr');
+      document.body.classList.add('rtl');
+      document.documentElement.setAttribute('data-dir', 'rtl');
     } else {
       document.dir = 'ltr';
+      document.documentElement.dir = 'ltr';
       document.documentElement.lang = 'en';
-      document.body.className = document.body.className.replace('rtl', '') + ' ltr';
+      document.body.classList.remove('rtl');
+      document.body.classList.add('ltr');
+      document.documentElement.setAttribute('data-dir', 'ltr');
     }
   }, [currentLanguage]);
 
