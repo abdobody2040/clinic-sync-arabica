@@ -76,24 +76,7 @@ export const SystemSettingsSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-6 border-t">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-2">
-                {t("importantInformation")}
-              </h4>
-              <ul className={`text-sm text-blue-800 space-y-1 ${isRTL ? 'text-right' : ''}`}>
-                <li>
-                  {t("autoSaveSettings")}
-                </li>
-                <li>
-                  {t("languageAffectsAll")}
-                </li>
-                <li>
-                  {t("currencyInReports")}
-                </li>
-              </ul>
-            </div>
-          </div>
+          
         </div>
       </CardContent>
     </Card>
