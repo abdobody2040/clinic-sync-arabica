@@ -9,7 +9,7 @@ interface StatsCardsProps {
   appointments: any[];
 }
 
-export const StatsCards: React.FC<StatsCardsProps> = ({ patients, appointments }) => {
+const StatsCards: React.FC<StatsCardsProps> = ({ patients, appointments }) => {
   const { t, isRTL } = useLanguage();
 
   // Calculate real statistics
@@ -69,3 +69,5 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ patients, appointments }
     </div>
   );
 };
+
+export default StatsCards;
