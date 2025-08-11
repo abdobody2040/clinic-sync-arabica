@@ -14,6 +14,7 @@ export const useLanguage = () => {
 
   // Memoize the changeLanguage function
   const changeLanguage = useCallback((language: Language) => {
+    console.log('Changing language to:', language);
     setCurrentLanguage(language);
     localStorage.setItem('clinic_language', language);
     
@@ -21,10 +22,17 @@ export const useLanguage = () => {
     if (language === 'ar') {
       document.dir = 'rtl';
       document.documentElement.lang = 'ar';
+      document.body.className = document.body.className.replace('ltr', '') + ' rtl';
     } else {
       document.dir = 'ltr';
       document.documentElement.lang = 'en';
+      document.body.className = document.body.className.replace('rtl', '') + ' ltr';
     }
+    
+    // Force a re-render by triggering a window resize event
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
   }, []);
 
   // Memoize the isRTL value
@@ -32,12 +40,15 @@ export const useLanguage = () => {
 
   useEffect(() => {
     // Set initial direction and language only once
+    console.log('Setting initial language:', currentLanguage);
     if (currentLanguage === 'ar') {
       document.dir = 'rtl';
       document.documentElement.lang = 'ar';
+      document.body.className = document.body.className.replace('ltr', '') + ' rtl';
     } else {
       document.dir = 'ltr';
       document.documentElement.lang = 'en';
+      document.body.className = document.body.className.replace('rtl', '') + ' ltr';
     }
   }, [currentLanguage]);
 
