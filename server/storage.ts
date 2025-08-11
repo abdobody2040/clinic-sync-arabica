@@ -7,12 +7,12 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
-  
+
   // Customer operations
   createCustomer(customer: InsertCustomer): Promise<Customer>;
   getCustomerByEmail(email: string): Promise<Customer | undefined>;
   getAllCustomers(): Promise<Customer[]>;
-  
+
   // License operations
   createLicense(license: InsertLicense): Promise<License>;
   getLicenseByKey(licenseKey: string): Promise<License | undefined>;
@@ -104,7 +104,7 @@ export class DatabaseStorage implements IStorage {
     .from(licenses)
     .leftJoin(customers, eq(licenses.customer_id, customers.id))
     .orderBy(licenses.created_at);
-    
+
     return result.map(row => ({
       ...row,
       customer: row.customer!
@@ -145,7 +145,7 @@ export class DatabaseStorage implements IStorage {
     const license = result[0];
     const isActive = license.status === 'active';
     const isNotExpired = !license.expires_at || new Date(license.expires_at) > new Date();
-    
+
     return {
       is_valid: isActive && isNotExpired,
       customer_name: license.customer_name || '',
@@ -198,12 +198,14 @@ export class DatabaseStorage implements IStorage {
     expiresAt.setDate(expiresAt.getDate() + durationDays);
 
     // Determine features and limits based on license type
-    const maxUsers = params.license_type === 'trial' ? 1 : 20;
-    const maxPatients = params.license_type === 'trial' ? 50 : 10000;
+    const maxUsers = params.license_type === 'trial' ? 1 : null; // null = unlimited
+    const maxPatients = params.license_type === 'trial' ? 50 : null; // null = unlimited
     const features = params.license_type === 'trial' 
       ? { basic_features: true }
       : { 
           basic_features: true, 
+          unlimited_patients: true,
+          unlimited_users: true,
           reports: true, 
           backup: true, 
           api_access: true, 
@@ -242,7 +244,7 @@ export class MemStorage implements IStorage {
     this.customers = new Map();
     this.licensesList = [];
     this.currentId = 1;
-    
+
     // Initialize with demo data
     this.initializeDemoData();
   }
@@ -353,7 +355,7 @@ export class MemStorage implements IStorage {
     features: any;
   } | null> {
     const licenseItem = this.licensesList.find(item => item.license_key === licenseKey);
-    
+
     if (!licenseItem) {
       return {
         is_valid: false,
@@ -367,7 +369,7 @@ export class MemStorage implements IStorage {
 
     const isActive = licenseItem.status === 'active';
     const isNotExpired = !licenseItem.expires_at || new Date(licenseItem.expires_at) > new Date();
-    
+
     return {
       is_valid: isActive && isNotExpired,
       customer_name: licenseItem.customer.clinic_name,
@@ -420,12 +422,14 @@ export class MemStorage implements IStorage {
     expiresAt.setDate(expiresAt.getDate() + durationDays);
 
     // Determine features and limits based on license type
-    const maxUsers = params.license_type === 'trial' ? 1 : 20;
-    const maxPatients = params.license_type === 'trial' ? 50 : 10000;
+    const maxUsers = params.license_type === 'trial' ? 1 : null; // null = unlimited
+    const maxPatients = params.license_type === 'trial' ? 50 : null; // null = unlimited
     const features = params.license_type === 'trial' 
       ? { basic_features: true }
       : { 
           basic_features: true, 
+          unlimited_patients: true,
+          unlimited_users: true,
           reports: true, 
           backup: true, 
           api_access: true, 
@@ -526,7 +530,7 @@ class WorkingDatabaseStorage implements IStorage {
     .from(licenses)
     .leftJoin(customers, eq(licenses.customer_id, customers.id))
     .orderBy(licenses.created_at);
-    
+
     return result.map(row => ({
       ...row,
       customer: row.customer!
@@ -567,7 +571,7 @@ class WorkingDatabaseStorage implements IStorage {
     const license = result[0];
     const isActive = license.status === 'active';
     const isNotExpired = !license.expires_at || new Date(license.expires_at) > new Date();
-    
+
     return {
       is_valid: isActive && isNotExpired,
       customer_name: license.customer_name || '',
@@ -626,7 +630,9 @@ class WorkingDatabaseStorage implements IStorage {
           maxPatients: null, 
           features: { 
             basic_features: true, 
-            advanced_reports: true, 
+            unlimited_patients: true,
+            unlimited_users: true,
+            reports: true, 
             backup: true, 
             api_access: true, 
             priority_support: true, 
@@ -666,16 +672,16 @@ const initializeStorage = async (): Promise<IStorage> => {
   try {
     console.log('Attempting to connect to database...');
     const dbStorage = new WorkingDatabaseStorage();
-    
+
     // Test the connection by trying to get customers
     try {
       const customers = await dbStorage.getAllCustomers();
       console.log('Database connected successfully, found', customers.length, 'customers');
-      
+
       // If no demo data exists, create it
       if (customers.length === 0) {
         console.log('No demo data found, creating demo customer and license...');
-        
+
         const demoCustomer = await dbStorage.createCustomer({
           clinic_name: 'Demo Clinic',
           contact_email: 'demo@clinic.com',
@@ -693,10 +699,10 @@ const initializeStorage = async (): Promise<IStorage> => {
           max_patients: 50,
           features: { basic_features: true },
         });
-        
+
         console.log('Demo data created successfully');
       }
-      
+
       console.log('Using DatabaseStorage for persistent data');
       return dbStorage;
     } catch (dbError) {

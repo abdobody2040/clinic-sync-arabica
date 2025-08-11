@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -131,20 +130,22 @@ export const LicenseGenerator: React.FC = () => {
     switch (type) {
       case 'trial':
         return {
-          badge: 'secondary',
-          users: 1,
+          users: '1',
           patients: 50,
           features: 'Basic features only'
         };
       case 'premium':
         return {
-          badge: 'default',
-          users: 20,
-          patients: 10000,
-          features: 'Full features including API access'
+          users: 'Unlimited',
+          patients: 'Unlimited',
+          features: 'All features, unlimited patients/users, API access, priority support'
         };
       default:
-        return { badge: 'secondary', users: 1, patients: 50, features: 'Basic features' };
+        return {
+          users: '1',
+          patients: 50,
+          features: 'Basic features only'
+        };
     }
   };
 
@@ -201,7 +202,7 @@ export const LicenseGenerator: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="trial">Trial - 1 user, 50 patients</SelectItem>
-                  <SelectItem value="premium">Premium - 20 users, 10,000 patients</SelectItem>
+                  <SelectItem value="premium">Premium - Unlimited users, Unlimited patients</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -289,7 +290,7 @@ export const LicenseGenerator: React.FC = () => {
               </div>
               <div>
                 <Label className="text-green-700">Max Patients</Label>
-                <p className="font-semibold">{getLicenseTypeInfo(generatedLicense.license_type).patients.toLocaleString()}</p>
+                <p className="font-semibold">{typeof getLicenseTypeInfo(generatedLicense.license_type).patients === 'number' ? getLicenseTypeInfo(generatedLicense.license_type).patients.toLocaleString() : getLicenseTypeInfo(generatedLicense.license_type).patients}</p>
               </div>
               <div>
                 <Label className="text-green-700">Expires</Label>

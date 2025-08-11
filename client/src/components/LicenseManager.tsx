@@ -205,9 +205,9 @@ export const LicenseManager: React.FC = () => {
                     </TableCell>
                     <TableCell>
                       <div className="text-sm">
-                        <div>{license.max_users} users</div>
+                        <div>{license.max_users ? license.max_users : 'Unlimited'} users</div>
                         <div className="text-muted-foreground">
-                          {license.max_patients.toLocaleString()} patients
+                          {license.max_patients ? license.max_patients.toLocaleString() : 'Unlimited'} patients
                         </div>
                       </div>
                     </TableCell>

@@ -1,4 +1,3 @@
-
 # Licensing System Setup Tutorial
 
 ## Table of Contents
@@ -164,6 +163,10 @@ Response:
 4. Click "Generate License"
 5. Copy generated license key
 
+**License Limits:**
+- **Trial**: 1 user, 50 patients, 30 days
+- **Premium**: Unlimited users, Unlimited patients, 365 days
+
 ### 2. License Manager (`LicenseManager.tsx`)
 
 **Features:**
@@ -260,7 +263,7 @@ const result = await storage.createCustomerLicense({
 ### Validation Logic:
 ```typescript
 const isValid = (
-  license.status === 'active' && 
+  license.status === 'active' &&
   (!license.expires_at || new Date(license.expires_at) > new Date())
 );
 ```
@@ -336,12 +339,12 @@ Check your database tables:
 SELECT * FROM customers;
 
 -- View all licenses with customer info
-SELECT l.*, c.clinic_name, c.contact_email 
-FROM licenses l 
+SELECT l.*, c.clinic_name, c.contact_email
+FROM licenses l
 JOIN customers c ON l.customer_id = c.id;
 
 -- Check license validation
-SELECT license_key, status, expires_at, 
+SELECT license_key, status, expires_at,
        (status = 'active' AND (expires_at IS NULL OR expires_at > NOW())) as is_valid
 FROM licenses;
 ```
@@ -387,7 +390,7 @@ async renewLicense(licenseKey: string, additionalDays: number) {
   const license = await getLicenseByKey(licenseKey);
   const newExpiry = new Date(license.expires_at);
   newExpiry.setDate(newExpiry.getDate() + additionalDays);
-  
+
   return updateLicense(license.id, { expires_at: newExpiry });
 }
 ```
@@ -423,7 +426,7 @@ interface LicenseUsage {
 // Upgrade trial to premium
 async upgradeLicense(licenseKey: string) {
   const license = await getLicenseByKey(licenseKey);
-  
+
   return updateLicense(license.id, {
     license_type: 'premium',
     max_users: 20,
