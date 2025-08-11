@@ -38,10 +38,8 @@ export interface IStorage {
   }>;
 }
 
-import { drizzle } from "drizzle-orm/neon-serverless";
+import { db } from "./db";
 import { eq, and, gte } from "drizzle-orm";
-
-const db = drizzle(process.env.DATABASE_URL!);
 
 export class DatabaseStorage implements IStorage {
   async getUser(id: number): Promise<User | undefined> {
@@ -243,6 +241,36 @@ export class MemStorage implements IStorage {
     this.customers = new Map();
     this.licensesList = [];
     this.currentId = 1;
+    
+    // Initialize with demo data
+    this.initializeDemoData();
+  }
+
+  private async initializeDemoData() {
+    // Create demo customer and license
+    const demoCustomer = await this.createCustomer({
+      clinic_name: 'Demo Clinic',
+      contact_email: 'demo@clinic.com',
+      contact_phone: '+971 50 123 4567',
+      address: 'Dubai Healthcare City',
+    });
+
+    const demoLicense = await this.createLicense({
+      customer_id: demoCustomer.id,
+      license_key: 'TRL-2025-DEMO1234',
+      license_type: 'trial',
+      status: 'active',
+      expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+      max_users: 1,
+      max_patients: 50,
+      features: { basic_features: true },
+    });
+
+    // Add to licenses list with customer info
+    this.licensesList.push({
+      ...demoLicense,
+      customer: demoCustomer
+    });
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -426,4 +454,5 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new DatabaseStorage();
+// Use MemStorage as fallback for now, can switch to DatabaseStorage once DB is working
+export const storage = new MemStorage();
